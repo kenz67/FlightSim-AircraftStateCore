@@ -1,0 +1,82 @@
+﻿@inherits LayoutComponentBase
+@using AircraftStateCore.Models;
+@using AircraftStateCore.Services.Interfaces;
+@using BootstrapBlazor.Components
+
+@inject ISimConnectService simconnect
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <Modal @ref="NotificationModal">
+        <ModalDialog ShowCloseButton="false"
+                     ShowSaveButton="true" SaveButtonText="Ok" SaveIcon=""
+                     OnSaveAsync="CloseDialog"
+                     IsCentered="true"
+                     Title="Save Data">
+            <BodyTemplate>
+                <br />
+                <div>@Message</div>
+                <br />
+            </BodyTemplate>
+        </ModalDialog>
+    </Modal>
+
+    <main>
+        <div class="top-row px-2">
+            @if (simconnect.VerifyAutoSave())
+            {
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Info">Autosave enabled</Badge></div>
+            }
+            @if (@simconnect.Connected())
+            {
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Success">Connected to Sim</Badge></div>               
+            }
+            else
+            {
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Danger">Not Connected to Sim</Badge></div>
+            }
+            @*<a href="https://docs.microsoft.com/aspnet/" target="_blank">about</a>*@
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code
+{
+
+    private Modal NotificationModal { get; set; }
+    private String Message { get; set; }
+
+    protected override void OnInitialized()
+    {
+        simconnect.OnMessageUpdate += Refresh;
+    }
+
+    private async Task<bool> CloseDialog()
+    {
+        simconnect.DisplayMessage = string.Empty;
+        await NotificationModal.Close();
+        return true;
+    }
+
+    private async Task Refresh()
+    {
+        Message = simconnect.DisplayMessage;
+        if (!string.IsNullOrEmpty(Message))
+        {
+            await NotificationModal.Show();
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        simconnect.OnMessageUpdate -= Refresh;
+    }
+}

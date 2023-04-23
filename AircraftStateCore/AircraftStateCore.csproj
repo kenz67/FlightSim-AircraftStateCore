@@ -1,0 +1,101 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<PropertyGroup>
+		<AppVersion>0.9</AppVersion>
+	</PropertyGroup>
+	
+    <PropertyGroup>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+		<OutputType>Exe</OutputType>
+        <RootNamespace>AircraftStateCore</RootNamespace>
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <EnableDefaultCssItems>false</EnableDefaultCssItems>
+
+        <!-- Display name -->
+        <ApplicationTitle>Aircraft State</ApplicationTitle>
+
+        <!-- App Identifier -->
+        <ApplicationId>com.kenzaldo.aircraftstate</ApplicationId>
+        <ApplicationIdGuid>CD2848AD-C89B-4B06-BDA0-4F33D30D86FD</ApplicationIdGuid>
+
+		<WindowsPackageType Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">None</WindowsPackageType>
+		
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+        <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+        <Platforms>AnyCPU;x64</Platforms>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.19041.0|AnyCPU'">
+      <ApplicationDisplayVersion>$(AppVersion)</ApplicationDisplayVersion>
+      <ApplicationVersion>1</ApplicationVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.19041.0|AnyCPU'">
+      <ApplicationDisplayVersion>$(AppVersion)</ApplicationDisplayVersion>
+      <ApplicationVersion>1</ApplicationVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.19041.0|x64'">
+      <ApplicationDisplayVersion>$(AppVersion)</ApplicationDisplayVersion>
+      <ApplicationVersion>1</ApplicationVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.19041.0|x64'">
+      <ApplicationDisplayVersion>$(AppVersion)</ApplicationDisplayVersion>
+      <ApplicationVersion>1</ApplicationVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- App Icon -->
+		<MauiIcon ForegroundFile="Resources\AppIcon\planeicon.svg" Include="Resources\AppIcon\planeicon.svg" Color="lightblue" />
+
+		<!-- Splash Screen -->
+        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+
+        <!-- Images -->
+        <MauiImage Include="Resources\Images\*" />
+        <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+
+        <!-- Custom Fonts -->
+        <MauiFont Include="Resources\Fonts\*" />
+
+        <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BootstrapBlazor" Version="7.5.0" />
+        <PackageReference Include="BootstrapBlazor.FontAwesome" Version="7.3.0" />
+        <PackageReference Include="CTrue.FsConnect" Version="1.3.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="System.Data.SQLite.Core" Version="1.0.117" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.FlightSimulator.SimConnect">		  
+        <HintPath>..\..\AircraftState\lib\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+	<PropertyGroup>
+		<EnableUnmanagedCodeSecurity>true</EnableUnmanagedCodeSecurity>
+		<UsePowerShell>True</UsePowerShell>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<SourceRevisionId>build$([System.DateTime]::Now.ToString("yyyyMMdd.HHmmss"))</SourceRevisionId>
+		<Copyright>2023</Copyright>
+		<Company>Zaldo</Company>
+	</PropertyGroup>
+</Project>

@@ -1,0 +1,179 @@
+﻿@using AircraftStateCore.Helpers;
+@using AircraftStateCore.Models;
+@using AircraftStateCore.Services.Interfaces;
+@using BootstrapBlazor.Components;
+
+@inject ISettingsData settingsData
+@inject MessageService MessageService
+
+@page "/SettingsPage"
+
+<h2>Settings</h2>
+
+<Message @ref="SaveMessage" Placement="Placement.Top" />
+
+<div>
+    <div class="bottom-buffer"></div>
+    <div class="row g-2 bottom-buffer">
+        <div class="col-2">
+            <Button @onclick="() => Save()" Color="Color.Primary">Save Settings</Button>
+        </div>
+    </div>
+    <div class="row g-2">
+        <div class="col-1" />
+        <div class="col-11">
+            <Checkbox TValue="bool" DisplayText="Auto save to Database" @bind-Value="@settings.AutoSave" OnValueChanged="OnAutoSaveChange" ShowLabel="false" ShowAfterLabel="true" />
+        </div>
+    </div>
+    <div class="row g-2 bottom-buffer">
+        <div class="col-1" />
+        <div class="col-11">
+            <Checkbox TValue="bool" DisplayText="Show Save As when saving to Database" @bind-Value="@settings.ShowSaveAs" OnValueChanged="OnSaveAsChange" ShowLabel="false" ShowAfterLabel="true" />
+        </div>
+    </div>
+    <div class="row g-2">
+        <div class="col-1" />
+        <div class="col-11">
+             <Tooltip Placement="Placement.Bottom" Title="When sending data to the sim, if the checkbox is checked, location data will not be sent, even if it is a seleted field.">
+                <Checkbox TValue="bool" DisplayText="Override (block) sending plane location (default)" @bind-Value="@settings.BlockLocation" OnValueChanged="OnBlockLocationChange" ShowLabel="false" ShowAfterLabel="true" />
+             </Tooltip>
+        </div>
+    </div>
+    <div class="row g-2 bottom-buffer">
+        <div class="col-1" />
+        <div class="col-11">
+             <Tooltip Placement="Placement.Bottom" Title="When sending data to the sim, if the checkbox is checked, fuel data will not be sent, even if it is a seleted field.">
+                <Checkbox TValue="bool" DisplayText="Override (block) sending fuel data (default)" @bind-Value="@settings.BlockFuel" OnValueChanged="OnBlockFuelChange" ShowLabel="false" ShowAfterLabel="true" />
+            </Tooltip>
+        </div>
+    </div>
+
+    <div class="row g-2">
+        <div class="col-1" />
+        <div class="col-11">
+            <Tooltip Placement="Placement.Bottom" Title="Select the settings that will be sent to the simulator.">
+            <Transfer
+                    ShowLabel="true" DisplayText="Select the fields that will be sent to the simulator"
+                    LeftPanelText="Available" RightPanelText="Selected"
+                    LeftButtonText="Remove" RightButtonText="Add"
+                    ShowSearch="true"                    
+                    LeftPannelSearchPlaceHolderString="Search"  RightPannelSearchPlaceHolderString="Search" 
+                    OnSetItemClass="SetItemClass"
+                      OnSelectedItemsChanged="@OnSelectedItemsChanged"
+                      Items="Items" @bind-Value="@SelectedItems" />
+            </Tooltip>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private Settings settings;
+    private List<SelectedItem> Items { get; set; }
+    private List<SelectedItem> SelectedItems { get; set; }
+    private Message SaveMessage { get; set; }
+
+    protected async override void OnInitialized()
+    {
+        settingsData.OnChangeAsync += Refresh;
+        settings = await settingsData.ReadSettings();
+
+        Items = new List<SelectedItem>();
+        Items = ConvertToSelectedItemList(settings.SelectedData);
+        SelectedItems = ConvertToSelectedItemSelectedList(settings.SelectedData);
+
+        Items.Sort((x, y) => x.Value.CompareTo(y.Value));
+        SelectedItems.Sort((x, y) => x.Value.CompareTo(y.Value));
+    }
+
+    private static string SetItemClass(SelectedItem item) => item.Value.ToString().EndsWith("0")
+        ? "transfer-disable bg-success text-white checkbox-hidden transfer-z"
+        : "transfer-z";
+
+
+    private List<SelectedItem> ConvertToSelectedItemList(List<AvailableDataItem> items)
+    {
+        var result = new List<SelectedItem>();
+
+        foreach (var item in items)
+        {
+            result.Add(new SelectedItem(item.value, item.txt));
+        }
+
+        return result;
+    }
+
+    private List<SelectedItem> ConvertToSelectedItemSelectedList(List<AvailableDataItem> items)
+    {
+        var result = new List<SelectedItem>();
+
+        foreach (var item in items.Where(i => i.enabled).ToList())
+        {
+            result.Add(new SelectedItem(item.value, item.txt));
+        }
+
+        return result;
+    }
+
+    private Task OnSelectedItemsChanged(IEnumerable<SelectedItem> items)
+    {
+        Items.Sort((x, y) => x.Value.CompareTo(y.Value));
+
+        SelectedItems.RemoveAll(r => r.Value.EndsWith("0") && !r.Value.EndsWith(".0"));
+
+        if (SelectedItems.Count == 0)
+        {
+            foreach (var h in FieldText.Headers)
+            {
+                SelectedItems.Add(new SelectedItem($"{h.Key}.0", h.Value) { Active = false });
+            }
+        }
+
+        SelectedItems.Sort((x, y) => x.Value.CompareTo(y.Value));
+
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private async Task Refresh()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public Task OnAutoSaveChange(bool value)
+    {
+        settings.AutoSave = value;
+        return Task.CompletedTask;
+    }
+
+    public Task OnSaveAsChange(bool value)
+    {
+        settings.ShowSaveAs = value;
+        return Task.CompletedTask;
+    }
+
+    public Task OnBlockLocationChange(bool value)
+    {
+        settings.BlockLocation = value;
+        return Task.CompletedTask;
+    }
+
+    public Task OnBlockFuelChange(bool value)
+    {
+        settings.BlockFuel = value;
+        return Task.CompletedTask;
+    }
+
+    private async void Save()
+    {
+        await settingsData.SaveSettings(SelectedItems);        
+        await MessageService.Show(new MessageOption()
+            {
+                Content = "Settings saved",
+                ShowDismiss = true,
+                Icon = "fa-solid fa-circle-info"
+            });
+    }
+
+    //TODO - Settings - Auto Save settings on change?
+}
