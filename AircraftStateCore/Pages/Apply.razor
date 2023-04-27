@@ -51,14 +51,20 @@
 					selectedData.Exists(s => s.txt.Equals(FieldText.FuelSelector)))
 			{
 				<div class="col-md-3 col-sm-6">
-					<Checkbox TValue = "bool" DisplayText="Block Fuel Data" ShowLabel="false" Value="BlockFuel" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
+					<Tooltip Placement="Placement.Bottom" Title="Do net send Fuel Data, even if selected below.">
+						<Checkbox TValue="bool" DisplayText="Block Fuel Data" ShowLabel="false" Value="BlockFuel" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
+					</Tooltip>
+
 				</div>			
 			}
 
 			@if (selectedData.Exists(s => s.txt.StartsWith("Location")))
 			{
 				<div class="col-md-3 col-sm-6">
-					<Checkbox TValue="bool" DisplayText="Block Location Data" ShowLabel="false" Value="BlockLocation" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
+					<Tooltip Placement="Placement.Bottom" Title="Do net send Location Data, even if selected below.">
+						<Checkbox TValue="bool" DisplayText="Block Location Data" ShowLabel="false" Value="BlockLocation" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
+					</Tooltip>
+
 				</div>
 			}
 		</div>
