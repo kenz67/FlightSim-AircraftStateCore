@@ -4,6 +4,8 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AircraftStateCore", "AircraftStateCore\AircraftStateCore.csproj", "{1D8FD1A2-C44B-407C-81DE-39AEA3931D7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AircraftStateCoreUnitTest", "AircraftStateCoreUnitTest\AircraftStateCoreUnitTest.csproj", "{69794B8F-DB97-4120-BC86-6DE928BB0B7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,14 @@ Global
 		{1D8FD1A2-C44B-407C-81DE-39AEA3931D7A}.Release|x64.ActiveCfg = Release|x64
 		{1D8FD1A2-C44B-407C-81DE-39AEA3931D7A}.Release|x64.Build.0 = Release|x64
 		{1D8FD1A2-C44B-407C-81DE-39AEA3931D7A}.Release|x64.Deploy.0 = Release|x64
+		{69794B8F-DB97-4120-BC86-6DE928BB0B7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69794B8F-DB97-4120-BC86-6DE928BB0B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69794B8F-DB97-4120-BC86-6DE928BB0B7F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{69794B8F-DB97-4120-BC86-6DE928BB0B7F}.Debug|x64.Build.0 = Debug|Any CPU
+		{69794B8F-DB97-4120-BC86-6DE928BB0B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69794B8F-DB97-4120-BC86-6DE928BB0B7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69794B8F-DB97-4120-BC86-6DE928BB0B7F}.Release|x64.ActiveCfg = Release|Any CPU
+		{69794B8F-DB97-4120-BC86-6DE928BB0B7F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
