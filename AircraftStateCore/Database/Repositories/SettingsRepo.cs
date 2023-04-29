@@ -41,6 +41,7 @@ public class SettingsRepo : ISettingsRepo
 
 	public async Task SaveSettings(Settings settings)
 	{
+		_dbContext.SaveChanges();
 		await SetIndividualSetting(SettingDefinitions.BlockLocation, settings.BlockLocation.ToString());
 		await SetIndividualSetting(SettingDefinitions.BlockFuel, settings.BlockFuel.ToString());
 		await SetIndividualSetting(SettingDefinitions.AutoSave, settings.AutoSave.ToString());
@@ -68,7 +69,7 @@ public class SettingsRepo : ISettingsRepo
 
 	private async Task SetIndividualSetting(string key, string value)
 	{
-		var dbValue = _dbContext.ApplicationSettings.Where(s => s.DataKey.Equals(key)).FirstOrDefault();
+		var dbValue = _dbContext.ApplicationSettings.FirstOrDefault(s => s.DataKey.Equals(key));
 		if (dbValue == null)
 		{
 			var newSetting = new ApplicationSettingsDatum { DataKey = key, DataValue = value };
@@ -77,7 +78,9 @@ public class SettingsRepo : ISettingsRepo
 		}
 		else if (dbValue.DataValue != value)
 		{
+			_dbContext.Attach(dbValue);
 			dbValue.DataValue = value;
+			//_dbContext.ApplicationSettings.Update(dbValue);
 			await _dbContext.SaveChangesAsync();
 		}
 	}

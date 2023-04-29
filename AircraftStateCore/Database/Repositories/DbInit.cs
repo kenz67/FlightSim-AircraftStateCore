@@ -25,34 +25,40 @@ public class DbInit : IDbInit
 	{
 		try
 		{
-			var newData = new List<ProfileDatum>();
-			var newSettings = new List<ApplicationSettingsDatum>();
-
-			foreach (var data in _dbContext.PlaneData)
+			if (_dbContext.ApplicationSettings.Any())
 			{
-				newData.Add(new ProfileDatum { ProfileName = data.Plane, Data = data.Data });
-			}
+				var newData = new List<ProfileDatum>();
+				var newSettings = new List<ApplicationSettingsDatum>();
 
-			_dbContext.ProfileData.AddRange(newData);
-
-			foreach (var s in _dbContext.Settings)
-			{
-				switch (s.DataKey)
+				foreach (var data in _dbContext.PlaneData)
 				{
-					case SettingDefinitions.AutoSave:
-					case SettingDefinitions.DataToSend:
-					case SettingDefinitions.BlockLocation:
-					case SettingDefinitions.BlockFuel:
-						newSettings.Add(new ApplicationSettingsDatum { DataKey = s.DataKey, DataValue = s.DataValue }); break;
-					case "ApplyFuel":
-						FlipValue(newSettings, s, SettingDefinitions.BlockFuel); break;
-					case "ApplyLocation":
-						FlipValue(newSettings, s, SettingDefinitions.BlockLocation); break;
+					newData.Add(new ProfileDatum { ProfileName = data.Plane, Data = data.Data });
 				}
-			}
 
-			_dbContext.ApplicationSettings.AddRange(newSettings);
-			_dbContext.SaveChanges();
+				if (newData.Count > 0)
+				{
+					_dbContext.ProfileData.AddRange(newData);
+				}
+
+				foreach (var s in _dbContext.Settings)
+				{
+					switch (s.DataKey)
+					{
+						case SettingDefinitions.AutoSave:
+						case SettingDefinitions.DataToSend:
+						case SettingDefinitions.BlockLocation:
+						case SettingDefinitions.BlockFuel:
+							newSettings.Add(new ApplicationSettingsDatum { DataKey = s.DataKey, DataValue = s.DataValue }); break;
+						case "ApplyFuel":
+							FlipValue(newSettings, s, SettingDefinitions.BlockFuel); break;
+						case "ApplyLocation":
+							FlipValue(newSettings, s, SettingDefinitions.BlockLocation); break;
+					}
+				}
+
+				_dbContext.ApplicationSettings.AddRange(newSettings);
+				_dbContext.SaveChanges();
+			}
 
 			_dbContext.Database.ExecuteSql($"DROP TABLE planeData");
 			_dbContext.Database.ExecuteSql($"DROP TABLE settings");
