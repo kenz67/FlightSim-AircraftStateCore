@@ -22,7 +22,7 @@ public class SimConnectService : ISimConnectService
 	//private SimConnect sim;
 	private readonly Settings _settings;
 	private bool sentToSim = false;
-	private bool masterBatteryOn = false;
+	public bool masterBatteryOn = false;
 	private readonly IPlaneDataRepo _planeDataRepo;
 	private readonly ISimConnectProxy _proxy;
 
@@ -449,12 +449,12 @@ public class SimConnectService : ISimConnectService
 		return Dec2Bcd(Math.Round(adf, 4) * 100000);
 	}
 
-	public static uint Dec2Bcd(uint num)
+	private static uint Dec2Bcd(uint num)
 	{
 		return HornerScheme(num, 10, 0x10);
 	}
 
-	public static uint Dec2Bcd(double num)
+	private static uint Dec2Bcd(double num)
 	{
 		return Dec2Bcd((uint)(num * 100));
 	}
