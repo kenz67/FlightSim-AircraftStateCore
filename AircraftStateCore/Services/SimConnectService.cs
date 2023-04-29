@@ -283,123 +283,34 @@ public class SimConnectService : ISimConnectService
 	private void SendLightsData(PlaneDataStruct data)
 	{
 		if (CheckEnabled(FieldText.LightsBeacon))
-			TurnOn(data.lightBeacon, EVENT_IDS.BEACON_LIGHT);
+			TurnOnOff(data.lightBeacon, EVENT_IDS.BEACON_LIGHT);
 
 		if (CheckEnabled(FieldText.LightsNav))
-			TurnOn(data.lightNav, EVENT_IDS.NAV_LIGHT);
+			TurnOnOff(data.lightNav, EVENT_IDS.NAV_LIGHT);
 
 		if (CheckEnabled(FieldText.LightsLanding))
-			TurnOn(data.lightLanding, EVENT_IDS.LANDING_LIGHT);
+			TurnOnOff(data.lightLanding, EVENT_IDS.LANDING_LIGHT);
 
 		if (CheckEnabled(FieldText.LightsTaxi))
-			TurnOn(data.lightTaxi, EVENT_IDS.TAXI_LIGHT);
+			TurnOnOff(data.lightTaxi, EVENT_IDS.TAXI_LIGHT);
 
 		if (CheckEnabled(FieldText.LightsStrobe))
-			TurnOn(data.lightStrobe, EVENT_IDS.STROBE_LIGHT);
+			TurnOnOff(data.lightStrobe, EVENT_IDS.STROBE_LIGHT);
 
 		if (CheckEnabled(FieldText.LightsPanel))
-			TurnOn(data.lightPanel, EVENT_IDS.PANEL_LIGHT);
+			TurnOnOff(data.lightPanel, EVENT_IDS.PANEL_LIGHT);
 
 		if (CheckEnabled(FieldText.LightsRecognition))
-			TurnOn(data.lightRecognition, EVENT_IDS.RECOGNITION_LIGHT);
+			TurnOnOff(data.lightRecognition, EVENT_IDS.RECOGNITION_LIGHT);
 
 		if (CheckEnabled(FieldText.LightsWing))
-			TurnOn(data.lightWing, EVENT_IDS.WING_LIGHT);
+			TurnOnOff(data.lightWing, EVENT_IDS.WING_LIGHT);
 
 		if (CheckEnabled(FieldText.LightsCabin))
-			TurnOn(data.lightCabin, EVENT_IDS.CABIN_LIGHT);
+			TurnOnOff(data.lightCabin, EVENT_IDS.CABIN_LIGHT);
 
 		if (CheckEnabled(FieldText.LightsLogo))
-			TurnOn(data.lightLogo, EVENT_IDS.LOGO_LIGHT);
-	}
-
-	private void SendObsData(PlaneDataStruct data)
-	{
-		if (CheckEnabled(FieldText.ObsObs1))
-		{
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.OBS1, (uint)data.obs1, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-		}
-		if (CheckEnabled(FieldText.ObsObs2))
-		{
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.OBS2, (uint)data.obs2, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-		}
-		if (CheckEnabled(FieldText.ObsAdfCard))
-		{
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.ADF_CARD_SET, (uint)data.adfCard, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-		}
-	}
-
-	private void SendOtherData(PlaneDataStruct data)
-	{
-		if (CheckEnabled(FieldText.OtherHeadingBug))
-		{
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.HEADING_BUG_SET, (uint)data.headingBug, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-		}
-
-		if (CheckEnabled(FieldText.OtherKolhsman))
-		{
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.KOHLSMAN_SET, SimConnectService.ConvertKohlsman(data.kohlsman), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-		}
-
-		if (CheckEnabled(FieldText.OtherBatteryVoltage))
-		{
-			var batteryData = new BatteryVoltage { batteryVoltage = data.batteryVoltage };
-			_proxy.SetDataOnSimObject(DATA_DEFINITIONS.SimPowerData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, batteryData);
-		}
-	}
-
-	private void SendPowerData(PlaneDataStruct data)
-	{
-		if (CheckEnabled(FieldText.PowerMasterAlternator))
-		{
-			TurnOn(data.masterAlternator, EVENT_IDS.MASTER_ALTERNATOR);
-		}
-
-		if (CheckEnabled(FieldText.PowerMasterBattery))
-		{
-			TurnOn(data.masterBattery, EVENT_IDS.MASTER_BATTERY);
-		}
-
-		if (CheckEnabled(FieldText.PowerMasterAvionics))
-		{
-			TurnOn(data.masterAvionics, EVENT_IDS.AVIONICS_MASTER);
-		}
-	}
-
-	private void SendRadioData(PlaneDataStruct data)
-	{
-		if (CheckEnabled(FieldText.RadiosCom1Both))
-		{
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.COM_RADIO_SET_HZ, SimConnectService.ConvertCom(data.com1Standby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.COM_RADIO_SET_HZ, SimConnectService.ConvertCom(data.com1Active), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.COM_STBY_RADIO_SET_HZ, SimConnectService.ConvertCom(data.com1Standby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-		}
-
-		if (CheckEnabled(FieldText.RadiosCom2Both))
-		{
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.COM2_RADIO_SET_HZ, SimConnectService.ConvertCom(data.com2Active), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.COM2_STBY_RADIO_SET_HZ, SimConnectService.ConvertCom(data.com2Standby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-		}
-
-		if (CheckEnabled(FieldText.RadiosNav1Both))
-		{
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.NAV1_RADIO_SET_HZ, SimConnectService.ConvertNav(data.nav1Active), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.NAV1_STBY_SET_HZ, SimConnectService.ConvertNav(data.nav1Standby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-		}
-
-		if (CheckEnabled(FieldText.RadiosNav2Both))
-		{
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.NAV2_RADIO_SET_HZ, SimConnectService.ConvertNav(data.nav2Active), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.NAV2_STBY_SET_HZ, SimConnectService.ConvertNav(data.nav2Standby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-		}
-
-		if (CheckEnabled(FieldText.RadiosAdfBoth))
-		{
-			var tmpStandby = data.adfStandby;
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.ADF_STBY_SET, SimConnectService.ConvertAdf(data.adfActive), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.ADF1_RADIO_SWAP, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.ADF_STBY_SET, SimConnectService.ConvertAdf(tmpStandby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
-		}
+			TurnOnOff(data.lightLogo, EVENT_IDS.LOGO_LIGHT);
 	}
 
 	private void SendLocationData(PlaneDataStruct data)
@@ -414,9 +325,102 @@ public class SimConnectService : ISimConnectService
 		_proxy.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneLocationData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, locationData);
 	}
 
-	private void TurnOn(bool status, EVENT_IDS id)
+	private void SendObsData(PlaneDataStruct data)
+	{
+		if (CheckEnabled(FieldText.ObsAdfCard))
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.ADF_CARD_SET, (uint)data.adfCard, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+		if (CheckEnabled(FieldText.ObsObs1))
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.OBS1, (uint)data.obs1, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+		if (CheckEnabled(FieldText.ObsObs2))
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.OBS2, (uint)data.obs2, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+	}
+
+	private void SendOtherData(PlaneDataStruct data)
+	{
+		if (CheckEnabled(FieldText.OtherHeadingBug))
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.HEADING_BUG_SET, (uint)data.headingBug, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+
+		if (CheckEnabled(FieldText.OtherKolhsman))
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.KOHLSMAN_SET, ConvertKohlsman(data.kohlsman), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+
+		if (CheckEnabled(FieldText.OtherBatteryVoltage))
+		{
+			var batteryData = new BatteryVoltage { batteryVoltage = data.batteryVoltage };
+			_proxy.SetDataOnSimObject(DATA_DEFINITIONS.SimPowerData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, batteryData);
+		}
+	}
+
+	private void SendPowerData(PlaneDataStruct data)
+	{
+		if (CheckEnabled(FieldText.PowerMasterAlternator))
+		{
+			TurnOnOff(data.masterAlternator, EVENT_IDS.MASTER_ALTERNATOR);
+		}
+
+		if (CheckEnabled(FieldText.PowerMasterBattery))
+		{
+			TurnOnOff(data.masterBattery, EVENT_IDS.MASTER_BATTERY);
+		}
+
+		if (CheckEnabled(FieldText.PowerMasterAvionics))
+		{
+			TurnOnOff(data.masterAvionics, EVENT_IDS.AVIONICS_MASTER);
+		}
+	}
+
+	private void SendRadioData(PlaneDataStruct data)
+	{
+		if (CheckEnabled(FieldText.RadiosCom1Both))
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.COM_RADIO_SET_HZ, ConvertCom(data.com1Standby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.COM_RADIO_SET_HZ, ConvertCom(data.com1Active), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.COM_STBY_RADIO_SET_HZ, ConvertCom(data.com1Standby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+
+		if (CheckEnabled(FieldText.RadiosCom2Both))
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.COM2_RADIO_SET_HZ, ConvertCom(data.com2Active), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.COM2_STBY_RADIO_SET_HZ, ConvertCom(data.com2Standby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+
+		if (CheckEnabled(FieldText.RadiosNav1Both))
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.NAV1_RADIO_SET_HZ, ConvertNav(data.nav1Active), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.NAV1_STBY_SET_HZ, ConvertNav(data.nav1Standby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+
+		if (CheckEnabled(FieldText.RadiosNav2Both))
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.NAV2_RADIO_SET_HZ, ConvertNav(data.nav2Active), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.NAV2_STBY_SET_HZ, ConvertNav(data.nav2Standby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+
+		if (CheckEnabled(FieldText.RadiosAdfBoth))
+		{
+			var tmpStandby = data.adfStandby;
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.ADF_STBY_SET, ConvertAdf(data.adfActive), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.ADF1_RADIO_SWAP, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.ADF_STBY_SET, ConvertAdf(tmpStandby), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+	}
+
+	private void TurnOnOff(bool status, EVENT_IDS id)
 	{
 		if (status)
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, id, 1, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+		else
 		{
 			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, id, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 		}
