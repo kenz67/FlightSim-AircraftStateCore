@@ -59,6 +59,7 @@ public class SimConnectService : ISimConnectService
 		_proxy.Disconnect();
 	}
 
+	//TODO, private???
 	public void ReceiveSimConnectMessage()
 	{
 		_proxy.ReceiveMessage();
@@ -69,6 +70,7 @@ public class SimConnectService : ISimConnectService
 		return _proxy.IsConnected();
 	}
 
+	//todo, real test, just instantiate svc and this will be called.
 	private void SetupEvents()
 	{
 		try
@@ -577,6 +579,7 @@ public class SimConnectService : ISimConnectService
 		// return "Exception received: " + data.dwException;
 	}
 
+	//TODO Private?
 	public void CloseConnection()
 	{
 		if (_proxy.CloseConnection())

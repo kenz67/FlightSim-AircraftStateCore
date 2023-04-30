@@ -708,6 +708,65 @@ public class SimConnectServiceTests
 	}
 
 	//////////////////////////////////////////////////////////////////////////
+	//
+	//////////////////////////////////////////////////////////////////////////
+	[Fact]
+	public void ConnectedTest()
+	{
+		var mockProxy = new Mock<ISimConnectProxy>();
+		var mockSettings = new Mock<ISettingsData>();
+		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+
+		var settingsData = new Settings()
+		{
+			SelectedData = new List<AvailableDataItem>()
+		};
+
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+
+		Assert.False(svc.Connected());
+
+		mockProxy.Setup(p => p.IsConnected()).Returns(true);
+		Assert.True(svc.Connected());
+	}
+
+	[Fact]
+	public void DisconnectTest()
+	{
+		var mockProxy = new Mock<ISimConnectProxy>();
+		var mockSettings = new Mock<ISettingsData>();
+		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+
+		var settingsData = new Settings()
+		{
+			SelectedData = new List<AvailableDataItem>()
+		};
+
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+
+		svc.Disconnect();
+		mockProxy.Verify(p => p.Disconnect(), Times.Once());
+	}
+
+	[Fact]
+	public void ReceiveMessageTest()
+	{
+		var mockProxy = new Mock<ISimConnectProxy>();
+		var mockSettings = new Mock<ISettingsData>();
+		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+
+		var settingsData = new Settings()
+		{
+			SelectedData = new List<AvailableDataItem>()
+		};
+
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+
+		svc.ReceiveSimConnectMessage();
+		mockProxy.Verify(p => p.ReceiveMessage(), Times.Once());
+	}
+
+	//////////////////////////////////////////////////////////////////////////
 	// Setup Data
 	//////////////////////////////////////////////////////////////////////////
 	private static PlaneDataStruct GetSampleData()
