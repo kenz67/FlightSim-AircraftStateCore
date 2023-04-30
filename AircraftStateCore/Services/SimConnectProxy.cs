@@ -58,53 +58,65 @@ namespace AircraftStateCore.Services
 
 		public void AddOnRecvOpen(RecvOpenEventHandler handler)
 		{
-			sim.OnRecvOpen += handler;
+			if (IsConnected())
+			{
+				sim.OnRecvOpen += handler;
+			}
 		}
 
 		public void AddOnRecvQuit(RecvQuitEventHandler handler)
 		{
-			sim.OnRecvQuit += handler;
+			if (IsConnected())
+			{
+				sim.OnRecvQuit += handler;
+			}
 		}
 
 		public void AddOnRecvEvent(RecvSimobjectDataEventHandler handler)
 		{
-			sim.OnRecvSimobjectData += handler;
+			if (IsConnected())
+			{
+				sim.OnRecvSimobjectData += handler;
+			}
 			//Sim.OnRecvEvent += new SimConnect.RecvEventEventHandler(SimConnect_OnRecvEvent);  //https://docs.flightsimulator.com/html/Programming_Tools/SimConnect/API_Reference/Events_And_Data/SimConnect_SubscribeToSystemEvent.htm
 		}
 
 		public void AddOnRecvException(RecvExceptionEventHandler handler)
 		{
-			sim.OnRecvException += handler;
+			if (IsConnected())
+			{
+				sim.OnRecvException += handler;
+			}
 		}
 
 		public void AddToDataDefinition(Enum DefineId, string DatumName, string UnitsName, SIMCONNECT_DATATYPE DatumType, float Epsilon, uint DatumId)
 		{
-			sim.AddToDataDefinition(DefineId, DatumName, UnitsName, DatumType, Epsilon, DatumId);
+			sim?.AddToDataDefinition(DefineId, DatumName, UnitsName, DatumType, Epsilon, DatumId);
 		}
 
 		public void RegisterDataDefineStruct<T>(Enum dwId)
 		{
-			sim.RegisterDataDefineStruct<T>(dwId);
+			sim?.RegisterDataDefineStruct<T>(dwId);
 		}
 
 		public void RequestDataOnSimObject(Enum RequestId, Enum DefineId, uint ObjectId, SIMCONNECT_PERIOD Period, SIMCONNECT_DATA_REQUEST_FLAG Flags, uint Origin, uint Interval, uint Limit)
 		{
-			sim.RequestDataOnSimObject(RequestId, DefineId, ObjectId, Period, Flags, Origin, Interval, Limit);
+			sim?.RequestDataOnSimObject(RequestId, DefineId, ObjectId, Period, Flags, Origin, Interval, Limit);
 		}
 
 		public void MapClientEventToSimEvent(Enum EventId, string EventName)
 		{
-			sim.MapClientEventToSimEvent(EventId, EventName);
+			sim?.MapClientEventToSimEvent(EventId, EventName);
 		}
 
 		public void TransmitClientEvent(uint ObjectId, Enum EventId, uint Data, Enum GroupId, SIMCONNECT_EVENT_FLAG Flags)
 		{
-			sim.TransmitClientEvent(ObjectId, EventId, Data, GroupId, Flags);
+			sim?.TransmitClientEvent(ObjectId, EventId, Data, GroupId, Flags);
 		}
 
 		public void SetDataOnSimObject(Enum DefineId, uint ObjectId, SIMCONNECT_DATA_SET_FLAG Flags, object DataSet)
 		{
-			sim.SetDataOnSimObject(DefineId, ObjectId, Flags, DataSet);
+			sim?.SetDataOnSimObject(DefineId, ObjectId, Flags, DataSet);
 		}
 	}
 }

@@ -45,7 +45,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="@FieldText.radiosHeader" Class="" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="@FieldText.radiosHeader" Class="" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										<div class="col-12">
 											<BootstrapInputGroup>
@@ -100,7 +100,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="OBS" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="OBS" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										<div class="col-12">
 											<BootstrapInputGroup>
@@ -131,7 +131,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Power" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Power" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										<div class="col-12">
 											<BootstrapInputGroup>
@@ -165,7 +165,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Location" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Location" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										<div class="col-12">
 											<BootstrapInputGroup>
@@ -209,7 +209,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Plane Configuration" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Plane Configuration" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										<div class="col-12">
 											<BootstrapInputGroup>
@@ -258,7 +258,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Fuel" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Fuel" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										<div class="col-12">
 											<BootstrapInputGroup>
@@ -289,7 +289,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Other" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Other" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										<div class="col-12">
 											<BootstrapInputGroup>
@@ -320,7 +320,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Lights" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Lights" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										<div class="col-12">
 											<BootstrapInputGroup>
@@ -396,6 +396,7 @@
 @code {
 	private Modal NotificationModal { get; set; }
 	private Message Message { get; set; }
+	private Color TitleColor = Color.Info;
 
 	protected override void OnInitialized()
 	{

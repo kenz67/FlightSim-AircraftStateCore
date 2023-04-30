@@ -77,7 +77,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="@FieldText.radiosHeader" Class="" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="@FieldText.radiosHeader" Class="" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.RadiosCom1Both)) ||
 												selectedData.Exists(s => s.txt.Equals(FieldText.RadiosCom2Both)) ||
@@ -158,7 +158,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="OBS" Class="btn-sm" TitleColor="Color.Info"  IsCollapsed="false">
+								<CollapseItem Text="OBS" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.ObsObs1)))
 										{
@@ -200,7 +200,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Power" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Power" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.PowerMasterBattery)))
 										{
@@ -245,7 +245,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Location" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Location" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LocationLongitude)))
 										{
@@ -308,7 +308,7 @@
 				<div class="col-12">
 					<Collapse>
 						<CollapseItems>
-							<CollapseItem Text="Plane Configuration" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Plane Configuration" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 								<div class="row g-1">
 									@if (selectedData.Exists(s => s.txt.Equals(FieldText.ConfigurationFlaps)))
 									{
@@ -376,7 +376,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Fuel" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Fuel" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyBoth)))
 										{
@@ -415,7 +415,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Other" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Other" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherKolhsman)))
 										{
@@ -457,7 +457,7 @@
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Lights" Class="btn-sm" TitleColor="Color.Info" IsCollapsed="false">
+								<CollapseItem Text="Lights" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsBeacon)))
 										{
@@ -580,6 +580,7 @@
 	private string disabledSend => (string.IsNullOrEmpty(selectedProfile) || !simconnect.Connected() ? "disabled bottom-buffer" : "bottom-buffer");
 	private Message ApplyMessage { get; set; }
 	private Settings SettingsData { get; set; }
+	private Color TitleColor = Color.Warning;
 
 	protected async override void OnInitialized()
 	{
