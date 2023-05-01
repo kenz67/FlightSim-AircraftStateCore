@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 
 namespace AircraftStateCore.DAL.Repositories;
 
+//TODO UT
 public class SettingsRepo : ISettingsRepo
 {
 	private readonly AircraftStateContext _dbContext;
@@ -28,7 +29,6 @@ public class SettingsRepo : ISettingsRepo
 			{
 				case SettingDefinitions.BlockLocation: settings.BlockLocation = setting.DataValue.Equals("true", StringComparison.OrdinalIgnoreCase); break;
 				case SettingDefinitions.BlockFuel: settings.BlockFuel = setting.DataValue.Equals("true", StringComparison.OrdinalIgnoreCase); break;
-				case SettingDefinitions.ShowApplyForm: settings.ShowApplyForm = setting.DataValue.Equals("true", StringComparison.OrdinalIgnoreCase); break;
 				case SettingDefinitions.AutoSave: settings.AutoSave = setting.DataValue.Equals("true", StringComparison.OrdinalIgnoreCase); break;
 				case SettingDefinitions.ShowSaveAs: settings.ShowSaveAs = setting.DataValue.Equals("true", StringComparison.OrdinalIgnoreCase); break;
 				case SettingDefinitions.DataToSend: settings.SelectedData = JsonConvert.DeserializeObject<List<AvailableDataItem>>(setting.DataValue); break;

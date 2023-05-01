@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 
 namespace AircraftStateCore.DAL.Repositories;
 
+//TODO UT
 public class PlaneDataRepo : IPlaneDataRepo
 {
 	private readonly AircraftStateContext _dbContext;

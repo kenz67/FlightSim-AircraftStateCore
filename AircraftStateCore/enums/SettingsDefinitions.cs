@@ -2,7 +2,6 @@
 
 public static class SettingDefinitions
 {
-	public const string ShowApplyForm = "ShowApplyForm";
 	public const string BlockLocation = "BlockLocation";
 	public const string BlockFuel = "BlockFuel";
 	public const string AutoSave = "AutoSave";

@@ -748,24 +748,6 @@ public class SimConnectServiceTests
 		mockProxy.Verify(p => p.Disconnect(), Times.Once());
 	}
 
-	[Fact]
-	public void ReceiveMessageTest()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings()
-		{
-			SelectedData = new List<AvailableDataItem>()
-		};
-
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		svc.ReceiveSimConnectMessage();
-		mockProxy.Verify(p => p.ReceiveMessage(), Times.Once());
-	}
-
 	//////////////////////////////////////////////////////////////////////////
 	// Setup Data
 	//////////////////////////////////////////////////////////////////////////

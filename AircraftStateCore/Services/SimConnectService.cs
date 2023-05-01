@@ -8,7 +8,6 @@ using Microsoft.FlightSimulator.SimConnect;
 namespace AircraftStateCore.Services;
 public class SimConnectService : ISimConnectService
 {
-	// public SimConnect Sim { get => sim; }
 	public PlaneDataStruct SimData { get; set; } = new PlaneDataStruct();
 	public MasterData MasterData { get; set; } = new MasterData();
 	public event Func<Task> OnChangeAsync;
@@ -59,8 +58,7 @@ public class SimConnectService : ISimConnectService
 		_proxy.Disconnect();
 	}
 
-	//TODO, private???
-	public void ReceiveSimConnectMessage()
+	private void ReceiveSimConnectMessage()
 	{
 		_proxy.ReceiveMessage();
 	}
@@ -70,7 +68,7 @@ public class SimConnectService : ISimConnectService
 		return _proxy.IsConnected();
 	}
 
-	//todo, real test, just instantiate svc and this will be called.
+	//todo, real test?, just instantiate svc and this will be called.
 	private void SetupEvents()
 	{
 		try
@@ -579,8 +577,7 @@ public class SimConnectService : ISimConnectService
 		// return "Exception received: " + data.dwException;
 	}
 
-	//TODO Private?
-	public void CloseConnection()
+	private void CloseConnection()
 	{
 		if (_proxy.CloseConnection())
 		{
