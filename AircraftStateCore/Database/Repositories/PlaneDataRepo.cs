@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 
 namespace AircraftStateCore.DAL.Repositories;
 
-//TODO UT
 public class PlaneDataRepo : IPlaneDataRepo
 {
 	private readonly AircraftStateContext _dbContext;
@@ -20,8 +19,11 @@ public class PlaneDataRepo : IPlaneDataRepo
 	public async Task DeleteSavedProfile(string profile)
 	{
 		var data = await _dbContext.ProfileData.Where(p => p.ProfileName.Equals(profile)).FirstOrDefaultAsync();
-		_dbContext.ProfileData.Remove(data);
-		await _dbContext.SaveChangesAsync();
+		if (data != null)
+		{
+			_dbContext.ProfileData.Remove(data);
+			await _dbContext.SaveChangesAsync();
+		}
 		return;
 	}
 
