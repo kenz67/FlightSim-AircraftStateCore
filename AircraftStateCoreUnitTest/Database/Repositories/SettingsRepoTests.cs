@@ -40,12 +40,6 @@ public class SettingsRepoTests
 		context.SaveChanges();
 	}
 
-	//[Fact()]
-	//public void SettingsRepoTest()
-	//{
-	//	Assert.True(false, "This test needs an implementation");
-	//}
-
 	[Fact()]
 	public async Task GetSettingsTest()
 	{
