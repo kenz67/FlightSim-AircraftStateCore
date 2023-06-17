@@ -29,12 +29,12 @@
 		</ModalDialog>
 	</Modal>
 	
-	@if (!simconnect.Connected())
+@*	@if (!simconnect.Connected())
 	{
 		<Button @onclick="() => Connect()" Color="Color.Primary">Connect To Sim</Button>
 	}
 	else
-	{
+	{*@
 		<DbSave />
 
 		<div class="row g-2">
@@ -85,8 +85,8 @@
 										<div class="col-12">
 											<BootstrapInputGroup>
 												<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosAdf" />
-												<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@simconnect.SimData.adfActive" />
-												<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@simconnect.SimData.adfStandby" />
+											<BootstrapInput TValue="double" Formatter="Formatter.DecimalAdfFormatter" value="@simconnect.SimData.adfActive" />
+											<BootstrapInput TValue="double" Formatter="Formatter.DecimalAdfFormatter" value="@simconnect.SimData.adfStandby" />
 											</BootstrapInputGroup>
 										</div>
 									</div>
@@ -390,7 +390,7 @@
 				</div>
 			</div>
 		</div>
-	}
+	//}
 </div>
 
 @code {

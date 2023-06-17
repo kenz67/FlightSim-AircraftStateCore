@@ -25,12 +25,6 @@
             <Checkbox TValue="bool" DisplayText="Auto save to Database" @bind-Value="@settings.AutoSave" OnValueChanged="OnAutoSaveChange" ShowLabel="false" ShowAfterLabel="true" />
         </div>
     </div>
-    <div class="row g-2 bottom-buffer">
-        <div class="col-1" />
-        <div class="col-11">
-            <Checkbox TValue="bool" DisplayText="Show Save As when saving to Database" @bind-Value="@settings.ShowSaveAs" OnValueChanged="OnSaveAsChange" ShowLabel="false" ShowAfterLabel="true" />
-        </div>
-    </div>
     <div class="row g-2">
         <div class="col-1" />
         <div class="col-11">
@@ -143,12 +137,6 @@
     public Task OnAutoSaveChange(bool value)
     {
         settings.AutoSave = value;
-        return Task.CompletedTask;
-    }
-
-    public Task OnSaveAsChange(bool value)
-    {
-        settings.ShowSaveAs = value;
         return Task.CompletedTask;
     }
 

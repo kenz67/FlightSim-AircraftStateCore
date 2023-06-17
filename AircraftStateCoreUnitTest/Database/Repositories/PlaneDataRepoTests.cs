@@ -1,4 +1,12 @@
-﻿namespace AircraftStateCore.DAL.Repositories.Tests;
+﻿using AircraftStateCore.DAL.DatabaseContext;
+using AircraftStateCore.DAL.Repositories.Interfaces;
+using AircraftStateCore.Database;
+using AircraftStateCore.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
+
+namespace AircraftStateCore.DAL.Repositories.Tests;
 
 [ExcludeFromCodeCoverage]
 public class PlaneDataRepoTests
