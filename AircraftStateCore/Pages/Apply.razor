@@ -52,7 +52,7 @@
 			{
 				<div class="col-md-3 col-sm-6">
 					<Tooltip Placement="Placement.Bottom" Title="Do net send Fuel Data, even if selected below.">
-						<Checkbox TValue="bool" DisplayText="Block Fuel Data" ShowLabel="false" Value="BlockFuel" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
+						<Checkbox TValue="bool" DisplayText="Block Fuel Data" ShowLabel="false" @bind-Value="BlockFuel" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
 					</Tooltip>
 
 				</div>			
@@ -62,7 +62,7 @@
 			{
 				<div class="col-md-3 col-sm-6">
 					<Tooltip Placement="Placement.Bottom" Title="Do net send Location Data, even if selected below.">
-						<Checkbox TValue="bool" DisplayText="Block Location Data" ShowLabel="false" Value="BlockLocation" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
+						<Checkbox TValue="bool" DisplayText="Block Location Data" ShowLabel="false" @bind-Value="BlockLocation" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
 					</Tooltip>
 
 				</div>
@@ -292,8 +292,8 @@
 											<div class="col-12">
 												<BootstrapInputGroup>
 													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.LocationPitch" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2AbsFormatter" value="@simconnect.SimData.pitch" />
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.PitchLabel(simconnect.SimData)" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2AbsFormatter" value="@planeData.CurrentData.pitch" />
+													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.PitchLabel(@planeData.CurrentData)" />
 												</BootstrapInputGroup>
 											</div>
 										}
@@ -433,6 +433,17 @@
 												<BootstrapInputGroup>
 													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherHeadingBug" />
 													<BootstrapInput TValue="double" value="@planeData.CurrentData.headingBug" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.GyroDrift)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.GyroDrift" />
+													<BootstrapInput TValue="double" Formatter="Formatter.GyroDriftFormatter" value="@planeData.CurrentData.gyroDriftError" />
+													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.GyroDriftLabel(@planeData.CurrentData)" />
 												</BootstrapInputGroup>
 											</div>
 										}
@@ -607,6 +618,10 @@
 			if (!string.IsNullOrEmpty(selectedProfile))
 			{
 				await planeData.LookUpProfile(selectedProfile);
+				if (!planeData.CurrentData.validData)
+				{
+					simconnect.NoProfile();
+				}
 			}
 		}		
 	}

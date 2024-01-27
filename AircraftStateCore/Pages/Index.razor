@@ -303,6 +303,15 @@
 												<BootstrapInput TValue="double" value="@simconnect.SimData.headingBug" />
 											</BootstrapInputGroup>
 										</div>
+
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.GyroDrift" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GyroDriftFormatter" value="@simconnect.SimData.gyroDriftError" />
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.GyroDriftLabel(simconnect.SimData)" />
+										</BootstrapInputGroup>
+									</div>
+
 										<div class="col-12">
 											<BootstrapInputGroup>
 												<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherBatteryVoltage" />
@@ -390,7 +399,7 @@
 				</div>
 			</div>
 		</div>
-	//}
+	@*}*@
 </div>
 
 @code {

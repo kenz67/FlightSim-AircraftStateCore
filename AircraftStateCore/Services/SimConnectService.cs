@@ -107,12 +107,13 @@ public class SimConnectService : ISimConnectService
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "ELEVATOR TRIM POSITION", "radians", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "RUDDER TRIM PCT", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "AILERON TRIM PCT", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "GYRO DRIFT ERROR", "radians", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "HEADING INDICATOR", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
 			//key on these to trigger db save. all 3 must be turned on together, then all 3 off together
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "ELECTRICAL MASTER BATTERY", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "GENERAL ENG MASTER ALTERNATOR", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "AVIONICS MASTER SWITCH", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "ELECTRICAL BATTERY VOLTAGE", "volts", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
 			//////////////////
@@ -129,6 +130,7 @@ public class SimConnectService : ISimConnectService
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneLocationData, "PLANE ALTITUDE", "feet", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneLocationData, "PLANE HEADING DEGREES MAGNETIC", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneLocationData, "PLANE PITCH DEGREES", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
 
 			//Trim
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimTrimData, "ELEVATOR TRIM POSITION", "radians", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -205,10 +207,19 @@ public class SimConnectService : ISimConnectService
 
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.ELECTRICAL_BATTERY_BUS_VOLTAGE, "ELECTRICAL_BATTERY_BUS_VOLTAGE");
 			//sim.SubscribeToSystemEvent(MY_SIMCONENCT_EVENT_IDS.Pause, "Pause");
+
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.HEADING_GYRO_SET, "HEADING_GYRO_SET");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.GYRO_DRIFT_SET, "GYRO_DRIFT_SET");
 		}
 		catch /* (COMException ex) */
 		{
 		}
+	}
+
+	public void NoProfile()
+	{
+		sentToSim = true;
+		OnMessageUpdate?.Invoke();
 	}
 
 	public void SendDataToSim(PlaneDataStruct data, bool BlockFuel, bool BlockLocation)
@@ -358,6 +369,13 @@ public class SimConnectService : ISimConnectService
 			var batteryData = new BatteryVoltage { batteryVoltage = data.batteryVoltage };
 			_proxy.SetDataOnSimObject(DATA_DEFINITIONS.SimPowerData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, batteryData);
 		}
+
+		if (CheckEnabled(FieldText.GyroDrift))
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.HEADING_GYRO_SET, (uint)0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+			Thread.Sleep(100);    // Seem to need the delay or the drift doesn't work
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.GYRO_DRIFT_SET, (uint)ConvertGyroDrift(data.gyroDriftError), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
 	}
 
 	private void SendPowerData(PlaneDataStruct data)
@@ -479,6 +497,17 @@ public class SimConnectService : ISimConnectService
 	{
 		var x = (uint)(value * 541.8);    //couldn't figure out how to set this, calulated this value, it is close, but sometimes off by a bit
 		return x;
+	}
+
+	private static uint ConvertGyroDrift(double value)
+	{
+		value *= 57.2958;
+		if (value < 0)
+		{
+			return (uint)(360 + value);
+		}
+
+		return (uint)value;
 	}
 
 	public void GetSimEnvInfo()

@@ -56,6 +56,9 @@ public static class Formatter
 	public static string RudderTrimLabel(PlaneDataStruct planeData) =>
 			Math.Round(planeData.rudderTrim, 3) >= 0 ? "% Rgt" : "% Lft";
 
+	public static string GyroDriftLabel(PlaneDataStruct planeData) =>
+		Math.Round(planeData.gyroDriftError, 3) >= 0 ? "° Rgt" : "° Lft";
+
 	public static string AileronTrimLabel(PlaneDataStruct planeData) =>
 				Math.Round(planeData.rudderTrim, 3) >= 0 ? "% Rgt" : "% Lft";
 
@@ -65,6 +68,7 @@ public static class Formatter
 	public static string Decimal2AbsFormatter(double source) => Math.Abs(Math.Round(source, 2)).ToString("N2");
 	public static string Decimal3AbsFormatter(double source) => Math.Abs(Math.Round(source, 3)).ToString("N3");
 	public static string DecimalAdfFormatter(double source) => Math.Abs(1000 * Math.Round(source, 3)).ToString();
+	public static string GyroDriftFormatter(double source) => Math.Round(source * 57.2958, 1).ToString();
 
 	public static string FuelSelectorFormatter(int source)
 	{

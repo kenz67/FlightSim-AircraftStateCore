@@ -31,6 +31,7 @@ public class AvailableData
             new AvailableDataItem("0103", FieldText.LocationAltitude),
             new AvailableDataItem("0104", FieldText.LocationHeading),
             new AvailableDataItem("0105", FieldText.LocationPitch),
+            new AvailableDataItem("0106", FieldText.GyroDrift),
 
             new AvailableDataItem("0150", FieldText.Headers["0150"]),
             new AvailableDataItem("0150.0", FieldText.Headers["0150"], true),

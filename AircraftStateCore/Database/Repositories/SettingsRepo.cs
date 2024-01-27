@@ -40,11 +40,16 @@ public class SettingsRepo : ISettingsRepo
 
     public async Task SaveSettings(Settings settings)
     {
-        _dbContext.SaveChanges();
-        await SetIndividualSetting(SettingDefinitions.BlockLocation, settings.BlockLocation.ToString());
-        await SetIndividualSetting(SettingDefinitions.BlockFuel, settings.BlockFuel.ToString());
-        await SetIndividualSetting(SettingDefinitions.AutoSave, settings.AutoSave.ToString());
-        await SetIndividualSetting(SettingDefinitions.DataToSend, JsonConvert.SerializeObject(settings.SelectedData));
+        try
+        {
+            _dbContext.SaveChanges();
+            await SetIndividualSetting(SettingDefinitions.BlockLocation, settings.BlockLocation.ToString());
+            await SetIndividualSetting(SettingDefinitions.BlockFuel, settings.BlockFuel.ToString());
+            await SetIndividualSetting(SettingDefinitions.AutoSave, settings.AutoSave.ToString());
+            await SetIndividualSetting(SettingDefinitions.DataToSend, JsonConvert.SerializeObject(settings.SelectedData));
+        }
+        catch
+        { }
     }
 
     public async Task<bool> UpdateVersion(string VersionNumber)

@@ -21,4 +21,6 @@ public interface ISimConnectService : IPageUpdate
 	void SendDataToSim(PlaneDataStruct data, bool BlockFuel, bool BlockLocation);
 
 	public event Func<Task> OnMessageUpdate;
+
+	public void NoProfile();
 }
