@@ -25,40 +25,34 @@ public class DbInit : IDbInit
     {
         try
         {
-            if (_dbContext.ApplicationSettings.Any())
+            var newData = new List<ProfileDatum>();
+            var newSettings = new List<ApplicationSettingsDatum>();
+
+            foreach (var data in _dbContext.PlaneData)
             {
-                var newData = new List<ProfileDatum>();
-                var newSettings = new List<ApplicationSettingsDatum>();
-
-                foreach (var data in _dbContext.PlaneData)
-                {
-                    newData.Add(new ProfileDatum { ProfileName = data.Plane, Data = data.Data });
-                }
-
-                if (newData.Count > 0)
-                {
-                    _dbContext.ProfileData.AddRange(newData);
-                }
-
-                foreach (var s in _dbContext.Settings)
-                {
-                    switch (s.DataKey)
-                    {
-                        case SettingDefinitions.AutoSave:
-                        case SettingDefinitions.DataToSend:
-                        case SettingDefinitions.BlockLocation:
-                        case SettingDefinitions.BlockFuel:
-                            newSettings.Add(new ApplicationSettingsDatum { DataKey = s.DataKey, DataValue = s.DataValue }); break;
-                        case "ApplyFuel":
-                            FlipValue(newSettings, s, SettingDefinitions.BlockFuel); break;
-                        case "ApplyLocation":
-                            FlipValue(newSettings, s, SettingDefinitions.BlockLocation); break;
-                    }
-                }
-
-                _dbContext.ApplicationSettings.AddRange(newSettings);
-                _dbContext.SaveChanges();
+                newData.Add(new ProfileDatum { ProfileName = data.Plane, Data = data.Data });
             }
+
+            _dbContext.ProfileData.AddRange(newData);
+
+            foreach (var s in _dbContext.Settings)
+            {
+                switch (s.DataKey)
+                {
+                    case SettingDefinitions.AutoSave:
+                    case SettingDefinitions.DataToSend:
+                    case SettingDefinitions.BlockLocation:
+                    case SettingDefinitions.BlockFuel:
+                        newSettings.Add(new ApplicationSettingsDatum { DataKey = s.DataKey, DataValue = s.DataValue }); break;
+                    case "ApplyFuel":
+                        FlipValue(newSettings, s, SettingDefinitions.BlockFuel); break;
+                    case "ApplyLocation":
+                        FlipValue(newSettings, s, SettingDefinitions.BlockLocation); break;
+                }
+            }
+
+            _dbContext.ApplicationSettings.AddRange(newSettings);
+            _dbContext.SaveChanges();
 
             _dbContext.Database.ExecuteSql($"DELETE FROM planeData");
             _dbContext.Database.ExecuteSql($"DELETE FROM settings");

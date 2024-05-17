@@ -8,15 +8,9 @@ using Newtonsoft.Json;
 
 namespace AircraftStateCore.DAL.Repositories;
 
-//TODO UT
-public class SettingsRepo : ISettingsRepo
+public class SettingsRepo(AircraftStateContext dbContext) : ISettingsRepo
 {
-    private readonly AircraftStateContext _dbContext;
-
-    public SettingsRepo(AircraftStateContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AircraftStateContext _dbContext = dbContext;
 
     public async Task<Settings> GetSettings()
     {
