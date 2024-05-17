@@ -42,10 +42,7 @@ namespace AircraftStateCore.Database.Migrations
 
                     b.HasKey("Plane");
 
-                    b.ToTable("planeData", null, t =>
-                        {
-                            t.ExcludeFromMigrations();
-                        });
+                    b.ToTable("planeData", (string)null);
                 });
 
             modelBuilder.Entity("AircraftStateCore.DAL.DatabaseContext.ProfileDatum", b =>
