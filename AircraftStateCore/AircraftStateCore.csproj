@@ -66,8 +66,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="BootstrapBlazor" Version="7.5.0" />
-        <PackageReference Include="BootstrapBlazor.FontAwesome" Version="7.3.0" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.7" />
+		<PackageReference Include="BootstrapBlazor" Version="8.5.7" />
+        <PackageReference Include="BootstrapBlazor.FontAwesome" Version="8.0.4" />
         <PackageReference Include="CTrue.FsConnect" Version="1.3.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.5">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -92,6 +94,7 @@
 	<PropertyGroup>
 		<EnableUnmanagedCodeSecurity>true</EnableUnmanagedCodeSecurity>
 		<UsePowerShell>True</UsePowerShell>
+		<SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
 	</PropertyGroup>
 
 	<PropertyGroup>
