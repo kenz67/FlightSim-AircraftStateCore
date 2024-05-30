@@ -1,14 +1,10 @@
-﻿using AircraftStateCore.DAL.Repositories.Interfaces;
-
-namespace AircraftStateCore;
-
-public partial class MainPage : ContentPage
+﻿namespace AircraftStateCore
 {
-	public MainPage(IDbInit dbInit)
-	{
-		InitializeComponent();
-
-		dbInit.Init();
-		//_ = new SimConnectService();
-	}
+    public partial class MainPage : ContentPage
+    {
+        public MainPage()
+        {
+            InitializeComponent();
+        }
+    }
 }

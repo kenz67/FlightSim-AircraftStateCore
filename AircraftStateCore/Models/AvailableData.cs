@@ -8,8 +8,8 @@ public class AvailableData
 
     public AvailableData()
     {
-        Items = new List<AvailableDataItem>
-        {
+        Items =
+        [
             new AvailableDataItem("0000", FieldText.Headers["0000"]),
             new AvailableDataItem("0000.0", FieldText.Headers["0000"], true),
             new AvailableDataItem("0001", FieldText.RadiosCom1Both),
@@ -70,6 +70,6 @@ public class AvailableData
             new AvailableDataItem("0358", FieldText.LightsLogo),
             new AvailableDataItem("0359", FieldText.LightsWing),
             new AvailableDataItem("0361", FieldText.LightsRecognition),
-        };
+        ];
     }
 }
