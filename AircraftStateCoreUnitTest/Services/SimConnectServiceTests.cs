@@ -21,7 +21,7 @@ public class SimConnectServiceTests
 
 		var settingsData = new Settings
 		{
-			SelectedData = new List<AvailableDataItem>()
+			SelectedData = []
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
@@ -52,7 +52,7 @@ public class SimConnectServiceTests
 
 		var settingsData = new Settings
 		{
-			SelectedData = new List<AvailableDataItem>()
+			SelectedData = []
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
@@ -719,7 +719,7 @@ public class SimConnectServiceTests
 
 		var settingsData = new Settings()
 		{
-			SelectedData = new List<AvailableDataItem>()
+			SelectedData = []
 		};
 
 		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
@@ -739,7 +739,7 @@ public class SimConnectServiceTests
 
 		var settingsData = new Settings()
 		{
-			SelectedData = new List<AvailableDataItem>()
+			SelectedData = []
 		};
 
 		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
