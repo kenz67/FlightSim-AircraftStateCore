@@ -28,9 +28,15 @@
         <ApplicationId>com.companyname.aircraftstatecore</ApplicationId>
 
         <!-- Versions -->
-        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationDisplayVersion>0.10</ApplicationDisplayVersion>
         <ApplicationVersion>1</ApplicationVersion>
 
+		<AppVersion>0.10</AppVersion>
+		
+		<SourceRevisionId>build$([System.DateTime]::Now.ToString("yyyyMMdd.HHmmss"))</SourceRevisionId>
+		<Copyright>2023</Copyright>
+		<Company>Zaldo</Company>
+		
 		<!-- Run as local app, not store app, also update launchsettings.json -->
 		<WindowsPackageType>None</WindowsPackageType>
 		
