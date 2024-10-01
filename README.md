@@ -1,6 +1,6 @@
 # AircraftStateCore
 
-Read and save MSFS aircraft state and apply to next flight
+Read and save MSFS aircraft state and apply to next flight poerted to dotnet Core
 
 ## Features
 
