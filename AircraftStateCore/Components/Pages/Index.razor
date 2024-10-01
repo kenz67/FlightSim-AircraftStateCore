@@ -1,0 +1,448 @@
+﻿@using AircraftStateCore.DAL.Repositories.Interfaces;
+@using AircraftStateCore.Helpers;
+@using AircraftStateCore.Models;
+@using AircraftStateCore.Services.Interfaces;
+@using BootstrapBlazor.Components; 
+    
+@inject MessageService MessageService
+@inject ISimConnectService simconnect
+@inject ISettingsRepo settingRepo
+
+@page "/"
+
+<h2>Sim Status</h2>
+
+<Message @ref="@Message" Placement="Placement.Bottom" />
+
+<div>
+	@* ShowSaveButton="true" SaveButtonText="Ok" SaveIcon="" *@
+	<Modal @ref="NotificationModal">
+		<ModalDialog ShowCloseButton="false" 
+				ShowSaveButton="true" SaveButtonText="Ok" SaveButtonIcon=""
+				OnSaveAsync="CloseDialog"
+				IsCentered="true"						
+				Title="Missing Settings">				
+			<BodyTemplate>
+				<br />
+				<div>@Message</div>
+				<br />
+			</BodyTemplate>
+		</ModalDialog>
+	</Modal>
+	
+
+	<DbSave />
+
+	<div class="row g-2">
+		@*first Column*@
+		<div class="col-md-6 col-lg-4 col-sm-12">
+			@*Radios*@
+			<div class="row g-2 bottom-buffer">
+				<div class="col-12">
+					<Collapse>
+						<CollapseItems>
+							<CollapseItem Text="@FieldText.radiosHeader" Class="" TitleColor="@TitleColor" IsCollapsed="false">
+								<div class="row g-1">
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="" />
+											<BootstrapInput class="disabled" TValue="string" value="Active" />
+											<BootstrapInput class="disabled" TValue="string" value="Standby" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosCom1" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@simconnect.SimData.com1Active" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@simconnect.SimData.com1Standby" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosCom2" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@simconnect.SimData.com2Active" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@simconnect.SimData.com2Standby" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosNav1" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@simconnect.SimData.nav1Active" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@simconnect.SimData.nav1Standby" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosNav2" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@simconnect.SimData.nav2Active" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@simconnect.SimData.nav2Standby" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosAdf" />
+										<BootstrapInput TValue="double" Formatter="Formatter.DecimalAdfFormatter" value="@simconnect.SimData.adfActive" />
+										<BootstrapInput TValue="double" Formatter="Formatter.DecimalAdfFormatter" value="@simconnect.SimData.adfStandby" />
+										</BootstrapInputGroup>
+									</div>
+								</div>
+							</CollapseItem>
+						</CollapseItems>
+					</Collapse>
+				</div>
+			</div>
+			@*OBS*@
+			<div class="row g-2 bottom-buffer">
+				<div class="col-12">
+					<Collapse>
+						<CollapseItems>
+							<CollapseItem Text="OBS" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+								<div class="row g-1">
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.ObsObs1" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.obs1" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.ObsObs2" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.obs2" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.ObsAdfCard" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.adfCard" />
+										</BootstrapInputGroup>
+									</div>
+								</div>
+							</CollapseItem>
+						</CollapseItems>
+					</Collapse>
+				</div>
+			</div>
+			@*Power*@
+			<div class="row g-2">
+				<div class="col-12">
+					<Collapse>
+						<CollapseItems>
+							<CollapseItem Text="Power" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+								<div class="row g-1">
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.PowerMasterBattery" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.masterBattery" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.PowerMasterAlternator" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.masterAlternator" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.PowerMasterAvionics" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.masterAvionics" />
+										</BootstrapInputGroup>
+									</div>
+								</div>
+							</CollapseItem>
+						</CollapseItems>
+					</Collapse>
+				</div>
+			</div>
+		</div>
+		@*second Column*@
+		<div class="col-md-6 col-lg-4 col-sm-12">
+			@*Location*@
+			<div class="row g-2 bottom-buffer">
+				<div class="col-12">
+					<Collapse>
+						<CollapseItems>
+							<CollapseItem Text="Location" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+								<div class="row g-1">
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.LocationLongitude" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GetLongitude" value="@simconnect.SimData.longitude" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.LocationLatitude" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GetLatitude" value="@simconnect.SimData.latitude" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.LocationHeading" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal0Formatter" value="@simconnect.SimData.heading" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.LocationAltitude" />
+											<BootstrapInput TValue="int" value="@simconnect.SimData.altitude" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.LocationPitch" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2AbsFormatter" value="@simconnect.SimData.pitch" />
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.PitchLabel(simconnect.SimData)" />
+										</BootstrapInputGroup>
+									</div>
+								</div>
+							</CollapseItem>
+						</CollapseItems>
+					</Collapse>
+				</div>
+			</div>
+			@*Plane Config*@
+			<div class="row g-2 bottom-buffer">
+				<div class="col-12">
+					<Collapse>
+						<CollapseItems>
+							<CollapseItem Text="Plane Configuration" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+								<div class="row g-1">
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.ConfigurationFlaps" />
+											<BootstrapInput TValue="int" value="@simconnect.SimData.flapsIndex" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.ConfigurationParkingBrake" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.parkingBrake" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.ConfigurationElevatorTrim" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2AbsFormatter" value="@simconnect.SimData.elevtorTrim" />
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.ElevTrimLabel(simconnect.SimData)" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.ConfigurationRudderTrim" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2AbsFormatter" value="@simconnect.SimData.rudderTrim" />
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.RudderTrimLabel(simconnect.SimData)" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.ConfigurationAileronTrim" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2AbsFormatter" value="@simconnect.SimData.aileronTrim" />
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.AileronTrimLabel(simconnect.SimData)" />
+										</BootstrapInputGroup>
+									</div>
+								</div>
+							</CollapseItem>
+						</CollapseItems>
+					</Collapse>
+				</div>
+			</div>
+		</div>
+		@*third Column*@
+		<div class="col-md-6 col-lg-4 col-sm-12">
+			@*Fuel*@
+			<div class="row g-2 bottom-buffer">
+				<div class="col-12">
+					<Collapse>
+						<CollapseItems>
+							<CollapseItem Text="Fuel" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+								<div class="row g-1">
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelLeft" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelLeft" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelRight" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelRight" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelSelector" />
+											<BootstrapInput TValue="int" Formatter="Formatter.FuelSelectorFormatter" value="@simconnect.SimData.fuelSelector" />
+										</BootstrapInputGroup>
+									</div>
+								</div>
+							</CollapseItem>
+						</CollapseItems>
+					</Collapse>
+				</div>
+			</div>
+			@*Other*@
+			<div class="row g-2 bottom-buffer">
+				<div class="col-12">
+					<Collapse>
+						<CollapseItems>
+							<CollapseItem Text="Other" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+								<div class="row g-1">
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherKolhsman" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.kohlsman" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherHeadingBug" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.headingBug" />
+										</BootstrapInputGroup>
+									</div>
+
+								<div class="col-12">
+									<BootstrapInputGroup>
+										<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.GyroDrift" />
+										<BootstrapInput TValue="double" Formatter="Formatter.GyroDriftFormatter" value="@simconnect.SimData.gyroDriftError" />
+										<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.GyroDriftLabel(simconnect.SimData)" />
+									</BootstrapInputGroup>
+								</div>
+
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherBatteryVoltage" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.batteryVoltage" />
+										</BootstrapInputGroup>
+									</div>
+								</div>
+							</CollapseItem>
+						</CollapseItems>
+					</Collapse>
+				</div>
+			</div>
+			@*Lights*@
+			<div class="row g-2 bottom-buffer">
+				<div class="col-12">
+					<Collapse>
+						<CollapseItems>
+							<CollapseItem Text="Lights" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+								<div class="row g-1">
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsBeacon" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightBeacon" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabin" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightCabin" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLanding" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightLanding" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLogo" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightLogo" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsNav" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightNav" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanel" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightPanel" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsRecognition" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightRecognition" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsStrobe" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightStrobe" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsTaxi" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightTaxi" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsWing" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightWing" />
+										</BootstrapInputGroup>
+									</div>
+								</div>
+							</CollapseItem>
+						</CollapseItems>
+					</Collapse>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+	private Modal NotificationModal { get; set; }
+	private Message Message { get; set; }
+	private Color TitleColor = Color.Info;
+
+	protected override void OnInitialized()
+	{
+		simconnect.OnChangeAsync += Refresh;
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		var currentVersion = Formatter.GetBuildNumber();
+		if (firstRender && await settingRepo.UpdateVersion(currentVersion))
+		{
+			await MessageService.Show(new MessageOption()
+			{
+				Content = $"You are running a new version of the application ({currentVersion}) Check the settings page to see if there are new values you would like to track.  More information can be found in the release notes on the About page.",
+				Icon = "fa-solid fa-circle-info",
+				Color = Color.Secondary,
+				ShowDismiss = true,
+				ShowBar = true,
+				IsAutoHide = false
+			});
+		}
+	}
+
+	private async Task Refresh()
+	{		
+		await InvokeAsync(StateHasChanged);
+	}
+
+	private async Task<bool> CloseDialog()
+	{
+		await NotificationModal.Close();
+		return true;
+	}
+
+	public async void Connect()
+	{
+		simconnect.ConnectToSim();
+		await InvokeAsync(StateHasChanged);
+	}
+
+	public void Dispose()
+	{
+		simconnect.OnChangeAsync -= Refresh;
+	}
+}

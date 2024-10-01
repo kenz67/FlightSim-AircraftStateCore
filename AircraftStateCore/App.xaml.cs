@@ -1,23 +1,47 @@
-﻿namespace AircraftStateCore;
+﻿using AircraftStateCore.Services.Interfaces;
 
-public partial class App : Application
+namespace AircraftStateCore
 {
-	public App(MainPage mainPage)
+	public partial class App : Application
 	{
-		//MainPage = new MainPage();
-		MainPage = mainPage;
-	}
+		readonly ILocalSettingsService _localSettingsService;
+		public App(ILocalSettingsService localSettings)
+		{
+			_localSettingsService = localSettings;
+			InitializeComponent();
 
-	protected override Window CreateWindow(IActivationState activationState)
-	{
-		var window = base.CreateWindow(activationState);
+			MainPage = new MainPage();
+		}
 
-		const int newWidth = 1200;
-		const int newHeight = 800;
+		protected override Window CreateWindow(IActivationState activationState)
+		{
+			var window = base.CreateWindow(activationState);
 
-		window.Width = newWidth;
-		window.Height = newHeight;
+			window.Width = _localSettingsService.Settings.WindowWidth;
+			window.Height = _localSettingsService.Settings.WindowHeight;
+			window.X = _localSettingsService.Settings.X;
+			window.Y = _localSettingsService.Settings.Y;
 
-		return window;
+			//window.SizeChanged += OnSizeChanged;
+			window.Destroying += OnClose;
+			return window;
+		}
+
+		//private void OnSizeChanged(object sender, EventArgs e)
+		//{
+		//	_localSettingsService.Settings.WindowHeight = (sender as Window).Height;
+		//	_localSettingsService.Settings.WindowWidth = (sender as Window).Width;
+		//}
+
+		private void OnClose(object sender, EventArgs e)
+		{
+			var win = sender as Window;
+			_localSettingsService.Settings.WindowHeight = win.Height;
+			_localSettingsService.Settings.WindowWidth = win.Width;
+			_localSettingsService.Settings.X = win.X;
+			_localSettingsService.Settings.Y = win.Y;
+
+			_localSettingsService.SaveSettings();
+		}
 	}
 }

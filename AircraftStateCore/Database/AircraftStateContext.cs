@@ -22,8 +22,11 @@ public partial class AircraftStateContext : DbContext
 
 	public virtual DbSet<SettingsDatum> Settings { get; set; }
 
+	//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	//	=> optionsBuilder.UseSqlite();
+
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		=> optionsBuilder.UseSqlite();
+	{ }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{

@@ -8,14 +8,9 @@ using Newtonsoft.Json;
 
 namespace AircraftStateCore.DAL.Repositories;
 
-public class SettingsRepo : ISettingsRepo
+public class SettingsRepo(AircraftStateContext dbContext) : ISettingsRepo
 {
-    private readonly AircraftStateContext _dbContext;
-
-    public SettingsRepo(AircraftStateContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AircraftStateContext _dbContext = dbContext;
 
     public async Task<Settings> GetSettings()
     {
@@ -28,9 +23,7 @@ public class SettingsRepo : ISettingsRepo
             {
                 case SettingDefinitions.BlockLocation: settings.BlockLocation = setting.DataValue.Equals("true", StringComparison.OrdinalIgnoreCase); break;
                 case SettingDefinitions.BlockFuel: settings.BlockFuel = setting.DataValue.Equals("true", StringComparison.OrdinalIgnoreCase); break;
-                case SettingDefinitions.ShowApplyForm: settings.ShowApplyForm = setting.DataValue.Equals("true", StringComparison.OrdinalIgnoreCase); break;
                 case SettingDefinitions.AutoSave: settings.AutoSave = setting.DataValue.Equals("true", StringComparison.OrdinalIgnoreCase); break;
-                case SettingDefinitions.ShowSaveAs: settings.ShowSaveAs = setting.DataValue.Equals("true", StringComparison.OrdinalIgnoreCase); break;
                 case SettingDefinitions.DataToSend: settings.SelectedData = JsonConvert.DeserializeObject<List<AvailableDataItem>>(setting.DataValue); break;
                 case SettingDefinitions.Version: settings.Version = setting.DataValue; break;
             }
@@ -41,11 +34,16 @@ public class SettingsRepo : ISettingsRepo
 
     public async Task SaveSettings(Settings settings)
     {
-        await SetIndividualSetting(SettingDefinitions.BlockLocation, settings.BlockLocation.ToString());
-        await SetIndividualSetting(SettingDefinitions.BlockFuel, settings.BlockFuel.ToString());
-        await SetIndividualSetting(SettingDefinitions.AutoSave, settings.AutoSave.ToString());
-        await SetIndividualSetting(SettingDefinitions.ShowSaveAs, settings.ShowSaveAs.ToString());
-        await SetIndividualSetting(SettingDefinitions.DataToSend, JsonConvert.SerializeObject(settings.SelectedData));
+        try
+        {
+            _dbContext.SaveChanges();
+            await SetIndividualSetting(SettingDefinitions.BlockLocation, settings.BlockLocation.ToString());
+            await SetIndividualSetting(SettingDefinitions.BlockFuel, settings.BlockFuel.ToString());
+            await SetIndividualSetting(SettingDefinitions.AutoSave, settings.AutoSave.ToString());
+            await SetIndividualSetting(SettingDefinitions.DataToSend, JsonConvert.SerializeObject(settings.SelectedData));
+        }
+        catch
+        { }
     }
 
     public async Task<bool> UpdateVersion(string VersionNumber)
@@ -68,17 +66,19 @@ public class SettingsRepo : ISettingsRepo
 
     private async Task SetIndividualSetting(string key, string value)
     {
-        var dbValue = _dbContext.ApplicationSettings.Where(s => s.DataKey.Equals(key)).FirstOrDefault();
+        var dbValue = _dbContext.ApplicationSettings.FirstOrDefault(s => s.DataKey.Equals(key));
         if (dbValue == null)
         {
             var newSetting = new ApplicationSettingsDatum { DataKey = key, DataValue = value };
             _dbContext.ApplicationSettings.Add(newSetting);
+            await _dbContext.SaveChangesAsync();
         }
         else if (dbValue.DataValue != value)
         {
+            _dbContext.Attach(dbValue);
             dbValue.DataValue = value;
+            //_dbContext.ApplicationSettings.Update(dbValue);
+            await _dbContext.SaveChangesAsync();
         }
-
-        await _dbContext.SaveChangesAsync();
     }
 }

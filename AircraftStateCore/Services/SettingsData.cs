@@ -5,17 +5,12 @@ using BootstrapBlazor.Components;
 
 namespace AircraftStateCore.Services;
 
-public class SettingsData : ISettingsData
+public class SettingsData(ISettingsRepo settingsRepo) : ISettingsData
 {
     public Settings Settings { get; set; }
-    private readonly ISettingsRepo _settingsRepo;
+    private readonly ISettingsRepo _settingsRepo = settingsRepo;
 
     public event Func<Task> OnChangeAsync;
-
-    public SettingsData(ISettingsRepo settingsRepo)
-    {
-        _settingsRepo = settingsRepo;
-    }
 
     public async Task<Settings> ReadSettings()
     {
@@ -40,6 +35,7 @@ public class SettingsData : ISettingsData
         //TODO - Is this needed?
         await OnChangeAsync();
     }
+
     public List<AvailableDataItem> GetSelectedData()
     {
         return Settings.SelectedData.Where(s => s.enabled).ToList();

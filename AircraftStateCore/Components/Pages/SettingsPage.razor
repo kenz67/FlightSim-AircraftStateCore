@@ -25,12 +25,6 @@
             <Checkbox TValue="bool" DisplayText="Auto save to Database" @bind-Value="@settings.AutoSave" OnValueChanged="OnAutoSaveChange" ShowLabel="false" ShowAfterLabel="true" />
         </div>
     </div>
-    <div class="row g-2 bottom-buffer">
-        <div class="col-1" />
-        <div class="col-11">
-            <Checkbox TValue="bool" DisplayText="Show Save As when saving to Database" @bind-Value="@settings.ShowSaveAs" OnValueChanged="OnSaveAsChange" ShowLabel="false" ShowAfterLabel="true" />
-        </div>
-    </div>
     <div class="row g-2">
         <div class="col-1" />
         <div class="col-11">
@@ -57,7 +51,7 @@
                     LeftPanelText="Available" RightPanelText="Selected"
                     LeftButtonText="Remove" RightButtonText="Add"
                     ShowSearch="true"                    
-                    LeftPannelSearchPlaceHolderString="Search"  RightPannelSearchPlaceHolderString="Search" 
+                    LeftPanelSearchPlaceHolderString="Search"  RightPanelSearchPlaceHolderString="Search" 
                     OnSetItemClass="SetItemClass"
                       OnSelectedItemsChanged="@OnSelectedItemsChanged"
                       Items="Items" @bind-Value="@SelectedItems" />
@@ -146,12 +140,6 @@
         return Task.CompletedTask;
     }
 
-    public Task OnSaveAsChange(bool value)
-    {
-        settings.ShowSaveAs = value;
-        return Task.CompletedTask;
-    }
-
     public Task OnBlockLocationChange(bool value)
     {
         settings.BlockLocation = value;
@@ -170,7 +158,7 @@
         await MessageService.Show(new MessageOption()
             {
                 Content = "Settings saved",
-                ShowDismiss = true,
+                //ShowDismiss = true,
                 Icon = "fa-solid fa-circle-info"
             });
     }

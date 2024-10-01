@@ -23,6 +23,7 @@ public static class FieldText
     public const string LocationAltitude = "Altitude";
     public const string LocationHeading = "Heading";
     public const string LocationPitch = "Pitch";
+    public const string GyroDrift = "Gyro Drift Error";
 
     public const string FuelLeft = "Left";
     public const string FuelRight = "Right";

@@ -1,29 +1,26 @@
 ﻿using AircraftStateCore.Models;
-using Microsoft.FlightSimulator.SimConnect;
 
 namespace AircraftStateCore.Services.Interfaces;
 
 public interface ISimConnectService : IPageUpdate
 {
-    SimConnect Sim { get; }
+	public PlaneDataStruct SimData { get; }
+	public MasterData MasterData { get; }
+	public string DisplayMessage { get; set; }
 
-    public PlaneDataStruct SimData { get; }
-    public MasterData MasterData { get; }
-    public string DisplayMessage { get; set; }
+	public bool VerifyAutoSave();
 
-    public bool VerifyAutoSave();
+	bool Connected();
 
-    void CloseConnection();
+	bool ConnectToSim(bool Reconnect = false);
 
-    bool Connected();
+	void GetSimEnvInfo();
 
-    bool ConnectToSim(bool Reconnect = false);
+	void SaveDataToDb(string SaveName);
 
-    void GetSimEnvInfo();
+	void SendDataToSim(PlaneDataStruct data, bool BlockFuel, bool BlockLocation);
 
-    void SaveDataToDb(string SaveName);
+	public event Func<Task> OnMessageUpdate;
 
-    void SendDataToSim(PlaneDataStruct data, bool BlockFuel, bool BlockLocation);
-
-    public event Func<Task> OnMessageUpdate;
+	public void NoProfile();
 }

@@ -8,8 +8,8 @@ public class AvailableData
 
     public AvailableData()
     {
-        Items = new List<AvailableDataItem>
-        {
+        Items =
+        [
             new AvailableDataItem("0000", FieldText.Headers["0000"]),
             new AvailableDataItem("0000.0", FieldText.Headers["0000"], true),
             new AvailableDataItem("0001", FieldText.RadiosCom1Both),
@@ -31,6 +31,7 @@ public class AvailableData
             new AvailableDataItem("0103", FieldText.LocationAltitude),
             new AvailableDataItem("0104", FieldText.LocationHeading),
             new AvailableDataItem("0105", FieldText.LocationPitch),
+            new AvailableDataItem("0106", FieldText.GyroDrift),
 
             new AvailableDataItem("0150", FieldText.Headers["0150"]),
             new AvailableDataItem("0150.0", FieldText.Headers["0150"], true),
@@ -69,6 +70,6 @@ public class AvailableData
             new AvailableDataItem("0358", FieldText.LightsLogo),
             new AvailableDataItem("0359", FieldText.LightsWing),
             new AvailableDataItem("0361", FieldText.LightsRecognition),
-        };
+        ];
     }
 }

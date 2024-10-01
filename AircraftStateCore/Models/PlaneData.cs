@@ -5,59 +5,62 @@ namespace AircraftStateCore.Models;
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
 public struct PlaneDataStruct
 {
-    public double latitude;   //setttable
-    public double longitude;  //settable
-    public int altitude;    //settable
-    public double heading;    //settable
-    public double pitch;      //settable
+	public double latitude;   //setttable
+	public double longitude;  //settable
+	public int altitude;    //settable
+	public double heading;    //settable
+	public double pitch;      //settable
 
-    public double com1Active;
-    public double com1Standby;
-    public double com2Active;
-    public double com2Standby;
-    public double nav1Active;
-    public double nav1Standby;
-    public double nav2Active;
-    public double nav2Standby;
-    public double adfActive;
-    public double adfStandby;
+	public double com1Active;
+	public double com1Standby;
+	public double com2Active;
+	public double com2Standby;
+	public double nav1Active;
+	public double nav1Standby;
+	public double nav2Active;
+	public double nav2Standby;
+	public double adfActive;
+	public double adfStandby;
 
-    public double obs1;
-    public double obs2;
-    public double adfCard;   //test in 172
+	public double obs1;
+	public double obs2;
+	public double adfCard;   //test in 172
 
-    public double fuelLeft;    //settable
-    public double fuelRight;   //settable
-    public int fuelSelector;
+	public double fuelLeft;    //settable
+	public double fuelRight;   //settable
+	public int fuelSelector;
 
-    public bool parkingBrake;
-    public double kohlsman;
-    public double headingBug;
+	public bool parkingBrake;
+	public double kohlsman;
+	public double headingBug;
 
-    public int flapsIndex;
-    public double elevtorTrim;
-    public double rudderTrim;
-    public double aileronTrim;
+	public int flapsIndex;
+	public double elevtorTrim;
+	public double rudderTrim;
+	public double aileronTrim;
 
-    public bool masterBattery;
-    public bool masterAlternator;
-    public bool masterAvionics;
+	public double gyroDriftError;
+	public double headingIndicator;
 
-    public double batteryVoltage;  //settable
+	public bool masterBattery;
+	public bool masterAlternator;
+	public bool masterAvionics;
 
-    public bool lightNav;
-    public bool lightBeacon;
-    public bool lightLanding;
-    public bool lightTaxi;
-    public bool lightStrobe;
-    public bool lightPanel;
-    public bool lightRecognition;
-    public bool lightWing;
-    public bool lightCabin;
-    public bool lightLogo;
+	public double batteryVoltage;  //settable
 
-    public bool junk;
+	public bool lightNav;
+	public bool lightBeacon;
+	public bool lightLanding;
+	public bool lightTaxi;
+	public bool lightStrobe;
+	public bool lightPanel;
+	public bool lightRecognition;
+	public bool lightWing;
+	public bool lightCabin;
+	public bool lightLogo;
 
-    //FLAPS HANDLE INDEX	//settable
-    public bool validData;
+	public bool junk;
+
+	//FLAPS HANDLE INDEX	//settable
+	public bool validData;
 }
