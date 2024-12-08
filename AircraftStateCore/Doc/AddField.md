@@ -13,7 +13,9 @@
   * If needed, add a method here to fix how the display appears on the page
 
 
-# Database
+# Settings
+
+* Add new field to the AvailableData.cs class
 
 # Apply
 
