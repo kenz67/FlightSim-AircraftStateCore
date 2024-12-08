@@ -289,6 +289,12 @@
 								<div class="row g-1">
 									<div class="col-12">
 										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherTransponder" />
+											<BootstrapInput TValue="uint" Formatter="Formatter.GetTransponder" value="@simconnect.SimData.transponder" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
 											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherKolhsman" />
 											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.kohlsman" />
 										</BootstrapInputGroup>
