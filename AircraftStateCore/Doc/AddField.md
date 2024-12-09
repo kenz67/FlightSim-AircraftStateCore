@@ -19,3 +19,10 @@
 
 # Apply
 
+* **Apply.razor**
+  * Add field (copy from Index.razor above) and add appropriate "If" statements
+  * Add new event to EVENT_IDS.cs
+  * Add Event Map
+	* e.g.: _proxy.MapClientEventToSimEvent(EVENT_IDS.TRANSPONDER1000DEC, "XPNDR_1000_DEC");
+  * Add to appropriate "Send" method in SimConnectService
+
