@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <!--<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>-->
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+        <!--<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>-->
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-        <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
+        <!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
 
         <!-- Note for MacCatalyst:
             The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
@@ -19,7 +19,6 @@
         <SingleProject>true</SingleProject>
         <ImplicitUsings>enable</ImplicitUsings>
         <EnableDefaultCssItems>false</EnableDefaultCssItems>
-		<Nullable>disable</Nullable>
 
         <!-- Display name -->
         <ApplicationTitle>AircraftStateCore</ApplicationTitle>
@@ -28,29 +27,22 @@
         <ApplicationId>com.companyname.aircraftstatecore</ApplicationId>
 
         <!-- Versions -->
-        <ApplicationDisplayVersion>0.10</ApplicationDisplayVersion>
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
         <ApplicationVersion>1</ApplicationVersion>
 
-		<AppVersion>0.10</AppVersion>
-		
-		<SourceRevisionId>build$([System.DateTime]::Now.ToString("yyyyMMdd.HHmmss"))</SourceRevisionId>
-		<Copyright>2023</Copyright>
-		<Company>Zaldo</Company>
-		
-		<!-- Run as local app, not store app, also update launchsettings.json -->
-		<WindowsPackageType>None</WindowsPackageType>
-		
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+        <!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
+        <WindowsPackageType>None</WindowsPackageType>
+
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-        <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
-        <!-- App Icon -->
+		<!-- App Icon -->
 		<MauiIcon ForegroundFile="Resources\AppIcon\planeicon.svg" Include="Resources\AppIcon\planeicon.svg" Color="lightblue" />
 
 		<!-- Splash Screen -->
@@ -68,9 +60,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="BootstrapBlazor" Version="8.6.0" />
-        <PackageReference Include="BootstrapBlazor.FontAwesome" Version="8.0.4" />
-        <PackageReference Include="FontAwesome" Version="4.7.0" />
+        <PackageReference Include="BootstrapBlazor" Version="9.1.2" />
+        <PackageReference Include="BootstrapBlazor.FontAwesome" Version="9.0.1" />
+        <PackageReference Include="Font.Awesome" Version="5.15.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
@@ -78,23 +70,30 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.12" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="9.0.12" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.12" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.FlightSimulator.SimConnect">
+        <HintPath>lib\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
+        <Private>True</Private>
+      </Reference>
+    </ItemGroup>
+
 	<ItemGroup>
-	  <Folder Include="lib\" />
+		<Folder Include="lib\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="Microsoft.FlightSimulator.SimConnect">
-	    <HintPath>D:\FlightSimulator\MSFS SDK\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
-	  </Reference>
+		<Reference Include="Microsoft.FlightSimulator.SimConnect">
+			<HintPath>D:\FlightSimulator\MSFS SDK\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
+		</Reference>
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<LibFiles Include="lib/**/*.*" />
 	</ItemGroup>
