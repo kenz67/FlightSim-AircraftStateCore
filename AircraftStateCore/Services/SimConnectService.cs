@@ -154,6 +154,8 @@ public class SimConnectService : ISimConnectService
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT CABIN ON", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT LOGO ON", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "TRANSPONDER CODE:1", "Bco16", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
 			//Register the data structures being used
 			_proxy.RegisterDataDefineStruct<PlaneDataStruct>(DATA_DEFINITIONS.SimPlaneDataStructure);
 			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimEnvironmentDataStructure);
@@ -192,6 +194,15 @@ public class SimConnectService : ISimConnectService
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.FLAPS_3, "FLAPS_3");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.FLAPS_4, "FLAPS_4");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.FLAPS_DOWN, "FLAPS_DOWN");
+
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.TRANSPONDER1000INC, "XPNDR_1000_INC");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.TRANSPONDER100INC, "XPNDR_100_INC");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.TRANSPONDER10INC, "XPNDR_10_INC");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.TRANSPONDER1INC, "XPNDR_1_INC");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.TRANSPONDER1000DEC, "XPNDR_1000_DEC");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.TRANSPONDER100DEC, "XPNDR_100_DEC");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.TRANSPONDER10DEC, "XPNDR_10_DEC");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.TRANSPONDER1DEC, "XPNDR_1_DEC");
 
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.NAV_LIGHT, "TOGGLE_NAV_LIGHTS");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.BEACON_LIGHT, "TOGGLE_BEACON_LIGHTS");
@@ -353,6 +364,27 @@ public class SimConnectService : ISimConnectService
 
 	private void SendOtherData(PlaneDataStruct data)
 	{
+		if (CheckEnabled(FieldText.OtherTransponder))
+		{
+			var sim = Formatter.GetTransponder(SimData.transponder);
+			var db = Formatter.GetTransponder(data.transponder);
+			List<int> diffs = new List<int>();
+			for (int i = 0; i < 4; i++)
+			{
+				int digit1 = (int)char.GetNumericValue(sim[i]);
+				int digit2 = (int)char.GetNumericValue(db[i]);
+				int difference = digit1 - digit2;
+				diffs.Add(difference);
+			}
+
+			ApplyTransponder(diffs[0], EVENT_IDS.TRANSPONDER1000INC, EVENT_IDS.TRANSPONDER1000DEC);
+			ApplyTransponder(diffs[1], EVENT_IDS.TRANSPONDER100INC, EVENT_IDS.TRANSPONDER100DEC);
+			ApplyTransponder(diffs[2], EVENT_IDS.TRANSPONDER10INC, EVENT_IDS.TRANSPONDER10DEC);
+			ApplyTransponder(diffs[3], EVENT_IDS.TRANSPONDER1INC, EVENT_IDS.TRANSPONDER1DEC);
+
+			var x = SimData.transponder;
+			//_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.TRANSPONDER, (uint)data.transponder, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
 		if (CheckEnabled(FieldText.OtherHeadingBug))
 		{
 			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.HEADING_BUG_SET, (uint)data.headingBug, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
@@ -374,6 +406,16 @@ public class SimConnectService : ISimConnectService
 			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.HEADING_GYRO_SET, (uint)0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 			Thread.Sleep(100);    // Seem to need the delay or the drift doesn't work
 			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.GYRO_DRIFT_SET, (uint)ConvertGyroDrift(data.gyroDriftError), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+	}
+
+	private void ApplyTransponder(int Diff, Enum IncrementEventId, Enum DecrementEventId)
+	{
+		var eventId = (Diff >= 0) ? DecrementEventId : IncrementEventId;
+
+		for (int i = 0; i < Math.Abs(Diff); i++)
+		{
+			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventId, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 		}
 	}
 

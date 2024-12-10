@@ -88,4 +88,14 @@ public static class Formatter
 
 		return attribute.InformationalVersion.Replace("+build", ".");
 	}
+
+	public static string GetTransponder(uint value)
+	{
+		int digit1 = (int)((value >> 12) & 0x0F);
+		int digit2 = (int)((value >> 8) & 0x0F);
+		int digit3 = (int)((value >> 4) & 0x0F);
+		int digit4 = (int)(value & 0x0F);
+
+		return $"{digit1}{digit2}{digit3}{digit4}";
+	}
 }

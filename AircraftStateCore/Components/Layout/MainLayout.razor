@@ -12,7 +12,7 @@
 
     <Modal @ref="NotificationModal">
         <ModalDialog ShowCloseButton="false"
-                     ShowSaveButton="true" SaveButtonText="Ok" SaveIcon=""
+                     ShowSaveButton="true" SaveButtonText="Ok" SaveButtonIcon=""
                      OnSaveAsync="CloseDialog"
                      IsCentered="true"
                      Title="Save Data">
@@ -32,7 +32,7 @@
             }
             @if (@simconnect.Connected())
             {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Success">Connected to Sim</Badge></div>               
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Success">Connected to Sim</Badge></div>
             }
             else
             {

@@ -2,8 +2,8 @@
 @using AircraftStateCore.Helpers;
 @using AircraftStateCore.Models;
 @using AircraftStateCore.Services.Interfaces;
-@using BootstrapBlazor.Components; 
-    
+@using BootstrapBlazor.Components;
+
 @inject MessageService MessageService
 @inject ISimConnectService simconnect
 @inject ISettingsRepo settingRepo
@@ -30,8 +30,7 @@
 		</ModalDialog>
 	</Modal>
 	
-
-	<DbSave />
+	<DbSave/>
 
 	<div class="row g-2">
 		@*first Column*@
@@ -289,6 +288,12 @@
 								<div class="row g-1">
 									<div class="col-12">
 										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherTransponder" />
+											<BootstrapInput TValue="uint" Formatter="Formatter.GetTransponder" value="@simconnect.SimData.transponder" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
 											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherKolhsman" />
 											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.kohlsman" />
 										</BootstrapInputGroup>
@@ -401,6 +406,8 @@
 	private Modal NotificationModal { get; set; }
 	private Message Message { get; set; }
 	private Color TitleColor = Color.Info;
+	private string Active = "Active";
+	private string Standby = "Standby"; 
 
 	protected override void OnInitialized()
 	{

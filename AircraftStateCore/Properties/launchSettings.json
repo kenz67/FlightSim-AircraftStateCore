@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Windows Machine": {
-      "commandName": "Project",                    //Run as app instead of msix
-      //"commandName": "MsixPackage",
+      "commandName": "Project",
       "nativeDebugging": false
     }
   }

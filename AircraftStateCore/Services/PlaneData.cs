@@ -15,6 +15,7 @@ public class PlaneData : IPlaneData
 
     public PlaneData(IPlaneDataRepo planeData)
     {
+        
         _planeData = planeData;
         CurrentData = new PlaneDataStruct();
 

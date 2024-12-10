@@ -417,6 +417,15 @@
 							<CollapseItems>
 								<CollapseItem Text="Other" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherTransponder)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherTransponder" />
+													<BootstrapInput TValue="uint" Formatter="Formatter.GetTransponder" value="@planeData.CurrentData.transponder" />
+												</BootstrapInputGroup>
+											</div>
+										}
 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherKolhsman)))
 										{
 											<div class="col-12">
@@ -592,6 +601,8 @@
 	private Message ApplyMessage { get; set; }
 	private Settings SettingsData { get; set; }
 	private Color TitleColor = Color.Warning;
+	private string Active = "Active";
+	private string Standby = "Standby";
 
 	protected async override void OnInitialized()
 	{
