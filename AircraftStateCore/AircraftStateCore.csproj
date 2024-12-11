@@ -78,25 +78,18 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="Microsoft.FlightSimulator.SimConnect">
-        <HintPath>lib\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
-        <Private>True</Private>
-      </Reference>
-    </ItemGroup>
-
 	<ItemGroup>
 		<Folder Include="lib\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="Microsoft.FlightSimulator.SimConnect">
-			<HintPath>D:\FlightSimulator\MSFS SDK\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
-		</Reference>
+		<LibFiles Include="lib/**/*.*" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<LibFiles Include="lib/**/*.*" />
+	  <Reference Include="Microsoft.FlightSimulator.SimConnect">
+	    <HintPath>lib\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<Target Name="CopyCustomContent" AfterTargets="AfterBuild">

@@ -27,6 +27,8 @@ public static class Formatter
 		return result;
 	}
 
+	public static string GetPercent(double source) => Math.Round(source, 0).ToString();
+
 	public static string GetLongitude(double source)
 	{
 		string result;

@@ -578,6 +578,19 @@
 												</BootstrapInputGroup>
 											</div>
 										}
+
+
+ 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsGlareshield)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshield" />
+													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightGlareShieldPct" />
+													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
 									</div>
 								</CollapseItem>
 							</CollapseItems>

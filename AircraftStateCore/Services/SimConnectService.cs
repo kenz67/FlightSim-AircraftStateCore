@@ -153,6 +153,9 @@ public class SimConnectService : ISimConnectService
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT WING ON", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT CABIN ON", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT LOGO ON", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT GLARESHIELD POWER SETTING", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimLightData2, "LIGHT GLARESHIELD POWER SETTING", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "TRANSPONDER CODE:1", "Bco16", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
@@ -163,6 +166,7 @@ public class SimConnectService : ISimConnectService
 			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimPlaneLocationData);
 			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimFlapsData);
 			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimLightData);
+			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimLightData2);
 			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimPowerData);
 
 			//Request data from sim
@@ -214,6 +218,7 @@ public class SimConnectService : ISimConnectService
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.WING_LIGHT, "TOGGLE_WING_LIGHTS");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.CABIN_LIGHT, "TOGGLE_CABIN_LIGHTS");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.LOGO_LIGHT, "TOGGLE_LOGO_LIGHTS");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.GLARESHIELD_LIGHT, "GLARESHIELD_LIGHTS_POWER_SETTING_SET");
 
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.ELECTRICAL_BATTERY_BUS_VOLTAGE, "ELECTRICAL_BATTERY_BUS_VOLTAGE");
 			//sim.SubscribeToSystemEvent(MY_SIMCONENCT_EVENT_IDS.Pause, "Pause");
@@ -260,11 +265,11 @@ public class SimConnectService : ISimConnectService
 			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.PARKING_BRAKE_SET, (uint)(data.parkingBrake ? 1 : 0), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 		}
 
-		var elevtorTrim = CheckEnabled(FieldText.ConfigurationElevatorTrim) ? data.elevtorTrim : SimData.elevtorTrim;
+		var elevatorTrim = CheckEnabled(FieldText.ConfigurationElevatorTrim) ? data.elevtorTrim : SimData.elevtorTrim;
 		var rudderTrim = CheckEnabled(FieldText.ConfigurationRudderTrim) ? data.rudderTrim : SimData.rudderTrim;
 		var aileronTrim = CheckEnabled(FieldText.ConfigurationAileronTrim) ? data.aileronTrim : SimData.aileronTrim;
 
-		var trimData = new TrimData { elevatorTrim = elevtorTrim, rudderTrim = rudderTrim, aileronTrim = aileronTrim };
+		var trimData = new TrimData { elevatorTrim = elevatorTrim, rudderTrim = rudderTrim, aileronTrim = aileronTrim };
 		_proxy.SetDataOnSimObject(DATA_DEFINITIONS.SimTrimData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, trimData);
 
 		if (CheckEnabled(FieldText.ConfigurationFlaps))
@@ -332,6 +337,11 @@ public class SimConnectService : ISimConnectService
 
 		if (CheckEnabled(FieldText.LightsLogo))
 			TurnOnOff(data.lightLogo, EVENT_IDS.LOGO_LIGHT);
+
+		if (CheckEnabled(FieldText.LightsGlareshield))
+		{
+			_proxy.TransmitClientEvent_Ex1(0, EVENT_IDS.GLARESHIELD_LIGHT, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY, 1, (uint)data.lightGlareShieldPct);
+		}
 	}
 
 	private void SendLocationData(PlaneDataStruct data)
@@ -344,6 +354,7 @@ public class SimConnectService : ISimConnectService
 
 		var locationData = new LocationData { altitude = altitude, heading = heading, latitude = latitude, longitude = longitude, pitch = pitch };
 		_proxy.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneLocationData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, locationData);
+
 	}
 
 	private void SendObsData(PlaneDataStruct data)
