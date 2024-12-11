@@ -9,6 +9,5 @@ public enum DATA_DEFINITIONS
 	SimFlapsData,
 	SimTrimData,
 	SimLightData,
-	SimLightData2,
 	SimPowerData,
 }

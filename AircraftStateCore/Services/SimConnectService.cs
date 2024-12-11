@@ -155,8 +155,6 @@ public class SimConnectService : ISimConnectService
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT LOGO ON", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT GLARESHIELD POWER SETTING", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
-			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimLightData2, "LIGHT GLARESHIELD POWER SETTING", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "TRANSPONDER CODE:1", "Bco16", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
 			//Register the data structures being used
@@ -166,7 +164,6 @@ public class SimConnectService : ISimConnectService
 			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimPlaneLocationData);
 			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimFlapsData);
 			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimLightData);
-			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimLightData2);
 			_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimPowerData);
 
 			//Request data from sim

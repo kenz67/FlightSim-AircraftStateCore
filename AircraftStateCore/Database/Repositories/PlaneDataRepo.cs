@@ -30,7 +30,6 @@ public class PlaneDataRepo(AircraftStateContext dbContext) : IPlaneDataRepo
 		{
 			data = JsonConvert.DeserializeObject<PlaneDataStruct>(dbData.Data);
 			data.validData = true;
-			data.lightGlareShieldPct = 75;
 		}
 		else
 		{

@@ -44,7 +44,7 @@
 
     <ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon ForegroundFile="Resources\AppIcon\planeicon.svg" Update="Resources\AppIcon\planeicon.svg" Color="lightblue" />
+		<MauiIcon ForegroundFile="Resources\AppIcon\planeicon.svg" Include="Resources\AppIcon\planeicon.svg" Color="lightblue" />
 
 		<!-- Splash Screen -->
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
