@@ -1,17 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <!--<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>-->
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-        <!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
 
-        <!-- Note for MacCatalyst:
-            The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
-            When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
-            The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
-            either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
-        <!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
 
         <OutputType>Exe</OutputType>
         <RootNamespace>AircraftStateCore</RootNamespace>
@@ -27,37 +19,43 @@
         <ApplicationId>com.companyname.aircraftstatecore</ApplicationId>
 
         <!-- Versions -->
-        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-        <ApplicationVersion>1</ApplicationVersion>
+		<!--<FileVersion>1.1.$([System.DateTime]::Now.ToString('yyyyMMdd')).$([System.DateTime]::Now.ToString('HHmm'))</FileVersion>-->
+		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+		<ApplicationDisplayVersion>2.1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>2</ApplicationVersion>
 
-        <!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
+		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
         <WindowsPackageType>None</WindowsPackageType>
-
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		
+		<!-- look at this -->
+		<!--https://stackoverflow.com/questions/60722094/set-assemblyinformationalversion-in-assemblyinfo-cs-over-msbuild-parameters-->
+		
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
         <Platforms>AnyCPU;x64</Platforms>
+    
     </PropertyGroup>
 
     <ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon ForegroundFile="Resources\AppIcon\planeicon.svg" Update="Resources\AppIcon\planeicon.svg" Color="lightblue" />
+		<MauiIcon Condition="'$(Configuration)' != 'Debug'" ForegroundFile="Resources\AppIcon\planeicon.svg" 
+				  Include="Resources\AppIcon\planeicon.svg" Color="lightblue" />
+		<MauiIcon Condition="'$(Configuration)' == 'Debug'" ForegroundFile="Resources\AppIcon\planeicon.svg"
+				  Update="Resources\AppIcon\planeicon.svg" Color="lightblue" />
 
-		<!-- Splash Screen -->
+		<!-- Splash Screen --><!--
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
-        <!-- Images -->
+        --><!-- Images --><!--
         <MauiImage Include="Resources\Images\*" />
         <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
-        <!-- Custom Fonts -->
+        --><!-- Custom Fonts --><!--
         <MauiFont Include="Resources\Fonts\*" />
 
-        <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+        --><!-- Raw Assets (also remove the "Resources\Raw" prefix) --><!--
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />-->
     </ItemGroup>
 
     <ItemGroup>
@@ -78,25 +76,18 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="Microsoft.FlightSimulator.SimConnect">
-        <HintPath>lib\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
-        <Private>True</Private>
-      </Reference>
-    </ItemGroup>
-
 	<ItemGroup>
 		<Folder Include="lib\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="Microsoft.FlightSimulator.SimConnect">
-			<HintPath>D:\FlightSimulator\MSFS SDK\SimConnect SDK\lib\managed\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
-		</Reference>
+		<LibFiles Include="lib/**/*.*" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<LibFiles Include="lib/**/*.*" />
+	  <Reference Include="Microsoft.FlightSimulator.SimConnect">
+	    <HintPath>lib\Microsoft.FlightSimulator.SimConnect.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 
 	<Target Name="CopyCustomContent" AfterTargets="AfterBuild">

@@ -56,6 +56,7 @@ public static class FieldText
 	public const string LightsLogo = "Logo";
 	public const string LightsWing = "Wing";
 	public const string LightsRecognition = "Recognition";
+	public const string LightsGlareshield = "Glare Shield";
 
 	public const string radiosHeader = "Radios";
 	public const string obsHeader = "OBS";

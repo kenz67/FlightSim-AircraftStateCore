@@ -114,6 +114,11 @@ namespace AircraftStateCore.Services
 			sim?.TransmitClientEvent(ObjectId, EventId, Data, GroupId, Flags);
 		}
 
+		public void TransmitClientEvent_Ex1(uint ObjectId, Enum EventId, Enum GroupId, SIMCONNECT_EVENT_FLAG Flags, uint dwData0, uint dwData1, uint dwData2, uint dwData3, uint dwData4)
+		{
+			sim?.TransmitClientEvent_EX1(ObjectId, EventId, GroupId, Flags, dwData0, dwData1, dwData2, dwData3, dwData4);
+		}
+
 		public void SetDataOnSimObject(Enum DefineId, uint ObjectId, SIMCONNECT_DATA_SET_FLAG Flags, object DataSet)
 		{
 			sim?.SetDataOnSimObject(DefineId, ObjectId, Flags, DataSet);

@@ -392,6 +392,12 @@
 											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightWing" />
 										</BootstrapInputGroup>
 									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshield" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightGlareShieldPct" />
+										</BootstrapInputGroup>
+									</div>
 								</div>
 							</CollapseItem>
 						</CollapseItems>

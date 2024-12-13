@@ -27,6 +27,8 @@ public static class Formatter
 		return result;
 	}
 
+	public static string GetPercent(double source) => Math.Round(source, 0).ToString();
+
 	public static string GetLongitude(double source)
 	{
 		string result;
@@ -84,9 +86,12 @@ public static class Formatter
 
 	public static string GetBuildNumber()
 	{
-		var attribute = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+		//var date = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
+		var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+		//var x = Assembly.GetExecutingAssembly().GetCustomAttributes();
 
-		return attribute.InformationalVersion.Replace("+build", ".");
+		//return $"{version.Replace(".0.0", String.Empty)}.{date.Replace("1.1.", String.Empty)}";
+		return version;
 	}
 
 	public static string GetTransponder(uint value)

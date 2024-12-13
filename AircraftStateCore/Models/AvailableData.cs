@@ -79,6 +79,7 @@ public class AvailableData
 			new AvailableDataItem("0358", FieldText.LightsLogo),
 			new AvailableDataItem("0359", FieldText.LightsWing),
 			new AvailableDataItem("0361", FieldText.LightsRecognition),
+			new AvailableDataItem("0362", FieldText.LightsGlareshield)
 		];
 	}
 }
