@@ -79,7 +79,10 @@ public class AvailableData
 			new AvailableDataItem("0358", FieldText.LightsLogo),
 			new AvailableDataItem("0359", FieldText.LightsWing),
 			new AvailableDataItem("0361", FieldText.LightsRecognition),
-			new AvailableDataItem("0362", FieldText.LightsGlareshield)
+			new AvailableDataItem("0362", FieldText.LightsGlareshieldPower),
+			new AvailableDataItem("0363", FieldText.LightsPanelPower),
+			new AvailableDataItem("0364", FieldText.LightsCabinPower),
+			new AvailableDataItem("0365", FieldText.LightsPedestralPower),
 		];
 	}
 }

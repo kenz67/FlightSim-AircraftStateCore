@@ -579,13 +579,45 @@
 											</div>
 										}
 
-
- 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsGlareshield)))
+ 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsGlareshieldPower)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshield" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshieldPower" />
 													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightGlareShieldPct" />
+													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPanelPower)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanelPower" />
+													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightPanelPct" />
+													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+												</BootstrapInputGroup>
+											</div>
+										}
+										
+ 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsCabinPower)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabinPower" />
+													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightCabinPct" />
+													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPedestralPower)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestralPower" />
+													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightPedestralPct" />
 													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
 												</BootstrapInputGroup>
 											</div>

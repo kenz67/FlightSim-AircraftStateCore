@@ -154,6 +154,9 @@ public class SimConnectService : ISimConnectService
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT CABIN ON", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT LOGO ON", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT GLARESHIELD POWER SETTING", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT CABIN POWER SETTING", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT PEDESTRAL POWER SETTING", "percent", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT POTENTIOMETER:3", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "TRANSPONDER CODE:1", "Bco16", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
@@ -215,7 +218,10 @@ public class SimConnectService : ISimConnectService
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.WING_LIGHT, "TOGGLE_WING_LIGHTS");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.CABIN_LIGHT, "TOGGLE_CABIN_LIGHTS");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.LOGO_LIGHT, "TOGGLE_LOGO_LIGHTS");
-			_proxy.MapClientEventToSimEvent(EVENT_IDS.GLARESHIELD_LIGHT, "GLARESHIELD_LIGHTS_POWER_SETTING_SET");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.GLARESHIELD_LIGHTPOWER, "GLARESHIELD_LIGHTS_POWER_SETTING_SET");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.PANEL_LIGHTPOWER, "LIGHT_POTENTIOMETER_SET");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.CABIN_LIGHTPOWER, "CABIN_LIGHTS_POWER_SETTING_SET");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.PEDESTRAL_LIGHT_POWER, "PEDESTRAL_LIGHTS_POWER_SETTING_SET");
 
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.ELECTRICAL_BATTERY_BUS_VOLTAGE, "ELECTRICAL_BATTERY_BUS_VOLTAGE");
 			//sim.SubscribeToSystemEvent(MY_SIMCONENCT_EVENT_IDS.Pause, "Pause");
@@ -335,10 +341,24 @@ public class SimConnectService : ISimConnectService
 		if (CheckEnabled(FieldText.LightsLogo))
 			TurnOnOff(data.lightLogo, EVENT_IDS.LOGO_LIGHT);
 
-		if (CheckEnabled(FieldText.LightsGlareshield))
+		if (CheckEnabled(FieldText.LightsGlareshieldPower))
+			SendLightsPower(EVENT_IDS.GLARESHIELD_LIGHTPOWER, data.lightGlareShieldPct);
+
+		if (CheckEnabled(FieldText.LightsPanelPower))
+			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct);
+
+		SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 2);
+		SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 3);
+		SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 4);
+		SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 5);
+		if (CheckEnabled(FieldText.LightsCabinPower))
 		{
-			_proxy.TransmitClientEvent_Ex1(0, EVENT_IDS.GLARESHIELD_LIGHT, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY, 1, (uint)data.lightGlareShieldPct);
+			SendLightsPower(EVENT_IDS.CABIN_LIGHTPOWER, data.lightCabinPct, 1);
+			SendLightsPower(EVENT_IDS.CABIN_LIGHTPOWER, data.lightCabinPct, 2);
 		}
+
+		if (CheckEnabled(FieldText.LightsPedestralPower))
+			SendLightsPower(EVENT_IDS.PEDESTRAL_LIGHT_POWER, data.lightPedestralPct);
 	}
 
 	private void SendLocationData(PlaneDataStruct data)
@@ -425,6 +445,11 @@ public class SimConnectService : ISimConnectService
 		{
 			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, eventId, 0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 		}
+	}
+
+	private void SendLightsPower(Enum EventId, double pct, uint circuit = 1)
+	{
+		_proxy.TransmitClientEvent_Ex1(0, EventId, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY, circuit, (uint)pct);
 	}
 
 	private void SendPowerData(PlaneDataStruct data)
