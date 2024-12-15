@@ -394,8 +394,26 @@
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshield" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshieldPower" />
 											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightGlareShieldPct" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanelPower" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent100" value="@simconnect.SimData.lightPanelPct" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabinPower" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightCabinPct" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestralPower" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightPedestralPct" />
 										</BootstrapInputGroup>
 									</div>
 								</div>

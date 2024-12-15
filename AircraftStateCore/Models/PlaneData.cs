@@ -59,6 +59,9 @@ public struct PlaneDataStruct
 	public bool lightCabin;
 	public bool lightLogo;
 	public double lightGlareShieldPct;
+	public double lightCabinPct;
+	public double lightPedestralPct;
+	public double lightPanelPct;
 
 	public uint transponder;
 

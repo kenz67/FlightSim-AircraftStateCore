@@ -36,7 +36,7 @@
     <div class="row g-2 bottom-buffer">
         <div class="col-1" />
         <div class="col-11">
-             <Tooltip Placement="Placement.Bottom" Title="When sending data to the sim, if the checkbox is checked, fuel data will not be sent, even if it is a seleted field.">
+             <Tooltip Placement="Placement.Bottom" Title="When sending data to the sim, if the checkbox is checked, fuel data will not be sent, even if it is a selected field.">
                 <Checkbox TValue="bool" DisplayText="Override (block) sending fuel data (default)" @bind-Value="@settings.BlockFuel" OnValueChanged="OnBlockFuelChange" ShowLabel="false" ShowAfterLabel="true" />
             </Tooltip>
         </div>
@@ -45,7 +45,9 @@
     <div class="row g-2">
         <div class="col-1" />
         <div class="col-11">
-            <Tooltip Placement="Placement.Bottom" Title="Select the settings that will be sent to the simulator.">
+            <Tooltip Placement="Placement.Bottom" IsHtml="true" 
+                Title="Select the settings that will be sent to the simulator.<br><br>
+                    <b>Settings may behave strangely in different aircraft, most testing done in C172 Classic.</b>">
             <Transfer
                     ShowLabel="true" DisplayText="Select the fields that will be sent to the simulator"
                     LeftPanelText="Available" RightPanelText="Selected"
