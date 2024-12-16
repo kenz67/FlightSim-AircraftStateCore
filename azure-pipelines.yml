@@ -27,7 +27,7 @@ stages:
       inputs:
          command: test
          projects: '**/*Tests/*.csproj'
-         arguments: '--configuration $(buildConfiguration)'
+         arguments: '--configuration Debug'
 
 # - stage: Publish
 #   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
