@@ -1,0 +1,39 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/create-first-pipeline?view=azure-devops&tabs=net%2Cbrowser
+
+pr:
+- master
+
+pool:
+  name: Default  
+
+variables:
+  buildConfiguration: 'Release'
+
+#Don't need to Build and Publish (publish should do both, but keeping this here for now as may add test steps, etc)
+stages:
+- stage: Build
+  jobs:
+  - job: "Build_Test"
+    displayName: "Run Unit Test"
+    steps:
+    # - script: dotnet build --configuration $(buildConfiguration)
+    #   displayName: "Build"
+    - task: DotNetCoreCLI@2
+      displayName: "Test"
+      inputs:
+         command: test
+         projects: '**/*Tests/*.csproj'
+         arguments: '--configuration $(buildConfiguration)'
+
+# - stage: Publish
+#   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+#   jobs:
+#   - job: Publish    
+#     steps:
+#     - checkout: none    
+#     - script: dotnet publish fstools/fstools.csproj /p:PublishProfile="Properties/PublishProfiles/fstools.zaldo.com - Web Deploy.pubxml" /p:Password=$(ftpPassword) /p:UserName=$(ftpUser)      
+#       displayName: 'Push to Server'
