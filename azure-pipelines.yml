@@ -36,6 +36,7 @@ stages:
      - script: dotnet build --configuration $(buildConfiguration)
        displayName: "Build $(buildConfiguration)"
   - job: Publish
+    steps:
     - checkout: none    
         #where/how to publish for upload to FlightSim.to
 #     - script: dotnet publish fstools/fstools.csproj /p:PublishProfile="Properties/PublishProfiles/fstools.zaldo.com - Web Deploy.pubxml" /p:Password=$(ftpPassword) /p:UserName=$(ftpUser)      
