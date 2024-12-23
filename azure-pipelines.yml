@@ -31,13 +31,20 @@ stages:
 - stage: Publish
   #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
-  - job: Build 
+  - job: Build
     steps:
      - script: dotnet build --configuration $(buildConfiguration)
        displayName: "Build $(buildConfiguration)"
+    
   - job: Publish
-    steps:
-    - checkout: none    
+    dependsOn: Build
+    steps:    
+    - checkout: none
+       - task: ArchiveFiles@2
+         inputs: 
+            rootFolderOrFile: '$(Build.BinariesDirectory)'
+            archiveType: zip
+            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
         #where/how to publish for upload to FlightSim.to
 #     - script: dotnet publish fstools/fstools.csproj /p:PublishProfile="Properties/PublishProfiles/fstools.zaldo.com - Web Deploy.pubxml" /p:Password=$(ftpPassword) /p:UserName=$(ftpUser)      
 #       displayName: 'Push to Server'
