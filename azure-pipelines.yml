@@ -51,14 +51,14 @@ stages:
           Rename-Item -Path $sourcePath -NewName $newName      
 
     - task: PowerShell@2      
+      name: ExtractVersion
       displayName: 'Extract Version Number from Project File'
       inputs: 
         targetType: 'inline' 
         script: | 
           [xml]$xml = Get-Content '$(System.DefaultWorkingDirectory)\AircraftStateCore/AircraftStateCore.csproj' 
           $version = $xml.Project.PropertyGroup.ApplicationDisplayVersion 
-          echo version = $version
-          Write-Host "##vso[task.setvariable variable=appVersion]$version"      
+          Write-Host "##vso[task.setvariable variable=appVersion;isOutput=true]$version"      
 
 
 #     - script: dotnet build --configuration $(buildConfiguration)
@@ -69,7 +69,7 @@ stages:
   - job: Publish
     dependsOn: Build
     variables: 
-       appVersion: $[dependencies.ExtractVersion.outputs['ExtractVersion.appVersion']]
+       appVersion: $[ dependencies.Build.outputs['ExtractVersion.appVersion']]
     steps:    
     - checkout: none
     - task: PowerShell@2
