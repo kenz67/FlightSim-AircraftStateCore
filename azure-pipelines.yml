@@ -12,7 +12,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  utBuildConfiguration: 'Release'
+  utBuildConfiguration: 'Debug'
 
 #Don't need to Build and Publish (publish should do both, but keeping this here for now as may add test steps, etc)
 stages:
