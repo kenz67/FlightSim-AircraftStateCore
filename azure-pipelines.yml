@@ -55,7 +55,7 @@ stages:
       inputs: 
         targetType: 'inline' 
         script: | 
-          [xml]$xml = Get-Content '(System.DefaultWorkingDirectory)\AircraftStateCore/AircraftStateCore.csproj' 
+          [xml]$xml = Get-Content '$(System.DefaultWorkingDirectory)\AircraftStateCore/AircraftStateCore.csproj' 
           $version = $xml.Project.PropertyGroup.ApplicationDisplayVersion 
           Write-Host "##vso[task.setvariable variable=appVersion]$version"      
 
