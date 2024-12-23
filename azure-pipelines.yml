@@ -35,27 +35,29 @@ stages:
     displayName: 'Build Release'
     steps:
     - task: DotNetCoreCLI@2
+      displayName: "Release Build"
       inputs:
         command: 'build'
         projects: '**/AircraftStateCore.csproj'
         arguments: '--configuration $(buildConfiguration)'
     - task: PowerShell@2       
+      displayName: "Rename Output Folder"
       inputs:        
         targetType: 'inline' 
         script: | 
           echo $(Build.StagingDirectory)
-          $sourcePath = "$(Build.StagingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\win10-x64" 
-          $newName = "$(Build.StagingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState" 
-          Rename-Item -Path $sourcePath -NewName $newName displayName:      
-      displayName: "Rename Output Folder"
+          $sourcePath = "$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\win10-x64" 
+          $newName = "$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState" 
+          Rename-Item -Path $sourcePath -NewName $newName      
+
     - task: PowerShell@2      
+      displayName: 'Extract Version Number from Project File'
       inputs: 
         targetType: 'inline' 
         script: | 
-          [xml]$xml = Get-Content '(Build.StagingDirectory)\AircraftStateCore/AircraftStateCore.csproj' 
+          [xml]$xml = Get-Content '(System.DefaultWorkingDirectory)\AircraftStateCore/AircraftStateCore.csproj' 
           $version = $xml.Project.PropertyGroup.ApplicationDisplayVersion Write-Host 
-          "##vso[task.setvariable variable=appVersion]$version"
-      displayName: 'Extract Version Number from Project File'
+          "##vso[task.setvariable variable=appVersion]$version"      
 
 
 #     - script: dotnet build --configuration $(buildConfiguration)
