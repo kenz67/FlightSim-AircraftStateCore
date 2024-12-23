@@ -16,17 +16,17 @@ variables:
 
 #Don't need to Build and Publish (publish should do both, but keeping this here for now as may add test steps, etc)
 stages:
-# - stage: Unit_Test
-#   jobs:
-#   - job: "Unit_Test"
-#     displayName: "Run Unit Test"
-#     steps:
-#     - task: DotNetCoreCLI@2
-#       displayName: "Test"
-#       inputs:
-#          command: test
-#          projects: '**/*Tests/*.csproj'
-#          arguments: '--configuration $(utBuildConfiguration)'
+- stage: Unit_Test
+  jobs:
+  - job: "Unit_Test"
+    displayName: "Run Unit Test"
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: "Test"
+      inputs:
+         command: test
+         projects: '**/*Tests/*.csproj'
+         arguments: '--configuration $(utBuildConfiguration)'
 
 - stage: Publish
   #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
