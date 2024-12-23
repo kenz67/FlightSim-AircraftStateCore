@@ -14,19 +14,19 @@ variables:
   buildConfiguration: 'Release'
   utBuildConfiguration: 'Debug' 
 
-#Don't need to Build and Publish (publish should do both, but keeping this here for now as may add test steps, etc)
+# Due to issues with build thinking there is a duplicate icon, doing separate test and release builds to get around that problem
 stages:
-# - stage: Unit_Test
-#   jobs:
-#   - job: "Unit_Test"
-#     displayName: "Run Unit Test"
-#     steps:
-#     - task: DotNetCoreCLI@2
-#       displayName: "Test"
-#       inputs:
-#          command: test
-#          projects: '**/*Tests/*.csproj'
-#          arguments: '--configuration $(utBuildConfiguration)'
+- stage: Unit_Test
+  jobs:
+  - job: "Unit_Test"
+    displayName: "Run Unit Test"
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: "Test"
+      inputs:
+         command: test
+         projects: '**/*Tests/*.csproj'
+         arguments: '--configuration $(utBuildConfiguration)'
 
 - stage: Publish
   #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
@@ -59,29 +59,23 @@ stages:
           [xml]$xml = Get-Content '$(System.DefaultWorkingDirectory)\AircraftStateCore/AircraftStateCore.csproj' 
           $version = $xml.Project.PropertyGroup.ApplicationDisplayVersion 
           Write-Host "##vso[task.setvariable variable=appVersion;isOutput=true]$version"      
-
-
-#     - script: dotnet build --configuration $(buildConfiguration)
-#       displayName: "Build $(buildConfiguration)"
-#     - script: ren 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\win10-x64' 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
-#       displayName: "Set output folder name"
-     
   - job: Publish
     dependsOn: Build
     variables: 
        appVersion: $[ dependencies.Build.outputs['ExtractVersion.appVersion']]
     steps:    
     - checkout: none
-    - task: PowerShell@2
-      displayName: test
-      inputs:
-        targetType: inline
-        script: echo appversion = $appVersion
     - task: ArchiveFiles@2
+      displayName: Create Zip file
       inputs: 
          rootFolderOrFile: '$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
          archiveType: zip
          archiveFile: '$(Build.ArtifactStagingDirectory)/$(appVersion).zip'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: '$(appVersion).zip'
+        publishLocation: 'pipeline'
 
 
 
