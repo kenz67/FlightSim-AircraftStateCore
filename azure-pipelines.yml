@@ -32,11 +32,12 @@ stages:
   #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - job: Build
-  displayName: 'Build Release'
+    displayName: 'Build Release'
     steps:
      - script: dotnet build --configuration $(buildConfiguration)
        displayName: "Build $(buildConfiguration)"
      - script: ren 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\win10-x64' 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
+       displayName: "Set output folder name"
     
     
   - job: Publish
