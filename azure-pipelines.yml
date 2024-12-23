@@ -42,7 +42,7 @@ stages:
     - checkout: none
     - task: ArchiveFiles@2
       inputs: 
-         rootFolderOrFile: '$(Build.BinariesDirectory)'
+         rootFolderOrFile: 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\win10-x64'
          archiveType: zip
          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
         #where/how to publish for upload to FlightSim.to
