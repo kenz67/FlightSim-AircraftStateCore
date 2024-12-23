@@ -35,7 +35,7 @@ stages:
     displayName: 'Build Release'
     steps:
     - task: DotNetCoreCLI@2
-      displayName: "Release Build"
+      displayName: "Build - $(buildConfiguration)"
       inputs:
         command: 'build'
         projects: '**/AircraftStateCore.csproj'
@@ -57,6 +57,7 @@ stages:
         script: | 
           [xml]$xml = Get-Content '$(System.DefaultWorkingDirectory)\AircraftStateCore/AircraftStateCore.csproj' 
           $version = $xml.Project.PropertyGroup.ApplicationDisplayVersion 
+          echo version = $version
           Write-Host "##vso[task.setvariable variable=appVersion]$version"      
 
 
@@ -71,6 +72,11 @@ stages:
        appVersion: $[dependencies.ExtractVersion.outputs['ExtractVersion.appVersion']]
     steps:    
     - checkout: none
+    - task: PowerShell@2
+      displayName: test
+      inputs:
+        targetType: inline
+        script: echo appversion = $appVersion
     - task: ArchiveFiles@2
       inputs: 
          rootFolderOrFile: '$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
