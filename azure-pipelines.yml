@@ -12,28 +12,31 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  utBuildConfiguration: 'Release'
 
 #Don't need to Build and Publish (publish should do both, but keeping this here for now as may add test steps, etc)
 stages:
-- stage: Build
+- stage: Unit Test
   jobs:
-  - job: "Build_Test"
+  - job: "Unit_Test"
     displayName: "Run Unit Test"
     steps:
-    # - script: dotnet build --configuration $(buildConfiguration)
-    #   displayName: "Build"
     - task: DotNetCoreCLI@2
       displayName: "Test"
       inputs:
          command: test
          projects: '**/*Tests/*.csproj'
-         arguments: '--configuration Debug'
+         arguments: '--configuration '$(utBuildConfiguration)'
 
-# - stage: Publish
-#   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
-#   jobs:
-#   - job: Publish    
-#     steps:
-#     - checkout: none    
+ - stage: Publish
+   #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+   jobs:
+   - job: Build 
+     steps:
+      - script: dotnet build --configuration $(buildConfiguration)
+        displayName: "Build $(buildConfiguration)"
+   - job: Publish
+     - checkout: none    
+        #where/how to publish for upload to FlightSim.to
 #     - script: dotnet publish fstools/fstools.csproj /p:PublishProfile="Properties/PublishProfiles/fstools.zaldo.com - Web Deploy.pubxml" /p:Password=$(ftpPassword) /p:UserName=$(ftpUser)      
 #       displayName: 'Push to Server'
