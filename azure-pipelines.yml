@@ -67,7 +67,8 @@ stages:
      
   - job: Publish
     dependsOn: Build
-    variables: appVersion: $[dependencies.ExtractVersion.outputs['ExtractVersion.appVersion']]
+    variables: 
+       appVersion: $[dependencies.ExtractVersion.outputs['ExtractVersion.appVersion']]
     steps:    
     - checkout: none
     - task: ArchiveFiles@2
