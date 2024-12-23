@@ -16,7 +16,7 @@ variables:
 
 #Don't need to Build and Publish (publish should do both, but keeping this here for now as may add test steps, etc)
 stages:
-- stage: Unit Test
+- stage: Unit_Test
   jobs:
   - job: "Unit_Test"
     displayName: "Run Unit Test"
