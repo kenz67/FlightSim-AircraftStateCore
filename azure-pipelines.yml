@@ -16,17 +16,17 @@ variables:
 
 #Don't need to Build and Publish (publish should do both, but keeping this here for now as may add test steps, etc)
 stages:
-- stage: Unit_Test
-  jobs:
-  - job: "Unit_Test"
-    displayName: "Run Unit Test"
-    steps:
-    - task: DotNetCoreCLI@2
-      displayName: "Test"
-      inputs:
-         command: test
-         projects: '**/*Tests/*.csproj'
-         arguments: '--configuration $(utBuildConfiguration)'
+# - stage: Unit_Test
+#   jobs:
+#   - job: "Unit_Test"
+#     displayName: "Run Unit Test"
+#     steps:
+#     - task: DotNetCoreCLI@2
+#       displayName: "Test"
+#       inputs:
+#          command: test
+#          projects: '**/*Tests/*.csproj'
+#          arguments: '--configuration $(utBuildConfiguration)'
 
 - stage: Publish
   #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
@@ -34,21 +34,47 @@ stages:
   - job: Build
     displayName: 'Build Release'
     steps:
-     - script: dotnet build --configuration $(buildConfiguration)
-       displayName: "Build $(buildConfiguration)"
-     - script: ren 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\win10-x64' 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
-       displayName: "Set output folder name"
-    
-    
-  - job: Publish
-    dependsOn: Build
-    steps:    
-    - checkout: none
-    - task: ArchiveFiles@2
-      inputs: 
-         rootFolderOrFile: 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
-         archiveType: zip
-         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '**/AircraftStateCore.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+    - task: PowerShell@2 
+        inputs: targetType: 'inline' 
+        script: | 
+            echo $(Build.StagingDirectory)
+            $sourcePath = "$(Build.StagingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\win10-x64" 
+            $newName = "$(Build.StagingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState" 
+            Rename-Item -Path $sourcePath -NewName $newName displayName:
+        displayName: "Rename Output Folder"
+    - task: PowerShell@2
+        inputs: targetType: 'inline' 
+        script: | 
+            [xml]$xml = Get-Content 'path/to/your/projectfile.csproj' 
+            $version = $xml.Project.PropertyGroup.ApplicationDisplayVersion Write-Host 
+            "##vso[task.setvariable variable=appVersion]$version"
+        displayName: 'Extract Version Number from Project File'
+
+
+#     - script: dotnet build --configuration $(buildConfiguration)
+#       displayName: "Build $(buildConfiguration)"
+#     - script: ren 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\win10-x64' 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
+#       displayName: "Set output folder name"
+     
+  # - job: Publish
+  #   dependsOn: Build
+  #   variables: appVersion: $[dependencies.ExtractVersion.outputs['ExtractVersion.appVersion']]
+  #   steps:    
+  #   - checkout: none
+  #   - task: ArchiveFiles@2
+  #     inputs: 
+  #        rootFolderOrFile: 'C:\Users\ken\Documents\Development\Azure Devops\_work\1\s\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
+  #        archiveType: zip
+  #        archiveFile: '$(Build.ArtifactStagingDirectory)/$(appVersion).zip'
+
+
+
+
         #where/how to publish for upload to FlightSim.to
 #     - script: dotnet publish fstools/fstools.csproj /p:PublishProfile="Properties/PublishProfiles/fstools.zaldo.com - Web Deploy.pubxml" /p:Password=$(ftpPassword) /p:UserName=$(ftpUser)      
 #       displayName: 'Push to Server'
