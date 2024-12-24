@@ -42,10 +42,8 @@
 
     <ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Condition="'$(Configuration)' != 'Debug'" ForegroundFile="Resources\AppIcon\planeicon.svg" 
-				  Include="Resources\AppIcon\planeicon.svg" Color="lightblue" />
-		<MauiIcon Condition="'$(Configuration)' == 'Debug'" ForegroundFile="Resources\AppIcon\planeicon.svg"
-				  Update="Resources\AppIcon\planeicon.svg" Color="lightblue" />
+		<MauiIcon Condition="'$(Configuration)' != 'Debug'" ForegroundFile="Resources\AppIcon\planeicon.svg" Include="Resources\AppIcon\planeicon.svg" Color="lightblue" />
+		<MauiIcon Condition="'$(Configuration)' == 'Debug'" ForegroundFile="Resources\AppIcon\planeicon.svg" Update="Resources\AppIcon\planeicon.svg" Color="lightblue" />
 
 		<!-- Splash Screen --><!--
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
@@ -64,6 +62,10 @@
     <ItemGroup>
         <PackageReference Include="BootstrapBlazor" Version="9.1.2" />
         <PackageReference Include="BootstrapBlazor.FontAwesome" Version="9.0.1" />
+        <PackageReference Include="coverlet.collector" Version="6.0.2">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Font.Awesome" Version="5.15.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
