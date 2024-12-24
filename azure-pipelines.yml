@@ -28,7 +28,7 @@ stages:
          projects: '**/*Tests/*.csproj'         
          arguments: '--configuration $(utBuildConfiguration) --collect:"XPlat Code Coverage"'
          publishTestResults: true
-     - task: PublishCodeCoverageResults@1
+    - task: PublishCodeCoverageResults@1
       displayName: 'Publish code coverage'
       inputs:
         codeCoverageTool: Cobertura
