@@ -26,19 +26,19 @@ stages:
       inputs:
          command: test
          projects: '**/*Tests/*.csproj'         
-         arguments: '--configuration $(utBuildConfiguration) --collect:""XPlat Code Coverage"" /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+         arguments: '--configuration $(utBuildConfiguration) --collect:"XPlat Code Coverage"'
          publishTestResults: true
     # code coverage behaving strangely, maybe revisit
     - task: PublishCodeCoverageResults@1   #this gives deprecation warning, but switch to version 2 gets all sorter of errors
       displayName: 'Publish code coverage'
       inputs:
         codeCoverageTool: Cobertura
-        summaryFileLocation: $(Build.SourcesDirectory)/**/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
+        summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
 
-- stage: Publish
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+- stage: Publish  
   jobs:
   - job: Build
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     displayName: 'Build Release'
     steps:
     - task: DotNetCoreCLI@2
@@ -66,7 +66,8 @@ stages:
           [xml]$xml = Get-Content '$(System.DefaultWorkingDirectory)\AircraftStateCore/AircraftStateCore.csproj' 
           $version = $xml.Project.PropertyGroup.ApplicationDisplayVersion 
           Write-Host "##vso[task.setvariable variable=appVersion;isOutput=true]$version"      
-  - job: Publish
+  - job: Publish  
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     dependsOn: Build
     variables: 
        appVersion: $[ dependencies.Build.outputs['ExtractVersion.appVersion']]
