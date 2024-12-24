@@ -27,9 +27,10 @@ stages:
          command: test
          projects: '**/*Tests/*.csproj'
          arguments: '--configuration $(utBuildConfiguration)'
+         codeCoverageEnabled: true
 
 - stage: Publish
-  #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - job: Build
     displayName: 'Build Release'
@@ -76,10 +77,13 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: '$(appVersion).zip'
         publishLocation: 'pipeline'
-
-
-
-
-        #where/how to publish for upload to FlightSim.to
-#     - script: dotnet publish fstools/fstools.csproj /p:PublishProfile="Properties/PublishProfiles/fstools.zaldo.com - Web Deploy.pubxml" /p:Password=$(ftpPassword) /p:UserName=$(ftpUser)      
-#       displayName: 'Push to Server'
+    # - task: GitHubRelease@1
+    #   inputs:
+    #      gitHubConnection: 'GitHub PAT'
+    #      repositoryName: 'kenz67/FlightSim-AircraftStateCore'
+    #      action: 'create'
+    #      target: '$(Build.SourceVersion)'
+    #      tagSource: 'gitTag'
+    #      releaseNotesSource: 'inline'
+    #      changeLogCompareToRelease: 'lastFullRelease'
+    #      changeLogType: 'commitBased'
