@@ -26,7 +26,7 @@ stages:
       inputs:
          command: test
          projects: '**/*Tests/*.csproj'         
-         arguments: '--configuration $(utBuildConfiguration) --collect:"XPlat Code'
+         arguments: '--configuration $(utBuildConfiguration) --collect:"Code coverage'
          codeCoverageEnabled: true
     - task: PublishTestResults@2 
       inputs: 
