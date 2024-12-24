@@ -26,13 +26,13 @@ stages:
       inputs:
          command: test
          projects: '**/*Tests/*.csproj'         
-         arguments: '--configuration $(utBuildConfiguration) /p:CollectCoverage=true  /p:CoverletOutputFormat=cobertura'
-    - task: PublishTestResults@2 
-      inputs: 
-         testResultsFormat: 'XUnit' 
-         testResultsFiles: '**/TestResults/*.trx' 
-         failTaskOnFailedTests: true
-      displayName: 'Publish Test Results'
+         arguments: '--configuration $(utBuildConfiguration) --collect:"XPlat Code Coverage"'
+         publishTestResults: true
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
 
 - stage: Publish
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
