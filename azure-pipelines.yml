@@ -32,7 +32,7 @@ stages:
       displayName: 'Publish code coverage'
       inputs:
         codeCoverageTool: Cobertura
-        summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
+        summaryFileLocation: $(Agent.TempDirectory)/**/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
 
 - stage: Publish
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
