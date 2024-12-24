@@ -34,10 +34,10 @@ stages:
         codeCoverageTool: Cobertura
         summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
 
-- stage: Publish
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+- stage: Publish  
   jobs:
   - job: Build
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     displayName: 'Build Release'
     steps:
     - task: DotNetCoreCLI@2
@@ -66,6 +66,7 @@ stages:
           $version = $xml.Project.PropertyGroup.ApplicationDisplayVersion 
           Write-Host "##vso[task.setvariable variable=appVersion;isOutput=true]$version"      
   - job: Publish
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')  
     dependsOn: Build
     variables: 
        appVersion: $[ dependencies.Build.outputs['ExtractVersion.appVersion']]
