@@ -25,9 +25,15 @@ stages:
       displayName: "Test"
       inputs:
          command: test
-         projects: '**/*Tests/*.csproj'
-         arguments: '--configuration $(utBuildConfiguration)'
+         projects: '**/*Tests/*.csproj'         
+         arguments: '--configuration $(utBuildConfiguration) --no-build --collect:"XPlat Code'
          codeCoverageEnabled: true
+    - task: PublishTestResults@2 
+      inputs: 
+         testResultsFormat: 'XUnit' 
+         testResultsFiles: '**/TestResults/*.trx' 
+         failTaskOnFailedTests: true
+      displayName: 'Publish Test Results'
 
 - stage: Publish
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
