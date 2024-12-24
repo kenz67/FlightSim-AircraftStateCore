@@ -26,14 +26,14 @@ stages:
       inputs:
          command: test
          projects: '**/*Tests/*.csproj'         
-         arguments: '--configuration $(utBuildConfiguration) --collect:"XPlat Code Coverage"'
+         arguments: '--configuration $(utBuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/"'
          publishTestResults: true
     # code coverage behaving strangely, maybe revisit
-    # - task: PublishCodeCoverageResults@1   #this gives deprecation warning, but switch to version 2 gets all sorter of errors
-    #   displayName: 'Publish code coverage'
-    #   inputs:
-    #     codeCoverageTool: Cobertura
-    #     summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
+    - task: PublishCodeCoverageResults@2   #this gives deprecation warning, but switch to version 2 gets all sorter of errors
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml' # using ** instead of * finds duplicate coverage files
 
 - stage: Publish
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
