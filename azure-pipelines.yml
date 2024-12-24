@@ -28,7 +28,11 @@ stages:
          projects: '**/*Tests/*.csproj'         
          arguments: '--configuration $(utBuildConfiguration) --collect:"XPlat Code Coverage"'
          publishTestResults: true
-    - task: PublishCodeCoverageResults@1
+    - task: ManualValidation@0 
+      inputs: 
+        notifyUsers: 'ken@zaldo.com' 
+        instructions: 'Please confirm the external process is complete.' 
+    - task: PublishCodeCoverageResults@2
       displayName: 'Publish code coverage'
       inputs:
         codeCoverageTool: Cobertura
