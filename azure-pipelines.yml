@@ -14,7 +14,7 @@ variables:
   buildConfiguration: 'Release'
   utBuildConfiguration: 'Debug' 
 
-# Due to issues with build thinking there is a duplicate icon, doing separate test and release builds to get around that problem
+# Due to issues with build thinking there is a duplicate icon, using debug build for test, which has the icon file removed to get around the issue
 stages:
 - stage: Unit_Test
   jobs:
@@ -28,11 +28,11 @@ stages:
          projects: '**/*Tests/*.csproj'         
          arguments: '--configuration $(utBuildConfiguration) --collect:"XPlat Code Coverage"'
          publishTestResults: true
-    - task: PublishCodeCoverageResults@2
+    - task: PublishCodeCoverageResults@1   #this gives deprecation warning, but switch to version 2 gets all sorter of errors
       displayName: 'Publish code coverage'
       inputs:
         codeCoverageTool: Cobertura
-        summaryFileLocation: '**/coverage.cobertura.xml' # using ** instead of * finds duplicate coverage files
+        summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
 
 - stage: Publish
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
@@ -82,13 +82,13 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: '$(appVersion).zip'
         publishLocation: 'pipeline'
-    # - task: GitHubRelease@1
-    #   inputs:
-    #      gitHubConnection: 'GitHub PAT'
-    #      repositoryName: 'kenz67/FlightSim-AircraftStateCore'
-    #      action: 'create'
-    #      target: '$(Build.SourceVersion)'
-    #      tagSource: 'gitTag'
-    #      releaseNotesSource: 'inline'
-    #      changeLogCompareToRelease: 'lastFullRelease'
-    #      changeLogType: 'commitBased'
+    - task: GitHubRelease@1
+      inputs:
+         gitHubConnection: 'GitHub PAT'
+         repositoryName: 'kenz67/FlightSim-AircraftStateCore'
+         action: 'create'
+         target: '$(Build.SourceVersion)'
+         tagSource: 'gitTag'
+         releaseNotesSource: 'inline'
+         changeLogCompareToRelease: 'lastFullRelease'
+         changeLogType: 'commitBased'
