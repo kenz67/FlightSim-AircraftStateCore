@@ -90,6 +90,6 @@ stages:
          action: 'create'
          target: '$(Build.SourceVersion)'
          tagSource: userSpecifiedTag
-         tag: ($appVersion)
+         tag: '$(appVersion)'
          changeLogCompareToRelease: 'lastFullRelease'
          changeLogType: 'commitBased'
