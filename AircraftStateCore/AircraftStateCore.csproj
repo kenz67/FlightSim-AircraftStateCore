@@ -19,13 +19,19 @@
         <ApplicationId>com.companyname.aircraftstatecore</ApplicationId>
 
         <!-- Versions -->
+		<ApplicationVersion>2</ApplicationVersion>
+		<ApplicationVersion2>$(ApplicationVersion).1</ApplicationVersion2>
 		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+		
+		<!-- Application display version overrides version, but only allows 3 digits, version allows 4-->
 		<!--<ApplicationDisplayVersion>2.1.0</ApplicationDisplayVersion>-->
 		
 		<!--This one works, not that no one section can be more that 65534, so need to be careful with dates-->
-		<ApplicationDisplayVersion>2.1.$([System.DateTime]::UtcNow.ToString(MMdd)).$([System.DateTime]::UtcNow.ToString(HHmm))</ApplicationDisplayVersion>
+		<!--For some reason adding debug breaks when in debug mode-->
+		<Version>$(ApplicationVersion2).$([System.DateTime]::UtcNow.ToString(MMdd)).$([System.DateTime]::UtcNow.ToString(HHmm))</Version>
 
-		<ApplicationVersion>2.1</ApplicationVersion>
+		<!--<ApplicationDisplayVersion Condition="'$(Configuration)' == 'Debug'">$(ApplicationVersion2).$([System.DateTime]::UtcNow.ToString(MMdd)).$([System.DateTime]::UtcNow.ToString(HHmm))</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion Condition="'$(Configuration)' != 'Debug'">$(ApplicationVersion2)</ApplicationDisplayVersion>-->		
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
         <WindowsPackageType>None</WindowsPackageType>
