@@ -13,10 +13,11 @@ pool:
 variables:
   buildConfiguration: 'Release'
   utBuildConfiguration: 'Debug' 
+  outputFolder: '$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
 
 # Due to issues with build thinking there is a duplicate icon, using debug build for test, which has the icon file removed to get around the issue
 stages:
-- stage: Unit_Test
+- stage: Unit_Test  
   jobs:
   - job: "Unit_Test"
     displayName: "Run Unit Test"
@@ -53,7 +54,7 @@ stages:
         script: | 
           echo $(Build.StagingDirectory)
           $sourcePath = "$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\win10-x64" 
-          $newName = "$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState" 
+          $newName = "$(outputFolder)" 
           Rename-Item -Path $sourcePath -NewName $newName      
 
     - task: PowerShell@2      
@@ -62,8 +63,8 @@ stages:
       inputs: 
         targetType: 'inline' 
         script: | 
-          [xml]$xml = Get-Content '$(System.DefaultWorkingDirectory)\AircraftStateCore/AircraftStateCore.csproj' 
-          $version = $xml.Project.PropertyGroup.ApplicationDisplayVersion 
+          $fileVersionInfo = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$(outputFolder)\AircraftStateCore.exe")
+          $version = $fileVersionInfo.ProductVersion
           Write-Host "##vso[task.setvariable variable=appVersion;isOutput=true]$version"      
   - job: Publish
     dependsOn: Build
@@ -74,7 +75,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: Create Zip file
       inputs: 
-         rootFolderOrFile: '$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
+         rootFolderOrFile: '$(outputFolder)'
          archiveType: zip
          archiveFile: '$(Build.ArtifactStagingDirectory)/$(appVersion).zip'
     - task: PublishPipelineArtifact@1
@@ -88,7 +89,7 @@ stages:
          repositoryName: 'kenz67/FlightSim-AircraftStateCore'
          action: 'create'
          target: '$(Build.SourceVersion)'
-         tagSource: 'gitTag'
-         releaseNotesSource: 'inline'
+         tagSource: userSpecifiedTag
+         tag: '$(appVersion)'
          changeLogCompareToRelease: 'lastFullRelease'
          changeLogType: 'commitBased'
