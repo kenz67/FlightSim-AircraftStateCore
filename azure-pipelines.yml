@@ -17,8 +17,7 @@ variables:
 
 # Due to issues with build thinking there is a duplicate icon, using debug build for test, which has the icon file removed to get around the issue
 stages:
-- stage: Unit_Test
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+- stage: Unit_Test  
   jobs:
   - job: "Unit_Test"
     displayName: "Run Unit Test"
