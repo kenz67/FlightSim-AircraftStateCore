@@ -19,13 +19,13 @@
         <ApplicationId>com.companyname.aircraftstatecore</ApplicationId>
 
         <!-- Versions -->
-		<!--<FileVersion>1.1.$([System.DateTime]::Now.ToString('yyyyMMdd')).$([System.DateTime]::Now.ToString('HHmm'))</FileVersion>-->
 		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-		<ApplicationDisplayVersion>2.1.0</ApplicationDisplayVersion>
+		<!--<ApplicationDisplayVersion>2.1.0</ApplicationDisplayVersion>-->
+		
 		<!--This one works, not that no one section can be more that 65534, so need to be careful with dates-->
-		<!--<ApplicationDisplayVersion>2.1.$([System.DateTime]::UtcNow.ToString(MMdd)).$([System.DateTime]::UtcNow.ToString(HHmm))</ApplicationDisplayVersion>-->
+		<ApplicationDisplayVersion>2.1.$([System.DateTime]::UtcNow.ToString(MMdd)).$([System.DateTime]::UtcNow.ToString(HHmm))</ApplicationDisplayVersion>
 
-		<ApplicationVersion>2</ApplicationVersion>
+		<ApplicationVersion>2.1</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
         <WindowsPackageType>None</WindowsPackageType>
