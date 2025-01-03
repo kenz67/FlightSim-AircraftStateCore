@@ -18,6 +18,7 @@ variables:
 # Due to issues with build thinking there is a duplicate icon, using debug build for test, which has the icon file removed to get around the issue
 stages:
 - stage: Unit_Test
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - job: "Unit_Test"
     displayName: "Run Unit Test"
@@ -63,7 +64,7 @@ stages:
       inputs: 
         targetType: 'inline' 
         script: | 
-          $fileVersionInfo = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$(executablePath)")
+          $fileVersionInfo = [System.Diagnostics.FileVersionInfo]::GetVersionInfo("$(outputFolder)\AircraftStateCore.exe")
           $version = $fileVersionInfo.ProductVersion
           Write-Host "##vso[task.setvariable variable=appVersion;isOutput=true]$version"      
   - job: Publish
