@@ -54,7 +54,7 @@ public static class Formatter
 
 	public static string PitchLabel(PlaneDataStruct planeData) =>
 		Math.Round(planeData.pitch, 3) >= 0 ? "Nose Up" : "Nose Down";
-	public static string ElevTrimLabel(PlaneDataStruct planeData) =>
+	public static string ElevatorTrimLabel(PlaneDataStruct planeData) =>
 		Math.Round(planeData.elevtorTrim, 3) >= 0 ? "Nose Up" : "Nose Down";
 	public static string RudderTrimLabel(PlaneDataStruct planeData) =>
 			Math.Round(planeData.rudderTrim, 3) >= 0 ? "% Rgt" : "% Lft";
@@ -89,8 +89,7 @@ public static class Formatter
 	{
 		//var date = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
 		var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-		//var x = Assembly.GetExecutingAssembly().GetCustomAttributes();
-
+		//var x = Assembly.GetExecutingAssembly().GetCustomAttributes();		
 		//return $"{version.Replace(".0.0", String.Empty)}.{date.Replace("1.1.", String.Empty)}";
 		return version;
 	}

@@ -22,7 +22,10 @@
 		<!--<FileVersion>1.1.$([System.DateTime]::Now.ToString('yyyyMMdd')).$([System.DateTime]::Now.ToString('HHmm'))</FileVersion>-->
 		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
 		<ApplicationDisplayVersion>2.1.0</ApplicationDisplayVersion>
-        <ApplicationVersion>2</ApplicationVersion>
+		<!--This one works, not that no one section can be more that 65534, so need to be careful with dates-->
+		<!--<ApplicationDisplayVersion>2.1.$([System.DateTime]::UtcNow.ToString(MMdd)).$([System.DateTime]::UtcNow.ToString(HHmm))</ApplicationDisplayVersion>-->
+
+		<ApplicationVersion>2</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
         <WindowsPackageType>None</WindowsPackageType>
@@ -39,10 +42,8 @@
 
     <ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Condition="'$(Configuration)' != 'Debug'" ForegroundFile="Resources\AppIcon\planeicon.svg" 
-				  Include="Resources\AppIcon\planeicon.svg" Color="lightblue" />
-		<MauiIcon Condition="'$(Configuration)' == 'Debug'" ForegroundFile="Resources\AppIcon\planeicon.svg"
-				  Update="Resources\AppIcon\planeicon.svg" Color="lightblue" />
+		<MauiIcon Condition="'$(Configuration)' != 'Debug'" ForegroundFile="Resources\AppIcon\planeicon.svg" Include="Resources\AppIcon\planeicon.svg" Color="lightblue" />
+		<MauiIcon Condition="'$(Configuration)' == 'Debug'" ForegroundFile="Resources\AppIcon\planeicon.svg" Update="Resources\AppIcon\planeicon.svg" Color="lightblue" />
 
 		<!-- Splash Screen --><!--
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />

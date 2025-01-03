@@ -59,7 +59,7 @@ public static class FieldText
 	public const string LightsGlareshieldPower = "Glare Shield %";
 	public const string LightsPanelPower = "Panel %";
 	public const string LightsCabinPower = "Cabin %";
-	public const string LightsPedestralPower = "Pedestral %";
+	public const string LightsPedestralPower = "Pedestal %";
 
 	public const string radiosHeader = "Radios";
 	public const string obsHeader = "OBS";

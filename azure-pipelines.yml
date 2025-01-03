@@ -1,0 +1,94 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# https://learn.microsoft.com/en-us/azure/devops/pipelines/create-first-pipeline?view=azure-devops&tabs=net%2Cbrowser
+
+pr:
+- master
+
+pool:
+  name: Default  
+
+variables:
+  buildConfiguration: 'Release'
+  utBuildConfiguration: 'Debug' 
+
+# Due to issues with build thinking there is a duplicate icon, using debug build for test, which has the icon file removed to get around the issue
+stages:
+- stage: Unit_Test
+  jobs:
+  - job: "Unit_Test"
+    displayName: "Run Unit Test"
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: "Test"
+      inputs:
+         command: test
+         projects: '**/*Tests/*.csproj'         
+         arguments: '--configuration $(utBuildConfiguration) --collect:"XPlat Code Coverage"'
+         publishTestResults: true
+    - task: PublishCodeCoverageResults@1   #this gives deprecation warning, but switch to version 2 gets errors and fails build
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
+
+- stage: Publish
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  jobs:
+  - job: Build
+    displayName: 'Build Release'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: "Build - $(buildConfiguration)"
+      inputs:
+        command: 'build'
+        projects: '**/AircraftStateCore.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+    - task: PowerShell@2       
+      displayName: "Rename Output Folder"
+      inputs:        
+        targetType: 'inline' 
+        script: | 
+          echo $(Build.StagingDirectory)
+          $sourcePath = "$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\win10-x64" 
+          $newName = "$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState" 
+          Rename-Item -Path $sourcePath -NewName $newName      
+
+    - task: PowerShell@2      
+      name: ExtractVersion
+      displayName: 'Extract Version Number from Project File'
+      inputs: 
+        targetType: 'inline' 
+        script: | 
+          [xml]$xml = Get-Content '$(System.DefaultWorkingDirectory)\AircraftStateCore/AircraftStateCore.csproj' 
+          $version = $xml.Project.PropertyGroup.ApplicationDisplayVersion 
+          Write-Host "##vso[task.setvariable variable=appVersion;isOutput=true]$version"      
+  - job: Publish
+    dependsOn: Build
+    variables: 
+       appVersion: $[ dependencies.Build.outputs['ExtractVersion.appVersion']]
+    steps:    
+    - checkout: none
+    - task: ArchiveFiles@2
+      displayName: Create Zip file
+      inputs: 
+         rootFolderOrFile: '$(System.DefaultWorkingDirectory)\AircraftStateCore\bin\Release\net9.0-windows10.0.19041.0\AircraftState'
+         archiveType: zip
+         archiveFile: '$(Build.ArtifactStagingDirectory)/$(appVersion).zip'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: '$(appVersion).zip'
+        publishLocation: 'pipeline'
+    - task: GitHubRelease@1
+      inputs:
+         gitHubConnection: 'GitHub PAT'
+         repositoryName: 'kenz67/FlightSim-AircraftStateCore'
+         action: 'create'
+         target: '$(Build.SourceVersion)'
+         tagSource: 'gitTag'
+         releaseNotesSource: 'inline'
+         changeLogCompareToRelease: 'lastFullRelease'
+         changeLogType: 'commitBased'
