@@ -36,7 +36,7 @@ stages:
         summaryFileLocation: $(Agent.TempDirectory)/*/coverage.cobertura.xml # using ** instead of * finds duplicate coverage files
 
 - stage: Publish
-  #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - job: Build
     displayName: 'Build Release'
