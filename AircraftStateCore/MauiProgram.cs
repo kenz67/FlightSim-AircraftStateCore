@@ -3,7 +3,6 @@ using AircraftStateCore.DAL.Repositories.Interfaces;
 using AircraftStateCore.Database;
 using AircraftStateCore.Services;
 using AircraftStateCore.Services.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace AircraftStateCore
 {
@@ -30,7 +29,6 @@ namespace AircraftStateCore
 				//.AddSingleton<MainPage>()
 				.AddSqlite<AircraftStateContext>($"Data Source={DbCommon.DbName}")
 				.AddSingleton<IDbInit, DbInit>()
-				.AddSingleton<ILocalSettingsService, LocalSettingsService>()
 				.AddSingleton<IPlaneDataRepo, PlaneDataRepo>()
 				.AddSingleton<ISettingsRepo, SettingsRepo>()
 				.AddSingleton<IPlaneData, PlaneData>()
