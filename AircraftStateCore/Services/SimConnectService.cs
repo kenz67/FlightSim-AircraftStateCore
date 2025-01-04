@@ -357,7 +357,7 @@ public class SimConnectService : ISimConnectService
 			SendLightsPower(EVENT_IDS.CABIN_LIGHTPOWER, data.lightCabinPct, 2);
 		}
 
-		if (CheckEnabled(FieldText.LightsPedestralPower))
+		if (CheckEnabled(FieldText.LightsPedestalPower))
 			SendLightsPower(EVENT_IDS.PEDESTRAL_LIGHT_POWER, data.lightPedestralPct);
 	}
 

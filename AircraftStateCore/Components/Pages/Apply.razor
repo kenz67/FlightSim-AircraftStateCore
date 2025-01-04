@@ -612,11 +612,11 @@
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPedestralPower)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPedestalPower)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestralPower" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestalPower" />
 													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightPedestralPct" />
 													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
 												</BootstrapInputGroup>
