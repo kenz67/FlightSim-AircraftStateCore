@@ -3,6 +3,7 @@ using AircraftStateCore.DAL.Repositories.Interfaces;
 using AircraftStateCore.Database;
 using AircraftStateCore.Services;
 using AircraftStateCore.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace AircraftStateCore
 {
