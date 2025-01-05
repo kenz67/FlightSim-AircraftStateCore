@@ -43,7 +43,7 @@ namespace AircraftStateCore.Services.Tests
 			var t = result.SelectedData.Where(r => r.enabled && !r.value.EndsWith(".0")).ToList();
 
 			Assert.Single(t);
-			Assert.Equal(allData.Items[0].txt, t[0].txt);
+			Assert.Equal(allData.Items[10].txt, t[0].txt);
 		}
 
 		[Fact()]
@@ -66,8 +66,8 @@ namespace AircraftStateCore.Services.Tests
 			await sut.ReadSettings();
 			var data = sut.GetSelectedData();
 
-			Assert.Equal(8, data.Count);  //7 headings + 1 enabled
-			Assert.Single(data.Where(d => d.txt.Equals(allData.Items[0].txt)).ToList());
+			Assert.Equal(9, data.Count);  //8 headings + 1 enabled
+			Assert.Single(data.Where(d => d.txt.Equals(allData.Items[10].txt)).ToList());
 		}
 
 		[Fact()]
