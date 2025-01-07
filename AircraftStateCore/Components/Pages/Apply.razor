@@ -18,7 +18,7 @@
 <div>
 	<div class="row">
 		<div class="col-10">
-			<Dropdown TValue="string" ShowLabel="true" Value="@selectedProfile" DisplayText="Select Profile" Direction="Direction.Dropright" Items="planeList" Size="Size.Small" OnSelectedItemChanged="ChangeProfile" />
+			<Dropdown TValue="string" ShowLabel="true" Value="@selectedProfile" DisplayText="Select Profile&nbsp;&nbsp;" Direction="Direction.Dropright" Items="planeList" Size="Size.Small" OnSelectedItemChanged="ChangeProfile" />
 		</div>
 		<div class="col-2">		
 			<Button class="@disabledDelete" OnClick="() => SmallModal.Toggle()" Color="Color.Dark">Delete Profile</Button>
