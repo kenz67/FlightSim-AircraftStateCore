@@ -18,7 +18,7 @@
 <div>
 	<div class="row">
 		<div class="col-10">
-			<Dropdown TValue="string" ShowLabel="true" Value="@selectedProfile" DisplayText="Select Profile" Direction="Direction.Dropright" Items="planeList" Size="Size.Small" OnSelectedItemChanged="ChangeProfile" />
+			<Dropdown TValue="string" ShowLabel="true" Value="@selectedProfile" DisplayText="Select Profile&nbsp;&nbsp;" Direction="Direction.Dropright" Items="planeList" Size="Size.Small" OnSelectedItemChanged="ChangeProfile" />
 		</div>
 		<div class="col-2">		
 			<Button class="@disabledDelete" OnClick="() => SmallModal.Toggle()" Color="Color.Dark">Delete Profile</Button>
@@ -612,11 +612,11 @@
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPedestralPower)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPedestalPower)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestralPower" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestalPower" />
 													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightPedestralPct" />
 													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
 												</BootstrapInputGroup>

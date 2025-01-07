@@ -82,7 +82,7 @@ public class AvailableData
 			new AvailableDataItem("0362", FieldText.LightsGlareshieldPower),
 			new AvailableDataItem("0363", FieldText.LightsPanelPower),
 			new AvailableDataItem("0364", FieldText.LightsCabinPower),
-			new AvailableDataItem("0365", FieldText.LightsPedestralPower),
+			new AvailableDataItem("0365", FieldText.LightsPedestalPower),
 		];
 	}
 }

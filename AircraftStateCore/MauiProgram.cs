@@ -30,7 +30,6 @@ namespace AircraftStateCore
 				//.AddSingleton<MainPage>()
 				.AddSqlite<AircraftStateContext>($"Data Source={DbCommon.DbName}")
 				.AddSingleton<IDbInit, DbInit>()
-				.AddSingleton<ILocalSettingsService, LocalSettingsService>()
 				.AddSingleton<IPlaneDataRepo, PlaneDataRepo>()
 				.AddSingleton<ISettingsRepo, SettingsRepo>()
 				.AddSingleton<IPlaneData, PlaneData>()

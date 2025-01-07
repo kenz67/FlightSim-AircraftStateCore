@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
-        <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>		
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 
         <OutputType>Exe</OutputType>
         <RootNamespace>AircraftStateCore</RootNamespace>
@@ -66,7 +65,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="BootstrapBlazor" Version="9.1.2" />
+        <PackageReference Include="BootstrapBlazor" Version="9.2.6" />
         <PackageReference Include="BootstrapBlazor.FontAwesome" Version="9.0.1" />
         <PackageReference Include="Font.Awesome" Version="5.15.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
@@ -76,10 +75,10 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.12" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="9.0.12" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.21" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="9.0.21" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.12" />
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.21" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
@@ -99,5 +98,15 @@
 
 	<Target Name="CopyCustomContent" AfterTargets="AfterBuild">
 		<Copy SourceFiles="@(LibFiles)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="false" />
+	</Target>
+
+	<ItemGroup>
+		<FluentValidationExcludedCultures Include="&#xD;&#xA;				ar;af-ZA;am-ET;ar-SA;as-IN;az-Latn-AZ;af-ZA;am-ET;ar-SA;as-IN;az-Latn-AZ;&#xD;&#xA;				bg-BG;bn-IN;bs-Latn-BA;&#xD;&#xA;				ca;ca-ES;ca-ES-VALENCIA;cs;cs-CA;cy-GB;cs-CZ;&#xD;&#xA;				da;da-DK;de;de-DE;&#xD;&#xA;				el;el-GR;en-GB;en-US;es;es-ES;es-MX;et-EE;eu-ES;&#xD;&#xA;				fa-IR;fi;fi-FI;fil-PH;fr;fr-CA;fr-FR;&#xD;&#xA;				ga-IE;gd-gb;gl-es;gu-IN;&#xD;&#xA;				he;he-IL;hi;hi-IN;hr;hr-HR;hu;hu-HU;hy-AM;&#xD;&#xA;				id;id-ID;is-IS;it;it-IT;&#xD;&#xA;				ja;ja-JP;&#xD;&#xA;				ka-GE;kk-KZ;km-KH;km-IN;kn-IN;ko;kok-IN;ko-KR;&#xD;&#xA;				lb-LU;lo-LA;lt-LT;lv-LV;&#xD;&#xA;				mi-NZ;mk-MK;ml-IN;mr-IN;ms;ms-MY;mt-MT;&#xD;&#xA;				nb;nb-NO;ne-NP;nl;nl-NL;nn-NO;&#xD;&#xA;				or-IN;&#xD;&#xA;				pa-IN;pl;pl-PL;pt;pt-BR;pt-PT;&#xD;&#xA;				quz-PE;&#xD;&#xA;				ro;ro-RO;ru;ru-RU;&#xD;&#xA;				sk;sk-SK;sl-SI;sq-AL;sr-Cyrl-BA;sr-Cyrl-RS;sr-LATN-RS;sv;sv-SE;&#xD;&#xA;				ta-IN;te-IN;th;th-TH;tr;tr-TR;tt-RU;&#xD;&#xA;				ug-CN;uk;uk-UA;ur-PK;uz-Latn-UZ;&#xD;&#xA;				vi;vi-VN;&#xD;&#xA;				zh-CN;zh-Hans;zh-Hant;zh-HK;zh-TW&#xD;&#xA;				">
+			<InProject>false</InProject>
+		</FluentValidationExcludedCultures>
+	</ItemGroup>
+
+	<Target Name="RemoveTranslationsAfterBuild" AfterTargets="AfterBuild">
+		<RemoveDir Directories="@(FluentValidationExcludedCultures->'$(OutputPath)%(Filename)')" />
 	</Target>
 </Project>

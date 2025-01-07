@@ -345,19 +345,22 @@ public class SimConnectService : ISimConnectService
 			SendLightsPower(EVENT_IDS.GLARESHIELD_LIGHTPOWER, data.lightGlareShieldPct);
 
 		if (CheckEnabled(FieldText.LightsPanelPower))
+		{
 			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct);
 
-		SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 2);
-		SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 3);
-		SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 4);
-		SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 5);
+			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 2);
+			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 3);
+			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 4);
+			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 5);
+		}
+
 		if (CheckEnabled(FieldText.LightsCabinPower))
 		{
 			SendLightsPower(EVENT_IDS.CABIN_LIGHTPOWER, data.lightCabinPct, 1);
 			SendLightsPower(EVENT_IDS.CABIN_LIGHTPOWER, data.lightCabinPct, 2);
 		}
 
-		if (CheckEnabled(FieldText.LightsPedestralPower))
+		if (CheckEnabled(FieldText.LightsPedestalPower))
 			SendLightsPower(EVENT_IDS.PEDESTRAL_LIGHT_POWER, data.lightPedestralPct);
 	}
 

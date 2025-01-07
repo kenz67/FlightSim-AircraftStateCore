@@ -88,8 +88,10 @@ public class SimConnectServiceTests
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Configuration Data
 	/////////////////////////////////////////////////////////////////////////////////////
-	[Fact]
-	public void SendConfigurationDataTests()
+	[Theory]
+	[InlineData(true, 1)]
+	[InlineData(false, 0)]
+	public void SendConfigurationDataTests(bool enabled, int expectedTimesCalled)
 	{
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
@@ -99,11 +101,11 @@ public class SimConnectServiceTests
 		{
 			SelectedData = new List<AvailableDataItem>()
 			{
-				{  new AvailableDataItem("0", FieldText.ConfigurationFlaps, true) },
-				{  new AvailableDataItem("0", FieldText.ConfigurationParkingBrake, true) },
-				{  new AvailableDataItem("0", FieldText.ConfigurationElevatorTrim, true) },
-				{  new AvailableDataItem("0", FieldText.ConfigurationRudderTrim, true) },
-				{  new AvailableDataItem("0", FieldText.ConfigurationAileronTrim, true) },
+				{  new AvailableDataItem("0", FieldText.ConfigurationFlaps, enabled) },
+				{  new AvailableDataItem("0", FieldText.ConfigurationParkingBrake, enabled) },
+				{  new AvailableDataItem("0", FieldText.ConfigurationElevatorTrim, enabled) },
+				{  new AvailableDataItem("0", FieldText.ConfigurationRudderTrim, enabled) },
+				{  new AvailableDataItem("0", FieldText.ConfigurationAileronTrim, enabled) },
 			}
 		};
 
@@ -115,8 +117,8 @@ public class SimConnectServiceTests
 		var trimData = new TrimData { elevatorTrim = data.elevtorTrim, aileronTrim = data.aileronTrim, rudderTrim = data.rudderTrim };
 		svc.SendDataToSim(data, false, false);
 
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.PARKING_BRAKE_SET, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimTrimData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), trimData), Times.Once);
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.PARKING_BRAKE_SET, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimTrimData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), trimData), Times.Exactly(expectedTimesCalled));
 
 		data.flapsIndex = 0;
 		svc.SendDataToSim(data, false, false);
@@ -133,53 +135,21 @@ public class SimConnectServiceTests
 		data.flapsIndex = 5;
 		svc.SendDataToSim(data, false, false);
 
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_UP, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_1, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_2, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_3, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_4, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_DOWN, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-	}
-
-	[Fact]
-	public void SendConfigurationDataNegativeTests()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings
-		{
-			SelectedData = new List<AvailableDataItem>()
-			{
-				{  new AvailableDataItem("0", FieldText.ConfigurationFlaps, false) },
-				{  new AvailableDataItem("0", FieldText.ConfigurationParkingBrake, false) },
-				{  new AvailableDataItem("0", FieldText.ConfigurationElevatorTrim, false) },
-				{  new AvailableDataItem("0", FieldText.ConfigurationRudderTrim, false) },
-				{  new AvailableDataItem("0", FieldText.ConfigurationAileronTrim, false) },
-			}
-		};
-
-		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		var data = GetSampleData();
-
-		svc.SimData = new PlaneDataStruct { elevtorTrim = 10 };
-		svc.SendDataToSim(data, false, false);
-
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<uint>(),
-			It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-
-		var trimData = new TrimData { elevatorTrim = 10, aileronTrim = 0, rudderTrim = 0 };
-		mockProxy.Verify(p => p.SetDataOnSimObject(It.IsAny<Enum>(), It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), trimData), Times.Once);
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_UP, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_1, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_2, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_3, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_4, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FLAPS_DOWN, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Lights Data
 	/////////////////////////////////////////////////////////////////////////////////////
-	[Fact]
-	public void SendLightDataTests()
+	[Theory]
+	[InlineData(true, 1)]
+	[InlineData(false, 0)]
+	public void SendLightDataTests(bool enabled, int expectedTimesCalled)
 	{
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
@@ -189,16 +159,20 @@ public class SimConnectServiceTests
 		{
 			SelectedData = new List<AvailableDataItem>()
 			{
-				{  new AvailableDataItem("0", FieldText.LightsBeacon, true) },
-				{  new AvailableDataItem("0", FieldText.LightsCabin, true) },
-				{  new AvailableDataItem("0", FieldText.LightsLanding, true) },
-				{  new AvailableDataItem("0", FieldText.LightsLogo, true) },
-				{  new AvailableDataItem("0", FieldText.LightsNav, true) },
-				{  new AvailableDataItem("0", FieldText.LightsPanel, true) },
-				{  new AvailableDataItem("0", FieldText.LightsRecognition, true) },
-				{  new AvailableDataItem("0", FieldText.LightsStrobe, true) },
-				{  new AvailableDataItem("0", FieldText.LightsTaxi, true) },
-				{  new AvailableDataItem("0", FieldText.LightsWing, true) },
+				{  new AvailableDataItem("0", FieldText.LightsBeacon, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsCabin, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsLanding, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsLogo, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsNav, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsPanel, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsRecognition, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsStrobe, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsTaxi, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsWing, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsGlareshieldPower, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsPanelPower, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsCabinPower, enabled) },
+				{  new AvailableDataItem("0", FieldText.LightsPedestalPower, enabled) },
 			}
 		};
 
@@ -208,65 +182,30 @@ public class SimConnectServiceTests
 		var data = GetSampleData();
 		svc.SendDataToSim(data, false, false);
 
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.BEACON_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.LANDING_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.TAXI_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.STROBE_LIGHT, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.PANEL_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.RECOGNITION_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.WING_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.CABIN_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.LOGO_LIGHT, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-	}
-
-	[Fact]
-	public void SendLightDataNegativeTests()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings
-		{
-			SelectedData = new List<AvailableDataItem>()
-			{
-				{  new AvailableDataItem("0", FieldText.LightsBeacon, false) },
-				{  new AvailableDataItem("0", FieldText.LightsCabin, false) },
-				{  new AvailableDataItem("0", FieldText.LightsLanding, false) },
-				{  new AvailableDataItem("0", FieldText.LightsLogo, false) },
-				{  new AvailableDataItem("0", FieldText.LightsNav, false) },
-				{  new AvailableDataItem("0", FieldText.LightsPanel, false) },
-				{  new AvailableDataItem("0", FieldText.LightsRecognition, false) },
-				{  new AvailableDataItem("0", FieldText.LightsStrobe, false) },
-				{  new AvailableDataItem("0", FieldText.LightsTaxi, false) },
-				{  new AvailableDataItem("0", FieldText.LightsWing, false) },
-			}
-		};
-
-		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		var data = GetSampleData();
-		svc.SendDataToSim(data, false, false);
-
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.BEACON_LIGHT, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV_LIGHT, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.LANDING_LIGHT, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.TAXI_LIGHT, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.STROBE_LIGHT, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.PANEL_LIGHT, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.RECOGNITION_LIGHT, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.WING_LIGHT, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.CABIN_LIGHT, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.LOGO_LIGHT, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.BEACON_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.LANDING_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.TAXI_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.STROBE_LIGHT, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.PANEL_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.RECOGNITION_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.WING_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.CABIN_LIGHT, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.LOGO_LIGHT, (uint)0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent_Ex1(It.IsAny<uint>(), EVENT_IDS.GLARESHIELD_LIGHTPOWER, GROUPID.MAX, It.IsAny<SIMCONNECT_EVENT_FLAG>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent_Ex1(It.IsAny<uint>(), EVENT_IDS.PANEL_LIGHTPOWER, GROUPID.MAX, It.IsAny<SIMCONNECT_EVENT_FLAG>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>()), Times.Exactly(5 * expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent_Ex1(It.IsAny<uint>(), EVENT_IDS.CABIN_LIGHTPOWER, GROUPID.MAX, It.IsAny<SIMCONNECT_EVENT_FLAG>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>()), Times.Exactly(2 * expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent_Ex1(It.IsAny<uint>(), EVENT_IDS.PEDESTRAL_LIGHT_POWER, GROUPID.MAX, It.IsAny<SIMCONNECT_EVENT_FLAG>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>(), It.IsAny<uint>()), Times.Exactly(expectedTimesCalled));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Fuel Data
 	/////////////////////////////////////////////////////////////////////////////////////
-	[Fact]
-	public void SendFuelDataTests()
+	[Theory]
+	[InlineData(true, false, 1)]
+	[InlineData(true, true, 0)]
+	[InlineData(false, false, 0)]
+	public void SendFuelDataTests(bool enabled, bool blockFuel, int expectedTimesCalled)
 	{
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
@@ -276,8 +215,8 @@ public class SimConnectServiceTests
 		{
 			SelectedData = new List<AvailableDataItem>()
 			{
-				{  new AvailableDataItem("0", FieldText.FuelQtyBoth, true) },
-				{  new AvailableDataItem("0", FieldText.FuelSelector, true) },
+				{  new AvailableDataItem("0", FieldText.FuelQtyBoth, enabled) },
+				{  new AvailableDataItem("0", FieldText.FuelSelector, enabled) },
 			}
 		};
 
@@ -287,79 +226,20 @@ public class SimConnectServiceTests
 		var data = GetSampleData();
 
 		var fuelData = new FuelData { fuelLeft = data.fuelLeft, fuelRight = data.fuelRight };
-		svc.SendDataToSim(data, false, false);
+		svc.SendDataToSim(data, blockFuel, false);
 
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FUEL_SELECTOR_SET, (uint)data.fuelSelector, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneFuelData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), fuelData), Times.Once);
-	}
-
-	[Fact]
-	public void SendFuelDataNegativeTests1()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings
-		{
-			SelectedData = new List<AvailableDataItem>()
-			{
-				{  new AvailableDataItem("0", FieldText.FuelQtyBoth, true) },
-				{  new AvailableDataItem("0", FieldText.FuelSelector, true) },
-			}
-		};
-
-		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		var data = GetSampleData();
-
-		svc.SimData = new PlaneDataStruct { fuelLeft = 10 };
-		svc.SendDataToSim(data, true, true);
-
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<uint>(),
-			It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-
-		var fuelData = new FuelData { fuelLeft = 10, fuelRight = 20 };
-		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneFuelData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), fuelData), Times.Never);
-	}
-
-	[Fact]
-	public void SendFuelDataNegativeTests2()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings
-		{
-			SelectedData = new List<AvailableDataItem>()
-			{
-				{  new AvailableDataItem("0", FieldText.FuelQtyBoth, false) },
-				{  new AvailableDataItem("0", FieldText.FuelSelector, false) },
-			}
-		};
-
-		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		//Send with all turned off
-		var data = GetSampleData();
-
-		svc.SimData = new PlaneDataStruct { fuelLeft = 30, fuelRight = 40 };
-		svc.SendDataToSim(data, false, false);
-
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<uint>(),
-			It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-
-		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneFuelData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), It.IsAny<FuelData>()), Times.Never);
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FUEL_SELECTOR_SET, (uint)data.fuelSelector, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneFuelData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), fuelData), Times.Exactly(expectedTimesCalled));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
-	// Fuel Data
+	// Location Data
 	/////////////////////////////////////////////////////////////////////////////////////
-	[Fact]
-	public void SendLocationDataTests()
+	[Theory]
+	[InlineData(true, false, 1)]
+	[InlineData(true, true, 0)]
+	[InlineData(false, false, 0)]
+	public void SendLocationDataTests(bool enabled, bool blockLocation, int expectedTimesCalled)
 	{
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
@@ -369,11 +249,11 @@ public class SimConnectServiceTests
 		{
 			SelectedData = new List<AvailableDataItem>()
 			{
-				{  new AvailableDataItem("0", FieldText.LocationAltitude, true) },
-				{  new AvailableDataItem("0", FieldText.LocationHeading, true) },
-				{  new AvailableDataItem("0", FieldText.LocationLatitude, true) },
-				{  new AvailableDataItem("0", FieldText.LocationLongitude, true) },
-				{  new AvailableDataItem("0", FieldText.LocationPitch, true) },
+				{  new AvailableDataItem("0", FieldText.LocationAltitude, enabled) },
+				{  new AvailableDataItem("0", FieldText.LocationHeading, enabled) },
+				{  new AvailableDataItem("0", FieldText.LocationLatitude, enabled) },
+				{  new AvailableDataItem("0", FieldText.LocationLongitude, enabled) },
+				{  new AvailableDataItem("0", FieldText.LocationPitch, enabled) },
 			}
 		};
 
@@ -383,78 +263,18 @@ public class SimConnectServiceTests
 		var data = GetSampleData();
 
 		var locationData = new LocationData { altitude = data.altitude, heading = data.heading, latitude = data.latitude, longitude = data.longitude, pitch = data.pitch };
-		svc.SendDataToSim(data, false, false);
+		svc.SendDataToSim(data, false, blockLocation);
 
-		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneLocationData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), locationData), Times.Once);
-	}
-
-	[Fact]
-	public void SendLocationDataNegativeTests1()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings
-		{
-			SelectedData = new List<AvailableDataItem>()
-			{
-				{  new AvailableDataItem("0", FieldText.LocationAltitude, true) },
-				{  new AvailableDataItem("0", FieldText.LocationHeading, true) },
-				{  new AvailableDataItem("0", FieldText.LocationLatitude, true) },
-				{  new AvailableDataItem("0", FieldText.LocationLongitude, true) },
-				{  new AvailableDataItem("0", FieldText.LocationPitch, true) },
-			}
-		};
-
-		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		var data = GetSampleData();
-
-		svc.SimData = new PlaneDataStruct { longitude = 10 };
-		svc.SendDataToSim(data, true, true);
-
-		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneLocationData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), It.IsAny<LocationData>()), Times.Never);
-	}
-
-	[Fact]
-	public void SendLocationDataNegativeTests2()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings
-		{
-			SelectedData = new List<AvailableDataItem>()
-			{
-				{  new AvailableDataItem("0", FieldText.LocationAltitude, false) },
-				{  new AvailableDataItem("0", FieldText.LocationHeading, false) },
-				{  new AvailableDataItem("0", FieldText.LocationLatitude, false) },
-				{  new AvailableDataItem("0", FieldText.LocationLongitude, false) },
-				{  new AvailableDataItem("0", FieldText.LocationPitch, false) },
-			}
-		};
-
-		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		//Send with all turned off
-		var data = GetSampleData();
-
-		svc.SimData = new PlaneDataStruct { altitude = 10, heading = 20, latitude = 30, longitude = 40, pitch = 50 };
-		svc.SendDataToSim(data, false, false);
-
-		var locationData = new LocationData { altitude = 10, heading = 20, latitude = 30, longitude = 40, pitch = 50 };
-		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneLocationData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), locationData), Times.Once);
+		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneLocationData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), locationData), Times.Exactly(expectedTimesCalled));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Obs Data
 	/////////////////////////////////////////////////////////////////////////////////////
-	[Fact]
-	public void SendLObsDataTests()
+	[Theory]
+	[InlineData(true, 1)]
+	[InlineData(false, 0)]
+	public void SendObsDataTests(bool enabled, int expectedTimesCalled)
 	{
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
@@ -464,9 +284,9 @@ public class SimConnectServiceTests
 		{
 			SelectedData = new List<AvailableDataItem>()
 			{
-				{  new AvailableDataItem("0", FieldText.ObsAdfCard, true) },
-				{  new AvailableDataItem("0", FieldText.ObsObs1, true) },
-				{  new AvailableDataItem("0", FieldText.ObsObs2, true) },
+				{  new AvailableDataItem("0", FieldText.ObsAdfCard, enabled) },
+				{  new AvailableDataItem("0", FieldText.ObsObs1, enabled) },
+				{  new AvailableDataItem("0", FieldText.ObsObs2, enabled) },
 			}
 		};
 
@@ -476,13 +296,18 @@ public class SimConnectServiceTests
 		var data = GetSampleData();
 		svc.SendDataToSim(data, false, false);
 
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.ADF_CARD_SET, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.OBS1, (uint)2, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.OBS2, (uint)3, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.ADF_CARD_SET, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.OBS1, (uint)2, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.OBS2, (uint)3, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
 	}
 
-	[Fact]
-	public void SendObsDataNegativeTests()
+	/////////////////////////////////////////////////////////////////////////////////////
+	// Other Data
+	/////////////////////////////////////////////////////////////////////////////////////
+	[Theory]
+	[InlineData(true, 1)]
+	[InlineData(false, 0)]
+	public void SendOtherDataTests(bool enabled, int expectedTimesCalled)
 	{
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
@@ -492,40 +317,11 @@ public class SimConnectServiceTests
 		{
 			SelectedData = new List<AvailableDataItem>()
 			{
-				{  new AvailableDataItem("0", FieldText.ObsAdfCard, false) },
-				{  new AvailableDataItem("0", FieldText.ObsObs1, false) },
-				{  new AvailableDataItem("0", FieldText.ObsObs2, false) },
-			}
-		};
-
-		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		var data = GetSampleData();
-		svc.SendDataToSim(data, false, false);
-
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.ADF_CARD_SET, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.OBS1, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.OBS2, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////
-	// Obs Data
-	/////////////////////////////////////////////////////////////////////////////////////
-	[Fact]
-	public void SendLOtherDataTests()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings
-		{
-			SelectedData = new List<AvailableDataItem>()
-			{
-				{  new AvailableDataItem("0", FieldText.OtherHeadingBug, true) },
-				{  new AvailableDataItem("0", FieldText.OtherKolhsman, true) },
-				{  new AvailableDataItem("0", FieldText.OtherBatteryVoltage, true) },
+				{ new AvailableDataItem("0", FieldText.OtherHeadingBug, enabled) },
+				{ new AvailableDataItem("0", FieldText.OtherKolhsman, enabled) },
+				{ new AvailableDataItem("0", FieldText.OtherBatteryVoltage, enabled) },
+				{ new AvailableDataItem("0", FieldText.OtherTransponder, enabled) },
+				{ new AvailableDataItem("0", FieldText.GyroDrift, enabled) },
 			}
 		};
 
@@ -537,44 +333,25 @@ public class SimConnectServiceTests
 
 		svc.SendDataToSim(data, false, false);
 
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.HEADING_BUG_SET, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.KOHLSMAN_SET, (uint)1083, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPowerData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), batteryData), Times.Once);
-	}
-
-	[Fact]
-	public void SendOtherDataNegativeTests()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings
-		{
-			SelectedData = new List<AvailableDataItem>()
-			{
-				{  new AvailableDataItem("0", FieldText.OtherHeadingBug, false) },
-				{  new AvailableDataItem("0", FieldText.OtherKolhsman, false) },
-				{  new AvailableDataItem("0", FieldText.OtherBatteryVoltage, false) },
-			}
-		};
-
-		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		var data = GetSampleData();
-		svc.SendDataToSim(data, false, false);
-
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.HEADING_BUG_SET, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.KOHLSMAN_SET, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPowerData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), It.IsAny<BatteryVoltage>()), Times.Never);
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.HEADING_BUG_SET, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.KOHLSMAN_SET, (uint)1083, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPowerData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), batteryData), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.SetDataOnSimObject(DATA_DEFINITIONS.SimPowerData, It.IsAny<uint>(), It.IsAny<SIMCONNECT_DATA_SET_FLAG>(), batteryData), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.TRANSPONDER1000INC, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.TRANSPONDER100INC, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(2 * expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.TRANSPONDER10INC, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(3 * expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.TRANSPONDER1INC, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(4 * expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.HEADING_GYRO_SET, 0, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.GYRO_DRIFT_SET, (uint)1145, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	// Power Data
 	/////////////////////////////////////////////////////////////////////////////////////
-	[Fact]
-	public void SendPowerDataTests()
+	[Theory]
+	[InlineData(true, 1)]
+	[InlineData(false, 0)]
+	public void SendPowerDataTests(bool enabled, int expectedTimesCalled)
 	{
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
@@ -584,9 +361,9 @@ public class SimConnectServiceTests
 		{
 			SelectedData = new List<AvailableDataItem>()
 			{
-				{  new AvailableDataItem("0", FieldText.PowerMasterAlternator, true) },
-				{  new AvailableDataItem("0", FieldText.PowerMasterAvionics, true) },
-				{  new AvailableDataItem("0", FieldText.PowerMasterBattery, true) },
+				{  new AvailableDataItem("0", FieldText.PowerMasterAlternator, enabled) },
+				{  new AvailableDataItem("0", FieldText.PowerMasterAvionics, enabled) },
+				{  new AvailableDataItem("0", FieldText.PowerMasterBattery, enabled) },
 			}
 		};
 
@@ -596,44 +373,18 @@ public class SimConnectServiceTests
 		var data = GetSampleData();
 		svc.SendDataToSim(data, false, false);
 
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.MASTER_ALTERNATOR, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.MASTER_BATTERY, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.AVIONICS_MASTER, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-	}
-
-	[Fact]
-	public void SendPowerDataNegativeTests()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings
-		{
-			SelectedData = new List<AvailableDataItem>()
-			{
-				{  new AvailableDataItem("0", FieldText.PowerMasterAlternator, false) },
-				{  new AvailableDataItem("0", FieldText.PowerMasterAvionics, false) },
-				{  new AvailableDataItem("0", FieldText.PowerMasterBattery, false) },
-			}
-		};
-
-		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		var data = GetSampleData();
-		svc.SendDataToSim(data, false, false);
-
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.MASTER_ALTERNATOR, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.MASTER_BATTERY, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.AVIONICS_MASTER, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.MASTER_ALTERNATOR, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.MASTER_BATTERY, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.AVIONICS_MASTER, (uint)1, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////
-	// Lights Data
+	// Radio Data
 	/////////////////////////////////////////////////////////////////////////////////////
-	[Fact]
-	public void SendLRadioDataTests()
+	[Theory]
+	[InlineData(true, 1)]
+	[InlineData(false, 0)]
+	public void SendRadioDataTests(bool enabled, int expectedTimesCalled)
 	{
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
@@ -643,11 +394,11 @@ public class SimConnectServiceTests
 		{
 			SelectedData = new List<AvailableDataItem>()
 			{
-				{  new AvailableDataItem("0", FieldText.RadiosCom1Both, true) },
-				{  new AvailableDataItem("0", FieldText.RadiosCom2Both, true) },
-				{  new AvailableDataItem("0", FieldText.RadiosNav1Both, true) },
-				{  new AvailableDataItem("0", FieldText.RadiosNav2Both, true) },
-				{  new AvailableDataItem("0", FieldText.RadiosAdfBoth, true) },
+				{  new AvailableDataItem("0", FieldText.RadiosCom1Both, enabled) },
+				{  new AvailableDataItem("0", FieldText.RadiosCom2Both, enabled) },
+				{  new AvailableDataItem("0", FieldText.RadiosNav1Both, enabled) },
+				{  new AvailableDataItem("0", FieldText.RadiosNav2Both, enabled) },
+				{  new AvailableDataItem("0", FieldText.RadiosAdfBoth, enabled) },
 			}
 		};
 
@@ -657,54 +408,17 @@ public class SimConnectServiceTests
 		var data = GetSampleData();
 		svc.SendDataToSim(data, false, false);
 
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM_RADIO_SET_HZ, (uint)121500000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM_RADIO_SET_HZ, (uint)120500000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM_STBY_RADIO_SET_HZ, (uint)121500000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM2_RADIO_SET_HZ, (uint)122500000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM2_STBY_RADIO_SET_HZ, (uint)123500000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV1_RADIO_SET_HZ, (uint)114000000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV1_STBY_SET_HZ, (uint)115000000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV2_RADIO_SET_HZ, (uint)116000000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV2_STBY_SET_HZ, (uint)117000000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.ADF_STBY_SET, (uint)268435456, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.ADF_STBY_SET, (uint)536870912, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Once);
-	}
-
-	[Fact]
-	public void SendRadioDataNegativeTests()
-	{
-		var mockProxy = new Mock<ISimConnectProxy>();
-		var mockSettings = new Mock<ISettingsData>();
-		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
-
-		var settingsData = new Settings
-		{
-			SelectedData = new List<AvailableDataItem>()
-			{
-				{  new AvailableDataItem("0", FieldText.RadiosCom1Both, false) },
-				{  new AvailableDataItem("0", FieldText.RadiosCom2Both, false) },
-				{  new AvailableDataItem("0", FieldText.RadiosNav1Both, false) },
-				{  new AvailableDataItem("0", FieldText.RadiosNav2Both, false) },
-				{  new AvailableDataItem("0", FieldText.RadiosAdfBoth, false) },
-			}
-		};
-
-		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
-
-		var data = GetSampleData();
-		svc.SendDataToSim(data, false, false);
-
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM_RADIO_SET_HZ, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM_STBY_RADIO_SET_HZ, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM2_RADIO_SET_HZ, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM2_STBY_RADIO_SET_HZ, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV1_RADIO_SET_HZ, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV1_STBY_SET_HZ, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV2_RADIO_SET_HZ, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV2_STBY_SET_HZ, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.ADF_STBY_SET, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
-		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.ADF_STBY_SET, It.IsAny<uint>(), It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Never);
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM_RADIO_SET_HZ, (uint)121500000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM_RADIO_SET_HZ, (uint)120500000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM_STBY_RADIO_SET_HZ, (uint)121500000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM2_RADIO_SET_HZ, (uint)122500000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.COM2_STBY_RADIO_SET_HZ, (uint)123500000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV1_RADIO_SET_HZ, (uint)114000000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV1_STBY_SET_HZ, (uint)115000000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV2_RADIO_SET_HZ, (uint)116000000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.NAV2_STBY_SET_HZ, (uint)117000000, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.ADF_STBY_SET, (uint)268435456, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
+		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.ADF_STBY_SET, (uint)536870912, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -795,6 +509,8 @@ public class SimConnectServiceTests
 			headingBug = 1,
 			kohlsman = 2,
 			batteryVoltage = 3,
+			transponder = 4660,
+			gyroDriftError = 20,
 
 			//Power Data
 			masterAlternator = true,
