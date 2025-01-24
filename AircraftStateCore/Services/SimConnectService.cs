@@ -219,7 +219,7 @@ public class SimConnectService : ISimConnectService
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.CABIN_LIGHT, "TOGGLE_CABIN_LIGHTS");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.LOGO_LIGHT, "TOGGLE_LOGO_LIGHTS");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.GLARESHIELD_LIGHTPOWER, "GLARESHIELD_LIGHTS_POWER_SETTING_SET");
-			_proxy.MapClientEventToSimEvent(EVENT_IDS.PANEL_LIGHTPOWER, "LIGHT_POTENTIOMETER_SET");
+			_proxy.MapClientEventToSimEvent(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, "LIGHT_POTENTIOMETER_SET");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.CABIN_LIGHTPOWER, "CABIN_LIGHTS_POWER_SETTING_SET");
 			_proxy.MapClientEventToSimEvent(EVENT_IDS.PEDESTRAL_LIGHT_POWER, "PEDESTRAL_LIGHTS_POWER_SETTING_SET");
 
@@ -346,12 +346,21 @@ public class SimConnectService : ISimConnectService
 
 		if (CheckEnabled(FieldText.LightsPanelPower))
 		{
-			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct);
+			/*
+			    Strange things happening
+				When using eventId PANEL_LIGHTS_POWER_SETTING_SET which seems to be correct, it does nothing
+				When using LIGHT_POTENTIOMETER_SET, 
+					Circuit 0 and 1 turn affect Landing light and radio lights as well
+					Other Circuits properly set the Panel Lights, at least in 172
+			*/
 
-			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 2);
-			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 3);
-			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 4);
-			SendLightsPower(EVENT_IDS.PANEL_LIGHTPOWER, data.lightPanelPct, 5);
+			//SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, data.lightPanelPct * 100, 0);
+			//SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, data.lightPanelPct * 100, 1);
+
+			SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, data.lightPanelPct * 100, 2);
+			SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, data.lightPanelPct * 100, 3);
+			SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, data.lightPanelPct * 100, 4);
+			SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, data.lightPanelPct * 100, 5);
 		}
 
 		if (CheckEnabled(FieldText.LightsCabinPower))
