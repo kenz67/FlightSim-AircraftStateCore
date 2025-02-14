@@ -18,6 +18,7 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings
 		{
@@ -25,7 +26,7 @@ public class SimConnectServiceTests
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		var expectFalse1 = svc.VerifyAutoSave();
 
@@ -49,6 +50,7 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings
 		{
@@ -56,7 +58,7 @@ public class SimConnectServiceTests
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		var data = new PlaneDataStruct
 		{
@@ -96,6 +98,7 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings
 		{
@@ -110,7 +113,7 @@ public class SimConnectServiceTests
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		var data = GetSampleData();
 
@@ -154,6 +157,7 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings
 		{
@@ -177,7 +181,7 @@ public class SimConnectServiceTests
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		var data = GetSampleData();
 		svc.SendDataToSim(data, false, false);
@@ -210,6 +214,7 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings
 		{
@@ -221,7 +226,7 @@ public class SimConnectServiceTests
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		var data = GetSampleData();
 
@@ -244,6 +249,7 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings
 		{
@@ -258,7 +264,7 @@ public class SimConnectServiceTests
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		var data = GetSampleData();
 
@@ -279,6 +285,7 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings
 		{
@@ -291,7 +298,7 @@ public class SimConnectServiceTests
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		var data = GetSampleData();
 		svc.SendDataToSim(data, false, false);
@@ -312,6 +319,7 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings
 		{
@@ -326,7 +334,7 @@ public class SimConnectServiceTests
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		var data = GetSampleData();
 		var batteryData = new BatteryVoltage { batteryVoltage = data.batteryVoltage };
@@ -356,6 +364,7 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings
 		{
@@ -368,7 +377,7 @@ public class SimConnectServiceTests
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		var data = GetSampleData();
 		svc.SendDataToSim(data, false, false);
@@ -389,6 +398,7 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings
 		{
@@ -403,7 +413,7 @@ public class SimConnectServiceTests
 		};
 
 		mockSettings.Setup(s => s.ReadSettings()).ReturnsAsync(settingsData);
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		var data = GetSampleData();
 		svc.SendDataToSim(data, false, false);
@@ -430,13 +440,14 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings()
 		{
 			SelectedData = []
 		};
 
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		Assert.False(svc.Connected());
 
@@ -450,13 +461,14 @@ public class SimConnectServiceTests
 		var mockProxy = new Mock<ISimConnectProxy>();
 		var mockSettings = new Mock<ISettingsData>();
 		var mockPlaneDataRepo = new Mock<IPlaneDataRepo>();
+		var mockDbInit = new Mock<IDbInit>();
 
 		var settingsData = new Settings()
 		{
 			SelectedData = []
 		};
 
-		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object);
+		var svc = new SimConnectService(mockProxy.Object, mockSettings.Object, mockPlaneDataRepo.Object, mockDbInit.Object);
 
 		svc.Disconnect();
 		mockProxy.Verify(p => p.Disconnect(), Times.Once());
