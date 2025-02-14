@@ -49,7 +49,7 @@ public class SettingsRepo(AircraftStateContext dbContext) : ISettingsRepo
 	public async Task<bool> UpdateVersion(string VersionNumber)
 	{
 		var existingVersion = _dbContext.ApplicationSettings.Where(s => s.DataKey.Equals(SettingDefinitions.Version)).FirstOrDefault();
-		var retValue = !VersionNoDate(VersionNumber).Equals(VersionNoDate(existingVersion.DataValue));
+		var retValue = !VersionNoDate(VersionNumber).Equals(VersionNoDate(existingVersion?.DataValue ?? "no version"));
 		if (existingVersion == null || !VersionNumber.Equals(existingVersion.DataValue))
 		{
 			await SetIndividualSetting(SettingDefinitions.Version, VersionNumber);
