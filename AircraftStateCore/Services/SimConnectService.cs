@@ -25,8 +25,9 @@ public class SimConnectService : ISimConnectService
 	private readonly IPlaneDataRepo _planeDataRepo;
 	private readonly ISimConnectProxy _proxy;
 
-	public SimConnectService(ISimConnectProxy SimProxy, ISettingsData settings, IPlaneDataRepo planeDataRepo)
+	public SimConnectService(ISimConnectProxy SimProxy, ISettingsData settings, IPlaneDataRepo planeDataRepo, IDbInit dbInit)
 	{
+		dbInit.Init();
 		_proxy = SimProxy;
 		_settings = settings.ReadSettings().Result;
 		_planeDataRepo = planeDataRepo;
@@ -354,8 +355,8 @@ public class SimConnectService : ISimConnectService
 					Other Circuits properly set the Panel Lights, at least in 172
 			*/
 
-			//SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, data.lightPanelPct * 100, 0);
-			//SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, data.lightPanelPct * 100, 1);
+			//SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, 100, 0);
+			//SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, 100, 1);
 
 			SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, data.lightPanelPct * 100, 2);
 			SendLightsPower(EVENT_IDS.PANEL_LIGHTS_POWER_SETTING_SET, data.lightPanelPct * 100, 3);
