@@ -35,6 +35,7 @@ public class SimConnectService : ISimConnectService
 		WindowHandle = w.Hwnd;
 		w.WndProcHandle += W_WndProcHandle;
 
+		//will i have problem with 2024?  https://devsupport.flightsimulator.com/t/2020-2024-compatible-microsoft-flightsimulator-simconnect-dll/11844/2
 		_proxy.ConnectToSim("Managed Data Request", WindowHandle, WM_USER_SIMCONNECT, null, 0);
 		SetupSimConnect();
 	}
