@@ -47,7 +47,7 @@
 				<Button class="@disabledSend" @onclick="() => SendToSim()" Color="Color.Primary">Send to Sim</Button>
 			</div>
 
-			@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyBoth)) ||
+			@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyAll)) ||
 					selectedData.Exists(s => s.txt.Equals(FieldText.FuelSelector)))
 			{
 				<div class="col-md-3 col-sm-6">
@@ -378,19 +378,65 @@
 							<CollapseItems>
 								<CollapseItem Text="Fuel" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyBoth)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelLeft" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelLeft" />
+													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="" />
+													<BootstrapInput class="disabled" TValue="string" value="Left" />
+													<BootstrapInput class="disabled" TValue="string" value="Right" />
 												</BootstrapInputGroup>
 											</div>
-
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelRight" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelRight" />
+													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.FuelMain" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelLeftMain" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelRightMain" />
+												</BootstrapInputGroup>
+											</div>
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.FuelTip" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelLeftTip" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelRightTip" />
+												</BootstrapInputGroup>
+											</div>
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.FuelAux" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelLeftAux" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelRightAux" />
+												</BootstrapInputGroup>
+											</div>
+			
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelCenter1" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelCenter1" />
+												</BootstrapInputGroup>
+											</div>
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelCenter2" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelCenter2" />
+												</BootstrapInputGroup>
+											</div>
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelCenter3" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelCenter3" />
+												</BootstrapInputGroup>
+											</div>
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelExternal1" />
+															<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelExternal1" />
+												</BootstrapInputGroup>
+											</div>
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelExternal2" />
+															<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelExternal2" />
 												</BootstrapInputGroup>
 											</div>
 										}
@@ -648,6 +694,8 @@
 	private Color TitleColor = Color.Warning;
 	private string Active = "Active";
 	private string Standby = "Standby";
+    private string Left = "Left";
+    private string Right = "Right";
 
 	protected async override void OnInitialized()
 	{

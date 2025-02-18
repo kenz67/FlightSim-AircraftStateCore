@@ -39,7 +39,7 @@ public class AvailableData
             //Fuel
             new AvailableDataItem("0150", FieldText.Headers["0150"]),
 			new AvailableDataItem("0150.0", FieldText.Headers["0150"], true),
-			new AvailableDataItem("0151", FieldText.FuelQtyBoth),
+			new AvailableDataItem("0151", FieldText.FuelQtyAll),
 			new AvailableDataItem("0152", FieldText.FuelSelector),
 
             //Plane Configuration

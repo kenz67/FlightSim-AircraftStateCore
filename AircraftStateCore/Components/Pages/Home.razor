@@ -31,6 +31,7 @@
 	</Modal>
 	
 	<DbSave/>
+	<h4>@simconnect.SimData.title</h4>
 
 	<div class="row g-2">
 		@*first Column*@
@@ -254,23 +255,69 @@
 					<Collapse>
 						<CollapseItems>
 							<CollapseItem Text="Fuel" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-								<div class="row g-1">
+								<div class="row g-1">								
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelLeft" />
-											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelLeft" />
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="" />
+											<BootstrapInput class="disabled" TValue="string" value="Left" />
+											<BootstrapInput class="disabled" TValue="string" value="Right" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelRight" />
-											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelRight" />
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.FuelMain" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelLeftMain" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelRightMain" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.FuelTip" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelLeftTip" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelRightTip" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.FuelAux" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelLeftAux" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelRightAux" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
 											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelSelector" />
 											<BootstrapInput TValue="int" Formatter="Formatter.FuelSelectorFormatter" value="@simconnect.SimData.fuelSelector" />
+										</BootstrapInputGroup>
+									</div>	
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelCenter1" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelCenter1" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelCenter2" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelCenter2" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelCenter3" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelCenter3" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelExternal1" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelExternal1" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelExternal2" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.fuelExternal2" />
 										</BootstrapInputGroup>
 									</div>
 								</div>
@@ -432,6 +479,8 @@
 	private Color TitleColor = Color.Info;
 	private string Active = "Active";
 	private string Standby = "Standby"; 
+    private string Left = "Left";
+    private string Right = "Right";
 
 	protected override void OnInitialized()
 	{
