@@ -5,7 +5,9 @@ namespace AircraftStateCore.Models;
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
 public struct PlaneDataStruct
 {
-	public double latitude;   //setttable
+	[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+	public String title;
+	public double latitude;   //settable
 	public double longitude;  //settable
 	public int altitude;    //settable
 	public double heading;    //settable
@@ -26,8 +28,17 @@ public struct PlaneDataStruct
 	public double obs2;
 	public double adfCard;   //test in 172
 
-	public double fuelLeft;    //settable
-	public double fuelRight;   //settable
+	public double fuelCenter1;    //settable
+	public double fuelCenter2;    //settable
+	public double fuelCenter3;    //settable
+	public double fuelExternal1;    //settable
+	public double fuelExternal2;    //settable
+	public double fuelLeftAux;    //settable
+	public double fuelLeftMain;    //settable
+	public double fuelLeftTip;    //settable
+	public double fuelRightAux;    //settable
+	public double fuelRightMain;    //settable
+	public double fuelRightTip;    //settable
 	public int fuelSelector;
 
 	public bool parkingBrake;

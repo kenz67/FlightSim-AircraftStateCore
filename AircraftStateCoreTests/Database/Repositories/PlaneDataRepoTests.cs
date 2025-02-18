@@ -31,7 +31,9 @@ public class PlaneDataRepoTests
 			""nav2Active"":111.55,""nav2Standby"":117.2,
 			""adfActive"":0.89,""adfStandby"":1.4,
 			""obs1"":81.0,""obs2"":12.0,""adfCard"":0.0,
-			""fuelLeft"":16.063632965087891,""fuelRight"":9.2027988433837891,""fuelSelector"":2,
+			""fuelLeftMain"":16.063632965087891,
+			""fuelRightMain"":9.2027988433837891,
+			""fuelSelector"":2,
 			""parkingBrake"":false,
 			""kohlsman"":29.92,
 			""headingBug"":81.0,
@@ -90,8 +92,8 @@ public class PlaneDataRepoTests
 		Assert.Equal(12.0, data.obs2);
 		Assert.Equal(0, data.adfCard);
 
-		Assert.Equal(16.063632965087891, data.fuelLeft);
-		Assert.Equal(9.2027988433837891, data.fuelRight);
+		Assert.Equal(16.063632965087891, data.fuelLeftMain);
+		Assert.Equal(9.2027988433837891, data.fuelRightMain);
 		Assert.Equal(2, data.fuelSelector);
 
 		Assert.False(data.parkingBrake);
@@ -148,8 +150,8 @@ public class PlaneDataRepoTests
 		Assert.Equal(0, data.obs2);
 		Assert.Equal(0, data.adfCard);
 
-		Assert.Equal(0, data.fuelLeft);
-		Assert.Equal(0, data.fuelRight);
+		Assert.Equal(0, data.fuelLeftMain);
+		Assert.Equal(0, data.fuelRightMain);
 		Assert.Equal(0, data.fuelSelector);
 
 		Assert.False(data.parkingBrake);
@@ -207,8 +209,8 @@ public class PlaneDataRepoTests
 			com2Active = 8,
 			com2Standby = 9,
 			elevtorTrim = 10,
-			fuelLeft = 11,
-			fuelRight = 12,
+			fuelLeftMain = 11,
+			fuelRightMain = 12,
 			flapsIndex = 13,
 			fuelSelector = 14,
 			heading = 15,

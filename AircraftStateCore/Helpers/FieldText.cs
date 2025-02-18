@@ -25,10 +25,19 @@ public static class FieldText
 	public const string LocationPitch = "Pitch";
 	public const string GyroDrift = "Gyro Drift Error";
 
+	public const string FuelMain = "Main Tanks";
+	public const string FuelTip = "Tip Tanks";
+	public const string FuelAux = "Aux Tanks";
+	public const string FuelCenter1 = "Center Tanks 1";
+	public const string FuelCenter2 = "Center Tanks 2";
+	public const string FuelCenter3 = "Center Tanks 3";
+	public const string FuelExternal1 = "External Tanks 1";
+	public const string FuelExternal2 = "External Tanks 2";
+
 	public const string FuelLeft = "Left";
 	public const string FuelRight = "Right";
 
-	public const string FuelQtyBoth = "Qty (left and right)";
+	public const string FuelQtyAll = "Qty (All Tanks)";
 	public const string FuelSelector = "Fuel Selector";
 
 	public const string ConfigurationFlaps = "Flaps";

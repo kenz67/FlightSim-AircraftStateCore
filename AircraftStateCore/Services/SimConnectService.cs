@@ -80,6 +80,7 @@ public class SimConnectService : ISimConnectService
 			_proxy.AddOnRecvException(new SimConnect.RecvExceptionEventHandler(SimConnect_OnRecvException));
 
 			//Data being captured
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "TITLE", null, SIMCONNECT_DATATYPE.STRING256, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PLANE LATITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PLANE LONGITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PLANE ALTITUDE", "feet", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -98,8 +99,17 @@ public class SimConnectService : ISimConnectService
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "NAV OBS:1", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "NAV OBS:2", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "ADF CARD", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK CENTER QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK CENTER2 QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK CENTER3 QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK EXTERNAL1 QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK EXTERNAL2 QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK LEFT AUX QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK LEFT MAIN QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK LEFT TIP QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK RIGHT AUX QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK RIGHT MAIN QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK RIGHT TIP QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "FUEL TANK SELECTOR:1", "enum", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "BRAKE PARKING INDICATOR", "bool", SIMCONNECT_DATATYPE.INT32, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "KOHLSMAN SETTING HG", "inHg", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -122,8 +132,17 @@ public class SimConnectService : ISimConnectService
 			//////////////////
 
 			//Fuel
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK CENTER QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK CENTER2 QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK CENTER3 QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK EXTERNAL1 QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK EXTERNAL2 QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK LEFT AUX QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK LEFT MAIN QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK LEFT TIP QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK RIGHT AUX QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK RIGHT MAIN QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneFuelData, "FUEL TANK RIGHT TIP QUANTITY", "gallons", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
 
 			//Position
 			_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneLocationData, "PLANE LATITUDE", "degrees", SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
@@ -303,9 +322,22 @@ public class SimConnectService : ISimConnectService
 			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.FUEL_SELECTOR_SET, (uint)data.fuelSelector, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 		}
 
-		if (CheckEnabled(FieldText.FuelQtyBoth))
+		if (CheckEnabled(FieldText.FuelQtyAll))
 		{
-			var fuelData = new FuelData { fuelLeft = data.fuelLeft, fuelRight = data.fuelRight };
+			var fuelData = new FuelData
+			{
+				fuelCenter = data.fuelCenter1,
+				fuelCenter2 = data.fuelCenter2,
+				fuelCenter3 = data.fuelCenter3,
+				fuelExternal1 = data.fuelExternal1,
+				fuelExternal2 = data.fuelExternal2,
+				fuelLeftAux = data.fuelLeftAux,
+				fuelLeftMain = data.fuelLeftMain,
+				fuelLeftTip = data.fuelLeftTip,
+				fuelRightAux = data.fuelRightAux,
+				fuelRightMain = data.fuelRightMain,
+				fuelRightTip = data.fuelRightTip
+			};
 			_proxy.SetDataOnSimObject(DATA_DEFINITIONS.SimPlaneFuelData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, fuelData);
 		}
 	}

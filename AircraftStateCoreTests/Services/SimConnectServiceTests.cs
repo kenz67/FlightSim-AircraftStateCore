@@ -220,7 +220,7 @@ public class SimConnectServiceTests
 		{
 			SelectedData = new List<AvailableDataItem>()
 			{
-				{  new AvailableDataItem("0", FieldText.FuelQtyBoth, enabled) },
+				{  new AvailableDataItem("0", FieldText.FuelQtyAll, enabled) },
 				{  new AvailableDataItem("0", FieldText.FuelSelector, enabled) },
 			}
 		};
@@ -230,7 +230,7 @@ public class SimConnectServiceTests
 
 		var data = GetSampleData();
 
-		var fuelData = new FuelData { fuelLeft = data.fuelLeft, fuelRight = data.fuelRight };
+		var fuelData = new FuelData { fuelLeftMain = data.fuelLeftMain, fuelRightMain = data.fuelRightMain };
 		svc.SendDataToSim(data, blockFuel, false);
 
 		mockProxy.Verify(p => p.TransmitClientEvent(It.IsAny<uint>(), EVENT_IDS.FUEL_SELECTOR_SET, (uint)data.fuelSelector, It.IsAny<Enum>(), It.IsAny<SIMCONNECT_EVENT_FLAG>()), Times.Exactly(expectedTimesCalled));
@@ -489,8 +489,8 @@ public class SimConnectServiceTests
 			aileronTrim = 3,
 
 			//Fuel Data
-			fuelLeft = 1,
-			fuelRight = 2,
+			fuelLeftMain = 1,
+			fuelRightMain = 2,
 			fuelSelector = 3,
 
 			//Lights Data

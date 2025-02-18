@@ -78,13 +78,32 @@ public static class Formatter
 		return source switch
 		{
 			0 => "Off",
-			1 => "Both",
+			1 => "All",
 			2 => "Left",
 			3 => "Right",
+			5 => "Right auxiliary",
+			6 => "Center",
+			7 => "Center2",
+			8 => "Center3",
+			9 => "External1",
+			10 => "External2",
+			11 => "Right tip",
+			12 => "Left tip",
+			13 => "Crossfeed",
+			14 => "Crossfeed left to right",
+			15 => "Crossfeed right to left",
+			16 => "Both",
+			17 => "External",
+			18 => "Isolate",
+			19 => "Left main",
+			20 => "Right main",
 			_ => source.ToString(),
 		};
 	}
 
+	/*
+
+	*/
 	public static string GetBuildNumber()
 	{
 		//var date = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
