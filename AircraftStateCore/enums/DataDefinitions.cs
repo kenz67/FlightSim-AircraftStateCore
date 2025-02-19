@@ -10,4 +10,5 @@ public enum DATA_DEFINITIONS
 	SimTrimData,
 	SimLightData,
 	SimPowerData,
+	PayloadData,
 }
