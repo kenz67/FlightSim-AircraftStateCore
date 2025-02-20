@@ -153,7 +153,53 @@
 					</Collapse>
 				</div>
 			</div>
-		</div>
+						@*Other*@
+			<div class="row g-2 bottom-buffer">
+				<div class="col-12">
+					<Collapse>
+						<CollapseItems>
+							<CollapseItem Text="Other" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+								<div class="row g-1">
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherTransponder" />
+											<BootstrapInput TValue="uint" Formatter="Formatter.GetTransponder" value="@simconnect.SimData.transponder" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherKolhsman" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.kohlsman" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherHeadingBug" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.headingBug" />
+										</BootstrapInputGroup>
+									</div>
+
+								<div class="col-12">
+									<BootstrapInputGroup>
+										<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.GyroDrift" />
+										<BootstrapInput TValue="double" Formatter="Formatter.GyroDriftFormatter" value="@simconnect.SimData.gyroDriftError" />
+										<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.GyroDriftLabel(simconnect.SimData)" />
+									</BootstrapInputGroup>
+								</div>
+
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherBatteryVoltage" />
+											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.batteryVoltage" />
+										</BootstrapInputGroup>
+									</div>
+								</div>
+							</CollapseItem>
+						</CollapseItems>
+					</Collapse>
+				</div>
+			</div>
+		</div>	
 		@*second Column*@
 		<div class="col-md-6 col-lg-4 col-sm-12">
 			@*Location*@
@@ -424,52 +470,7 @@
 					</Collapse>
 				</div>
 			</div>
-			@*Other*@
-			<div class="row g-2 bottom-buffer">
-				<div class="col-12">
-					<Collapse>
-						<CollapseItems>
-							<CollapseItem Text="Other" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-								<div class="row g-1">
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherTransponder" />
-											<BootstrapInput TValue="uint" Formatter="Formatter.GetTransponder" value="@simconnect.SimData.transponder" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherKolhsman" />
-											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.kohlsman" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherHeadingBug" />
-											<BootstrapInput TValue="double" value="@simconnect.SimData.headingBug" />
-										</BootstrapInputGroup>
-									</div>
 
-								<div class="col-12">
-									<BootstrapInputGroup>
-										<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.GyroDrift" />
-										<BootstrapInput TValue="double" Formatter="Formatter.GyroDriftFormatter" value="@simconnect.SimData.gyroDriftError" />
-										<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.GyroDriftLabel(simconnect.SimData)" />
-									</BootstrapInputGroup>
-								</div>
-
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherBatteryVoltage" />
-											<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@simconnect.SimData.batteryVoltage" />
-										</BootstrapInputGroup>
-									</div>
-								</div>
-							</CollapseItem>
-						</CollapseItems>
-					</Collapse>
-				</div>
-			</div>
 			@*Payload*@					
 			<div class="row g-2 bottom-buffer">
 				<div class="col-12">

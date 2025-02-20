@@ -237,6 +237,68 @@
 						</Collapse>
 					</div>
 				</div>
+							@*Other*@
+				<div class="row g-2 bottom-buffer">
+					<div class="col-12">
+						<Collapse>
+							<CollapseItems>
+								<CollapseItem Text="Other" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+									<div class="row g-1">
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherTransponder)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherTransponder" />
+													<BootstrapInput TValue="uint" Formatter="Formatter.GetTransponder" value="@planeData.CurrentData.transponder" />
+												</BootstrapInputGroup>
+											</div>
+										}
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherKolhsman)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherKolhsman" />
+													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.kohlsman" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherHeadingBug)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherHeadingBug" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.headingBug" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.GyroDrift)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.GyroDrift" />
+													<BootstrapInput TValue="double" Formatter="Formatter.GyroDriftFormatter" value="@planeData.CurrentData.gyroDriftError" />
+													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.GyroDriftLabel(@planeData.CurrentData)" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherBatteryVoltage)))
+										{
+										<div class="col-12">
+											<BootstrapInputGroup>
+												<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherBatteryVoltage" />
+												<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.batteryVoltage" />
+											</BootstrapInputGroup>
+										</div>
+										}
+									</div>
+								</CollapseItem>
+							</CollapseItems>
+						</Collapse>
+					</div>
+				</div>
 			</div>	
 			@*second Column*@
 			<div class="col-md-6 col-lg-4 col-sm-12">
@@ -614,69 +676,7 @@
 						</Collapse>
 					</div>
 				</div>
-				@*Other*@
-				<div class="row g-2 bottom-buffer">
-					<div class="col-12">
-						<Collapse>
-							<CollapseItems>
-								<CollapseItem Text="Other" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherTransponder)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherTransponder" />
-													<BootstrapInput TValue="uint" Formatter="Formatter.GetTransponder" value="@planeData.CurrentData.transponder" />
-												</BootstrapInputGroup>
-											</div>
-										}
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherKolhsman)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherKolhsman" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.kohlsman" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherHeadingBug)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherHeadingBug" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.headingBug" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.GyroDrift)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.GyroDrift" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GyroDriftFormatter" value="@planeData.CurrentData.gyroDriftError" />
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.GyroDriftLabel(@planeData.CurrentData)" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherBatteryVoltage)))
-										{
-										<div class="col-12">
-											<BootstrapInputGroup>
-												<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherBatteryVoltage" />
-												<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.batteryVoltage" />
-											</BootstrapInputGroup>
-										</div>
-										}
-									</div>
-								</CollapseItem>
-							</CollapseItems>
-						</Collapse>
-					</div>
-				</div>
-				@*Payload*@
+					@*Payload*@
 				<div class="row g-2 bottom-buffer">
 					<div class="col-12">
 						<Collapse>
