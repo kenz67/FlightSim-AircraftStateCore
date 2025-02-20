@@ -19,7 +19,7 @@
 
         <!-- Versions -->
 		<ApplicationVersion>2</ApplicationVersion>
-		<ApplicationVersion2>$(ApplicationVersion).1</ApplicationVersion2>
+		<ApplicationVersion2>$(ApplicationVersion).2</ApplicationVersion2>
 		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
 		
 		<!-- Application display version overrides version, but only allows 3 digits, version allows 4-->

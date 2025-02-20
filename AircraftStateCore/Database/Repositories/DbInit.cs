@@ -10,9 +10,16 @@ namespace AircraftStateCore.DAL.Repositories;
 public class DbInit : IDbInit
 {
 	private readonly AircraftStateContext _dbContext;
-
+	private readonly bool _isLegacy;
 	public DbInit(AircraftStateContext dbContext)
 	{
+		if (!File.Exists(DbCommon.DbName))
+		{
+			_isLegacy = true;
+			var oldDb = $"{DbCommon.DbName.Replace("2", String.Empty)}";
+			File.Copy(oldDb, DbCommon.DbName);
+		}
+
 		_dbContext = dbContext;
 		_dbContext.Database.Migrate();
 	}
@@ -26,13 +33,12 @@ public class DbInit : IDbInit
 	{
 		try
 		{
+
 			var newData = new List<ProfileDatum>();
 			var newSettings = new List<ApplicationSettingsDatum>();
 
-			if (_dbContext.PlaneData.Any())
+			if (_isLegacy)
 			{
-				File.Copy(DbCommon.DbName, $"{DbCommon.DbName.Replace(".sqlite", String.Empty)}_old.sqlite", true);
-
 				foreach (var data in _dbContext.PlaneData)
 				{
 					newData.Add(new ProfileDatum { ProfileName = data.Plane, Data = data.Data });
@@ -61,6 +67,10 @@ public class DbInit : IDbInit
 
 				_dbContext.Database.ExecuteSql($"DELETE FROM planeData");
 				_dbContext.Database.ExecuteSql($"DELETE FROM settings");
+			}
+			else
+			{
+				_dbContext.Database.EnsureCreated();
 			}
 		}
 		catch { }

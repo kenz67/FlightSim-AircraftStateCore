@@ -70,6 +70,23 @@ public static class FieldText
 	public const string LightsCabinPower = "Cabin %";
 	public const string LightsPedestalPower = "Pedestal %";
 
+	public const string payLoadAll = "Payload Stations (All)";
+	public const string payLoad0 = "Payload Station 1";
+	public const string payLoad1 = "Payload Station 2";
+	public const string payLoad2 = "Payload Station 3";
+	public const string payLoad3 = "Payload Station 4";
+	public const string payLoad4 = "Payload Station 5";
+	public const string payLoad5 = "Payload Station 6";
+	public const string payLoad6 = "Payload Station 7";
+	public const string payLoad7 = "Payload Station 8";
+	public const string payLoad8 = "Payload Station 9";
+	public const string payLoad9 = "Payload Station 10";
+	public const string payLoad10 = "Payload Station 11";
+	public const string payLoad11 = "Payload Station 12";
+	public const string payLoad12 = "Payload Station 13";
+	public const string payLoad13 = "Payload Station 14";
+	public const string payLoad14 = "Payload Station 15";
+
 	public const string radiosHeader = "Radios";
 	public const string obsHeader = "OBS";
 	public const string locationHeader = "Location";
@@ -78,6 +95,7 @@ public static class FieldText
 	public const string otherHeader = "Other";
 	public const string lightsHeader = "Lights";
 	public const string powerHeader = "Power";
+	public const string payloadHeader = "Payload";
 
 	public static readonly Dictionary<string, string> Headers = new()
 	{
@@ -88,6 +106,7 @@ public static class FieldText
 		{ "0200", configHeader },
 		{ "0250", otherHeader },
 		{ "0300", powerHeader },
-		{ "0350", lightsHeader }
+		{ "0350", lightsHeader },
+		{ "0400", payloadHeader }
 	};
 }

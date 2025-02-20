@@ -66,7 +66,7 @@ namespace AircraftStateCore.Services.Tests
 			await sut.ReadSettings();
 			var data = sut.GetSelectedData();
 
-			Assert.Equal(9, data.Count);  //8 headings + 1 enabled
+			Assert.Equal(10, data.Count);  //8 headings + 1 enabled
 			Assert.Single(data.Where(d => d.txt.Equals(allData.Items[10].txt)).ToList());
 		}
 

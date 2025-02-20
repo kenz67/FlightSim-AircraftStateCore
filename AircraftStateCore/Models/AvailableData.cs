@@ -83,6 +83,11 @@ public class AvailableData
 			new AvailableDataItem("0363", FieldText.LightsPanelPower),
 			new AvailableDataItem("0364", FieldText.LightsCabinPower),
 			new AvailableDataItem("0365", FieldText.LightsPedestalPower),
+
+			// Payload
+			new AvailableDataItem("0400", FieldText.Headers["0400"]),
+			new AvailableDataItem("0400.0", FieldText.Headers["0400"], true),
+			new AvailableDataItem("0401", FieldText.payLoadAll),
 		];
 	}
 }
