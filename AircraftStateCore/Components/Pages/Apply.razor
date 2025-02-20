@@ -368,6 +368,164 @@
 					</Collapse>
 				</div>
 			</div>
+				@*Lights*@
+				<div class="row g-2 bottom-buffer">
+					<div class="col-12">
+						<Collapse>
+							<CollapseItems>
+								<CollapseItem Text="Lights" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+									<div class="row g-1">
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsBeacon)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsBeacon" />
+													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightBeacon" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsCabin)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabin" />
+													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightCabin" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsLanding)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLanding" />
+													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightLanding" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsLogo)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLogo" />
+													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightLogo" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsNav)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsNav" />
+													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightNav" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPanel)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanel" />
+													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightPanel" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsRecognition)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsRecognition" />
+													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightRecognition" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsStrobe)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsStrobe" />
+													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightStrobe" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsTaxi)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsTaxi" />
+													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightTaxi" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsWing)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsWing" />
+													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightWing" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsGlareshieldPower)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshieldPower" />
+													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightGlareShieldPct" />
+													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPanelPower)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanelPower" />
+													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent100" value="@planeData.CurrentData.lightPanelPct" />
+													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsCabinPower)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabinPower" />
+													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightCabinPct" />
+													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPedestalPower)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestalPower" />
+													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightPedestralPct" />
+													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+									</div>
+								</CollapseItem>
+							</CollapseItems>
+						</Collapse>
+					</div>
+				</div>
+
 			</div>	
 			@*third Column*@
 			<div class="col-md-6 col-lg-4 col-sm-12">
@@ -518,153 +676,159 @@
 						</Collapse>
 					</div>
 				</div>
-				@*Lights*@
+				@*Payload*@
 				<div class="row g-2 bottom-buffer">
 					<div class="col-12">
 						<Collapse>
 							<CollapseItems>
-								<CollapseItem Text="Lights" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+								<CollapseItem Text="Payload" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsBeacon)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsBeacon" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightBeacon" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad0" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload0" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsCabin)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabin" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightCabin" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad1" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload1" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsLanding)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLanding" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightLanding" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad2" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload2" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsLogo)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLogo" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightLogo" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad3" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload3" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsNav)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsNav" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightNav" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad4" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload4" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPanel)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanel" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightPanel" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad5" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload5" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsRecognition)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsRecognition" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightRecognition" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad6" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload6" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsStrobe)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsStrobe" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightStrobe" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad7" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload7" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsTaxi)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsTaxi" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightTaxi" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad8" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload8" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsWing)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsWing" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightWing" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad9" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload9" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
- 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsGlareshieldPower)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshieldPower" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightGlareShieldPct" />
-													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad10" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload10" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPanelPower)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanelPower" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent100" value="@planeData.CurrentData.lightPanelPct" />
-													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
-												</BootstrapInputGroup>
-											</div>
-										}
-										
- 										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsCabinPower)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabinPower" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightCabinPct" />
-													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad11" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload11" />
 												</BootstrapInputGroup>
 											</div>
 										}
 
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPedestalPower)))
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
 										{
 											<div class="col-12">
 												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestalPower" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightPedestralPct" />
-													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad12" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload12" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad13" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload13" />
+												</BootstrapInputGroup>
+											</div>
+										}
+
+										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
+										{
+											<div class="col-12">
+												<BootstrapInputGroup>
+													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad14" />
+													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload14" />
 												</BootstrapInputGroup>
 											</div>
 										}
@@ -698,7 +862,7 @@
     private string Right = "Right";
 
 	protected async override void OnInitialized()
-	{
+	{      
 		simconnect.GetSimEnvInfo();
 		var planeTitle = simconnect.MasterData.title;
 		SettingsData = await settings.ReadSettings();

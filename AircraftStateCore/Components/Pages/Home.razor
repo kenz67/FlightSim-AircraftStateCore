@@ -246,6 +246,104 @@
 					</Collapse>
 				</div>
 			</div>
+			@*Lights*@
+			<div class="row g-2 bottom-buffer">
+				<div class="col-12">
+					<Collapse>
+						<CollapseItems>
+							<CollapseItem Text="Lights" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+								<div class="row g-1">
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsBeacon" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightBeacon" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabin" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightCabin" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLanding" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightLanding" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLogo" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightLogo" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsNav" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightNav" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanel" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightPanel" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsRecognition" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightRecognition" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsStrobe" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightStrobe" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsTaxi" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightTaxi" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsWing" />
+											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightWing" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshieldPower" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightGlareShieldPct" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanelPower" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent100" value="@simconnect.SimData.lightPanelPct" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabinPower" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightCabinPct" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestalPower" />
+											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightPedestralPct" />
+										</BootstrapInputGroup>
+									</div>
+								</div>
+							</CollapseItem>
+						</CollapseItems>
+					</Collapse>
+				</div>
+			</div>
+
 		</div>
 		@*third Column*@
 		<div class="col-md-6 col-lg-4 col-sm-12">
@@ -372,95 +470,101 @@
 					</Collapse>
 				</div>
 			</div>
-			@*Lights*@
+			@*Payload*@					
 			<div class="row g-2 bottom-buffer">
 				<div class="col-12">
 					<Collapse>
 						<CollapseItems>
-							<CollapseItem Text="Lights" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
+							<CollapseItem Text="Payload Data" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
 								<div class="row g-1">
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsBeacon" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightBeacon" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad0" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload0" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabin" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightCabin" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad1" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload1" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLanding" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightLanding" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad2" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload2" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLogo" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightLogo" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad3" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload3" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsNav" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightNav" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad4" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload4" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanel" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightPanel" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad5" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload5" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsRecognition" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightRecognition" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad6" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload6" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsStrobe" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightStrobe" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad7" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload7" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsTaxi" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightTaxi" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad8" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload8" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsWing" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightWing" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad9" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload9" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshieldPower" />
-											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightGlareShieldPct" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad10" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload10" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanelPower" />
-											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent100" value="@simconnect.SimData.lightPanelPct" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad11" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload11" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabinPower" />
-											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightCabinPct" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad12" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload12" />
 										</BootstrapInputGroup>
 									</div>
 									<div class="col-12">
 										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestalPower" />
-											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightPedestralPct" />
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad13" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload13" />
+										</BootstrapInputGroup>
+									</div>
+									<div class="col-12">
+										<BootstrapInputGroup>
+											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad14" />
+											<BootstrapInput TValue="double" value="@simconnect.SimData.payload14" />
 										</BootstrapInputGroup>
 									</div>
 								</div>
@@ -469,6 +573,7 @@
 					</Collapse>
 				</div>
 			</div>
+
 		</div>
 	</div>
 </div>

@@ -161,6 +161,22 @@ public class SimConnectService : ISimConnectService
 		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "LIGHT POTENTIOMETER:3", "percent over 100", SIMCONNECT_DATATYPE.FLOAT64);
 
 		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "TRANSPONDER CODE:1", "Bco16", SIMCONNECT_DATATYPE.INT32);
+
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:1", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:2", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:3", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:4", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:5", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:6", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:7", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:8", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:9", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:10", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:11", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:12", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:13", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:14", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPlaneDataStructure, "PAYLOAD STATION WEIGHT:15", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
 	}
 
 	private void SetupEnvironmentDataDefinitions()
@@ -210,6 +226,23 @@ public class SimConnectService : ISimConnectService
 
 		//Power
 		_proxy.AddToDataDefinition(DATA_DEFINITIONS.SimPowerData, "ELECTRICAL BATTERY VOLTAGE", "volts", SIMCONNECT_DATATYPE.FLOAT64);
+
+		//Payloads
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:1", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:2", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:3", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:4", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:5", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:6", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:7", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:8", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:9", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:10", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:11", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:12", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:13", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:14", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+		_proxy.AddToDataDefinition(DATA_DEFINITIONS.PayloadData, "PAYLOAD STATION WEIGHT:15", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
 	}
 
 	private void RegisterDataStructures()
@@ -222,6 +255,7 @@ public class SimConnectService : ISimConnectService
 		_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimFlapsData);
 		_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimLightData);
 		_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.SimPowerData);
+		_proxy.RegisterDataDefineStruct<MasterData>(DATA_DEFINITIONS.PayloadData);
 	}
 
 	private void MapEvents()
@@ -302,6 +336,7 @@ public class SimConnectService : ISimConnectService
 		SendOtherData(data);
 		SendPowerData(data);
 		SendRadioData(data);
+		SendPayloadData(data);
 
 		OnMessageUpdate?.Invoke();
 	}
@@ -509,6 +544,32 @@ public class SimConnectService : ISimConnectService
 			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.HEADING_GYRO_SET, (uint)0, GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
 			Thread.Sleep(100);    // Seem to need the delay or the drift doesn't work
 			_proxy.TransmitClientEvent(SimConnect.SIMCONNECT_OBJECT_ID_USER, EVENT_IDS.GYRO_DRIFT_SET, (uint)ConvertGyroDrift(data.gyroDriftError), GROUPID.MAX, SIMCONNECT_EVENT_FLAG.GROUPID_IS_PRIORITY);
+		}
+	}
+
+	private void SendPayloadData(PlaneDataStruct data)
+	{
+		if (CheckEnabled(FieldText.payLoadAll) && data.payload0 + data.payload1 > 0)   //Don't want to send 0 values if no value for either pilot
+		{
+			var payloadData = new PayloadData
+			{
+				payload0 = data.payload0,
+				payload1 = data.payload1,
+				payload2 = data.payload2,
+				payload3 = data.payload3,
+				payload4 = data.payload4,
+				payload5 = data.payload5,
+				payload6 = data.payload6,
+				payload7 = data.payload7,
+				payload8 = data.payload8,
+				payload9 = data.payload9,
+				payload10 = data.payload10,
+				payload11 = data.payload11,
+				payload12 = data.payload12,
+				payload13 = data.payload13,
+				payload14 = data.payload14
+			};
+			_proxy.SetDataOnSimObject(DATA_DEFINITIONS.PayloadData, SimConnect.SIMCONNECT_OBJECT_ID_USER, SIMCONNECT_DATA_SET_FLAG.DEFAULT, payloadData);
 		}
 	}
 
