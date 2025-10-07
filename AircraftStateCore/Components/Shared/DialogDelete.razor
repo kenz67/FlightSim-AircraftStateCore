@@ -1,0 +1,40 @@
+﻿<MudDialog>
+    <TitleContent>
+        <div class="d-flex align-items-center dialogHeaderText">
+            <MudIcon Icon="@Icons.Material.Filled.Warning" Color="Color.Info" Size="Size.Large" Class="me-2" />
+        </div>
+    </TitleContent>
+    <DialogContent>
+        <br />
+            <div class="dialogContextText">@Message1 <b>@Message2</b> @Message3</div>
+        <br />
+    </DialogContent>
+    <DialogActions>        
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Close">Yes</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="() => MudDialog.Cancel()">No</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public string Message1 { get; set; }
+
+    [Parameter]
+    public string Message2 { get; set; }
+
+    [Parameter]
+    public string Message3 { get; set; }
+
+    protected override void OnInitialized()
+    {
+        MudDialog.SetOptionsAsync(new DialogOptions() { BackdropClick = false });
+    }
+
+    private void Close() => MudDialog.Close(DialogResult.Ok(true));
+
+    }
+
+}

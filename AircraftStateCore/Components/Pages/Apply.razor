@@ -7,6 +7,7 @@
 @inject IPlaneData planeData;
 @inject ISettingsData settings;
 @inject MessageService MessageService
+@inject IDialogService DialogService
 
 @page "/apply"
 
@@ -18,23 +19,17 @@
 <div>
 	<div class="row">
 		<div class="col-10">
-			<Dropdown TValue="string" ShowLabel="true" Value="@selectedProfile" DisplayText="Select Profile&nbsp;&nbsp;" Direction="BootstrapBlazor.Components.Direction.Dropright" Items="planeList" Size="BootstrapBlazor.Components.Size.Small" OnSelectedItemChanged="ChangeProfile" />
+			<MudStack Style="width:450px">
+				<MudSelect T="string" FitContent=true Label="Select Profile" AnchorOrigin="Origin.BottomRight" @bind-Value="selectedProfile" TextChanged="OnAfterProfileChange">
+					@foreach (var plane in planeArray)
+					{
+						<MudSelectItem T="string" Value="@plane">@plane</MudSelectItem>
+					}
+				</MudSelect>
+			</MudStack>
 		</div>
 		<div class="col-2">		
-			<Button class="@disabledDelete" OnClick="() => SmallModal.Toggle()" Color="BootstrapBlazor.Components.Color.Dark">Delete Profile</Button>
-			<Modal @ref="SmallModal">
-				<ModalDialog SaveButtonText="Yes" ShowCloseButton="false" ShowSaveButton = "false" CloseButtonText="No" CloseButtonIcon="" IsCentered="true" Title="Delete Profile">
-					<BodyTemplate>
-						<br />
-						<div>Are you sure you want to delete the <b>@selectedProfile</b> profile?</div>
-						<br />
-						<div class="modal-footer">
-							<Button Color="BootstrapBlazor.Components.Color.Success" @onclick="() => DeleteProfile()">Yes</Button>
-							<Button Color="BootstrapBlazor.Components.Color.Danger" @onclick="() => Close()">No</Button>
-						</div>
-					</BodyTemplate>
-				</ModalDialog>
-			</Modal>
+			<MudButton Disabled=@disabledDelete OnClick="() => OpenDelete()" Variant="Variant.Filled" Color="MudBlazor.Color.Dark">Delete Profile</MudButton>			
 		</div>
 	</div>
 
@@ -44,27 +39,25 @@
 	{
 		<div class="row g-10 form-inline">
 			<div class="col-md-3">
-				<Button class="@disabledSend" @onclick="() => SendToSim()" Color="BootstrapBlazor.Components.Color.Primary">Send to Sim</Button>
+				<MudButton Disabled=@disabledSend @onclick="() => SendToSim()" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">Send to Sim</MudButton>
 			</div>
 
 			@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyAll)) ||
 					selectedData.Exists(s => s.txt.Equals(FieldText.FuelSelector)))
 			{
 				<div class="col-md-3 col-sm-6">
-					<Tooltip Placement="BootstrapBlazor.Components.Placement.Bottom" Title="Do net send Fuel Data, even if selected below.">
-						<Checkbox TValue="bool" DisplayText="Block Fuel Data" ShowLabel="false" @bind-Value="BlockFuel" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
-					</Tooltip>
-
+					<MudTooltip Text="Do net send Fuel Data, even if selected below.">
+						<MudCheckBox @bind-Value="BlockFuel" Label="Block Fuel Data" Color="MudBlazor.Color.Primary" />
+					</MudTooltip>
 				</div>			
 			}
 
 			@if (selectedData.Exists(s => s.txt.StartsWith("Location")))
 			{
 				<div class="col-md-3 col-sm-6">
-					<Tooltip Placement="BootstrapBlazor.Components.Placement.Bottom" Title="Do net send Location Data, even if selected below.">
-						<Checkbox TValue="bool" DisplayText="Block Location Data" ShowLabel="false" @bind-Value="BlockLocation" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
-					</Tooltip>
-
+					<MudTooltip Text="Do net send Location Data, even if selected below.">
+						<MudCheckBox @bind-Value="BlockLocation" Label="Block Location Data" Color="MudBlazor.Color.Primary" />
+					</MudTooltip>
 				</div>
 			}
 		</div>
@@ -845,21 +838,21 @@
 </div>
 
 @code {
-	private List<SelectedItem> planeList { get; set; } = new List<SelectedItem>();
+	private List<string> planeArray = new List<string>();
 	private List<AvailableDataItem> selectedData;
 	private string selectedProfile = string.Empty;	
-	private Modal SmallModal { get; set; }
+	//private Modal SmallModal { get; set; }
 	private bool BlockFuel { get; set; } = true;
 	private bool BlockLocation { get; set; } = true;
-	private string disabledDelete => (string.IsNullOrEmpty(selectedProfile) ? "disabled" : string.Empty);
-	private string disabledSend => (string.IsNullOrEmpty(selectedProfile) || !simconnect.Connected() ? "disabled bottom-buffer" : "bottom-buffer");
+	private bool disabledDelete => (string.IsNullOrEmpty(selectedProfile) || selectedProfile.Equals(planeArray.FirstOrDefault() ?? String.Empty) ? true : false);
+	private bool disabledSend => (disabledDelete || !simconnect.Connected() ? true : false);
 	private Message ApplyMessage { get; set; }
 	private Settings SettingsData { get; set; }
 	private BootstrapBlazor.Components.Color TitleColor = BootstrapBlazor.Components.Color.Warning;
 	private string Active = "Active";
 	private string Standby = "Standby";
-    private string Left = "Left";
-    private string Right = "Right";
+	private string Left = "Left";
+	private string Right = "Right";
 
 	protected async override void OnInitialized()
 	{      
@@ -872,17 +865,16 @@
 		BlockLocation = SettingsData.BlockLocation;
 
 		planeData.OnChangeAsync += Refresh;
-		planeList.Add(new SelectedItem { Text = "No default profile for current plane", Value = string.Empty });
+		planeArray.Add("No default profile for current plane");
 		foreach (var p in planeData.Profiles)
 		{
-			var selected = false;
 			if (p.Equals(planeTitle))
 			{
-				selectedProfile = planeTitle;
-				selected = true;
+				selectedProfile = planeTitle;				
 			}
 
-			planeList.Add(new SelectedItem { Text = p, Value = p, Active = selected });
+			planeArray.Add(p);
+
 			if (!string.IsNullOrEmpty(selectedProfile))
 			{
 				await planeData.LookUpProfile(selectedProfile);
@@ -912,15 +904,30 @@
 
 	}
 
-	public void Close()
+	protected async Task OnAfterProfileChange(string item)
 	{
-		SmallModal.Close();
+		selectedProfile = item;
+		await planeData.LookUpProfile(item);		
+		return;
 	}
 
-	protected async Task ChangeProfile(SelectedItem item)
-	{
-		selectedProfile = item.Value;
-		await planeData.LookUpProfile(item.Value);		
+	private async Task OpenDelete()
+	{         
+		var param = new DialogParameters<DialogDelete>{
+			{ x => x.Message1, "Are you sure you want to delete the " },
+			{ x => x.Message2, selectedProfile },
+			{ x => x.Message3, " profile?" },			
+		};
+		
+
+		var dialog = await DialogService.ShowAsync<DialogDelete>("Save Data", param);
+		var choice = await dialog.Result;
+
+		if (choice.Canceled)
+		{
+			return;
+		}
+		await DeleteProfile();
 		return;
 	}
 
@@ -928,25 +935,22 @@
 	{
 		await planeData.DeleteProfile(selectedProfile);
 
-		var seletedItem = planeList.Where(p => p.Value.Equals(selectedProfile)).FirstOrDefault();
-		planeList.Remove(seletedItem);
-		await ChangeProfile(planeList.First());
+		planeArray.Remove(selectedProfile);
+		await OnAfterProfileChange(planeArray.First());
 		
-		Close();
 		return;
 	}
 
 	private async Task SendToSim()
 	{
-		Close();
 		simconnect.SendDataToSim(planeData.CurrentData, BlockFuel, BlockLocation);
 
-		await MessageService.Show(new MessageOption()
-		{
-			Content = "Data sent to Simulator",
-			//ShowDismiss = true,
-			Icon = "fa-solid fa-circle-info"
-		});		
+		var param = new DialogParameters<DialogOk> {
+			{ x => x.Title, "Send Data" },
+            { x => x.Message, "Data sent to Simulator" }
+        };
+
+        await DialogService.ShowAsync<DialogOk>(String.Empty, param);
 	}
 
 	private async Task Refresh()

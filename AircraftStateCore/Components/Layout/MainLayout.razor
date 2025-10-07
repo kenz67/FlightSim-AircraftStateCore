@@ -74,10 +74,11 @@
         if (!string.IsNullOrEmpty(Message))
         {
             var param = new DialogParameters<DialogOk> {
+                { x => x.Title, "Save Data" },
                 { x => x.Message, Message }
             };
 
-            await DialogService.ShowAsync<DialogOk>("Save Data", param);
+            await DialogService.ShowAsync<DialogOk>(String.Empty, param);
             simconnect.DisplayMessage = string.Empty;
         }
 

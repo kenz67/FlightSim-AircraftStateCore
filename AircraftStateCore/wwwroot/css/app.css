@@ -169,10 +169,7 @@ ul.no-bullets {
 /*=======================================================================================
 // Mud Classes
 =======================================================================================*/
-.panel-about {
 
-    background-color: lightblue;
-}
 
 .mud-expansion-panel-lightblue-header * {
     max-width: 600px;
@@ -185,4 +182,27 @@ ul.no-bullets {
 .mud-expansion-panel-lightblue-header .mud-expand-panel-content {
     padding-top: 15px;
     background-color: white;
+}
+
+.mud-select .mud-input-control > .mud-input-control-input-container > div.mud-input.mud-input-text {
+    background-color: royalblue;
+    color: white;
+}
+
+.mud-input-control > .mud-input-control-input-container > .mud-input-label-inputcontrol {   
+    font-size: 1.5rem; /* Adjust font size as needed */
+    font-weight: bold;
+}
+
+.panel-about {
+    background-color: lightblue;
+}
+
+.dialogHeaderText {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.dialogContextText {
+    font-size: 18px;
 }

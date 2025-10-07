@@ -44,8 +44,8 @@
 
 	public void SaveProfile()
 	{
-		//planeData.SaveProfile(ProfileName);
-		simconnect.SaveDataToDb(ProfileName);
+		simconnect.SaveDataToDb(ProfileName);       
+        planeData.ResetProfiles();
 		SmallModal.Close();
 	}
 

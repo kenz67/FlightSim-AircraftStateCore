@@ -1,7 +1,14 @@
-﻿<MudDialog>
+﻿@using static MudBlazor.CategoryTypes
+<MudDialog>
+    <TitleContent>
+        <div class="d-flex align-items-center dialogHeaderText">
+            <MudIcon Icon="@DialogIcon" Color="Color.Info" Size="Size.Large" Class="me-2" />
+            <span>@Title</span>
+        </div>
+    </TitleContent>
     <DialogContent>
         <br />
-            <div>@Message</div>
+            <div class="dialogContextText">@Message</div>
         <br />
     </DialogContent>
     <DialogActions>        
@@ -16,6 +23,12 @@
 @code {
     [CascadingParameter]
     private IMudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public string DialogIcon { get; set; } = Icons.Material.Filled.Info;
+
+    [Parameter]
+    public string Title { get; set; }
 
     [Parameter]
     public string Message { get; set; }
