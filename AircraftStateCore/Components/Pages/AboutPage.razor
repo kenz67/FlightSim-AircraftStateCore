@@ -1,6 +1,6 @@
 ﻿@using AircraftStateCore.Models;
 @using AircraftStateCore.Services.Interfaces;
-@using BootstrapBlazor.Components;
+@using MudBlazor;
 
 @inject ISettingsData settingsData
 
@@ -36,18 +36,26 @@
     </div>
     <div class="row g-2">
         <div class="col-12">
-            <Collapse IsAccordion=true>
-                <CollapseItems>
-                    <CollapseItem Text="2.2" TitleColor="BootstrapBlazor.Components.Color.Info">
-                        <p>
-                            Add fields
-                            <ul>
-                                <li>All Fuel Tanks</li>
-                                <li>Payloads</li>
-                            </ul>
-                        </p>
-                    </CollapseItem>
-                    <CollapseItem Text="2.1" TitleColor="BootstrapBlazor.Components.Color.Info">
+            <MudExpansionPanels MultiExpansion="false" class="mud-expansion-panel-lightblue-header">
+                <MudExpansionPanel Text="2.2">
+                    <TitleContent>
+                        <MudText Typo="Typo.h6">2.2</MudText>
+                    </TitleContent>
+                    <ChildContent>
+                        Add fields
+                        <ul>
+                            <li>All Fuel Tanks</li>
+                            <li>Payloads</li>
+                        </ul>
+                    </ChildContent>
+                </MudExpansionPanel>  
+
+
+                <MudExpansionPanel>
+                    <TitleContent>
+                            <MudText Typo="Typo.h6">2.1</MudText>
+                    </TitleContent>
+                    <ChildContent>
                         <p>Add fields
                             <ul>
                                 <li>Transponder</li>
@@ -57,12 +65,17 @@
                                 <li>Pedestal Light %</li>
                             </ul>
                         </p>
-                    </CollapseItem>
-                    <CollapseItem Text="2.0" TitleColor="BootstrapBlazor.Components.Color.Info">
+                    </ChildContent>
+                </MudExpansionPanel> 
+                <MudExpansionPanel>
+                    <TitleContent>
+                            <MudText Typo="Typo.h6">2.0</MudText>
+                    </TitleContent>
+                    <ChildContent>
                         <p>This is a port of the original Aircraft State application.  The functionality is the same, but it has been moved to more modern technology using DotNet Core giving a modern interface and making the code easier to maintain and add new features in the future</p>
-                    </CollapseItem>
-                </CollapseItems>
-            </Collapse>
+                    </ChildContent>
+                </MudExpansionPanel> 
+            </MudExpansionPanels>
         </div>
     </div>
     <p /><p />
@@ -82,7 +95,7 @@
 {
     private String version { get; set; }
 
-    protected async override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
         version = (await settingsData.ReadSettings()).Version;
     }

@@ -5,6 +5,16 @@
 
 @inject ISimConnectService simconnect
 
+@* Required *@
+<MudThemeProvider />
+<MudPopoverProvider />
+
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -42,7 +52,11 @@
         </div>
 
         <article class="content px-4">
+        <MudLayout>
+            <MudMainContent>
             @Body
+            </MudMainContent>
+        </MudLayout>
         </article>
     </main>
 </div>

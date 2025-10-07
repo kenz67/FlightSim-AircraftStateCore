@@ -164,3 +164,25 @@ ul.no-bullets {
     padding: 0; /* Remove padding */
     margin: 0; /* Remove margins */
 }
+
+
+/*=======================================================================================
+// Mud Classes
+=======================================================================================*/
+.panel-about {
+
+    background-color: lightblue;
+}
+
+.mud-expansion-panel-lightblue-header * {
+    max-width: 600px;
+}
+
+.mud-expansion-panel-lightblue-header .mud-expand-panel-header {   
+    background-color: lightblue;
+}
+
+.mud-expansion-panel-lightblue-header .mud-expand-panel-content {
+    padding-top: 15px;
+    background-color: white;
+}
