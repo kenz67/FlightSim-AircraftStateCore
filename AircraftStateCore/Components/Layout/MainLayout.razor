@@ -1,11 +1,13 @@
 ﻿@inherits LayoutComponentBase
 @using AircraftStateCore.Models;
 @using AircraftStateCore.Services.Interfaces;
-@using BootstrapBlazor.Components
 
+@inject IDialogService DialogService
 @inject ISimConnectService simconnect
 
 @* Required *@
+
+@* <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" /> TODO: Reseach Themes *@  
 <MudThemeProvider />
 <MudPopoverProvider />
 
@@ -19,20 +21,6 @@
     <div class="sidebar">
         <NavMenu />
     </div>
-
-    <Modal @ref="NotificationModal">
-        <ModalDialog ShowCloseButton="false"
-                     ShowSaveButton="true" SaveButtonText="Ok" SaveButtonIcon=""
-                     OnSaveAsync="CloseDialog"
-                     IsCentered="true"
-                     Title="Save Data">
-            <BodyTemplate>
-                <br />
-                <div>@Message</div>
-                <br />
-            </BodyTemplate>
-        </ModalDialog>
-    </Modal>
 
     <main>
         <div class="top-row px-2">
@@ -63,8 +51,6 @@
 
 @code
 {
-
-    private Modal NotificationModal { get; set; }
     private String Message { get; set; }
 
     protected override void OnInitialized()
@@ -72,11 +58,14 @@
         simconnect.OnMessageUpdate += Refresh;
     }
 
-    private async Task<bool> CloseDialog()
+    private async Task ShowDialog()
     {
-        simconnect.DisplayMessage = string.Empty;
-        await NotificationModal.Close();
-        return true;
+        var param = new DialogParameters<DialogOk> {
+            { x => x.Message, "Save current data to the database?" },
+            { x => x.ShowCancel, true }
+        };
+        var dialogReference = await DialogService.ShowAsync<DialogOk>("Save Data", param);
+        var result = await dialogReference.Result; // Await the result of the dialog
     }
 
     private async Task Refresh()
@@ -84,8 +73,14 @@
         Message = simconnect.DisplayMessage;
         if (!string.IsNullOrEmpty(Message))
         {
-            await NotificationModal.Show();
+            var param = new DialogParameters<DialogOk> {
+                { x => x.Message, Message }
+            };
+
+            await DialogService.ShowAsync<DialogOk>("Save Data", param);
+            simconnect.DisplayMessage = string.Empty;
         }
+
         await InvokeAsync(StateHasChanged);
     }
 
