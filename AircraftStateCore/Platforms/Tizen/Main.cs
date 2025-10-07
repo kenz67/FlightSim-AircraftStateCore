@@ -11,6 +11,7 @@ namespace AircraftStateCore
         static void Main(string[] args)
         {
             var app = new Program();
+            app.MapStaticAssets();
             app.Run(args);
         }
     }

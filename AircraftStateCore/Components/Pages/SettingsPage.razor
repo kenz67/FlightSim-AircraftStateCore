@@ -10,13 +10,13 @@
 
 <h2>Settings</h2>
 
-<Message @ref="SaveMessage" Placement="Placement.Top" />
+<Message @ref="SaveMessage" Placement="BootstrapBlazor.Components.Placement.Top" />
 
 <div>
     <div class="bottom-buffer"></div>
     <div class="row g-2 bottom-buffer">
         <div class="col-2">
-            <Button @onclick="() => Save()" Color="Color.Primary">Save Settings</Button>
+            <Button @onclick="() => Save()" Color="BootstrapBlazor.Components.Color.Primary">Save Settings</Button>
         </div>
     </div>
     <div class="row g-2">
@@ -28,7 +28,7 @@
     <div class="row g-2">
         <div class="col-1" />
         <div class="col-11">
-             <Tooltip Placement="Placement.Bottom" Title="When sending data to the sim, if the checkbox is checked, location data will not be sent, even if it is a seleted field.">
+            <Tooltip Placement="BootstrapBlazor.Components.Placement.Bottom" Title="When sending data to the sim, if the checkbox is checked, location data will not be sent, even if it is a seleted field.">
                 <Checkbox TValue="bool" DisplayText="Override (block) sending plane location (default)" @bind-Value="@settings.BlockLocation" OnValueChanged="OnBlockLocationChange" ShowLabel="false" ShowAfterLabel="true" />
              </Tooltip>
         </div>
@@ -36,7 +36,7 @@
     <div class="row g-2 bottom-buffer">
         <div class="col-1" />
         <div class="col-11">
-             <Tooltip Placement="Placement.Bottom" Title="When sending data to the sim, if the checkbox is checked, fuel data will not be sent, even if it is a selected field.">
+            <Tooltip Placement="BootstrapBlazor.Components.Placement.Bottom" Title="When sending data to the sim, if the checkbox is checked, fuel data will not be sent, even if it is a selected field.">
                 <Checkbox TValue="bool" DisplayText="Override (block) sending fuel data (default)" @bind-Value="@settings.BlockFuel" OnValueChanged="OnBlockFuelChange" ShowLabel="false" ShowAfterLabel="true" />
             </Tooltip>
         </div>
@@ -45,8 +45,8 @@
     <div class="row g-2">
         <div class="col-1" />
         <div class="col-11">
-            <Tooltip Placement="Placement.Bottom" IsHtml="true" 
-                Title="Select the settings that will be sent to the simulator.<br><br>
+            <Tooltip Placement="BootstrapBlazor.Components.Placement.Bottom" IsHtml="true"
+                     Title="Select the settings that will be sent to the simulator.<br><br>
                     <b>Settings may behave strangely in different aircraft, most testing done in C172 Classic.</b>">
             <Transfer
                     ShowLabel="true" DisplayText="Select the fields that will be sent to the simulator"

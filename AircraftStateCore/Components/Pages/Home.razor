@@ -12,7 +12,7 @@
 
 <h2>Sim Status</h2>
 
-<Message @ref="@Message" Placement="Placement.Bottom" />
+<Message @ref="@Message" Placement="BootstrapBlazor.Components.Placement.Bottom" />
 
 <div>
 	@* ShowSaveButton="true" SaveButtonText="Ok" SaveIcon="" *@
@@ -582,7 +582,7 @@
 @code {
 	private Modal NotificationModal { get; set; }
 	private Message Message { get; set; }
-	private Color TitleColor = Color.Info;
+	private BootstrapBlazor.Components.Color TitleColor = BootstrapBlazor.Components.Color.Info;
 	private string Active = "Active";
 	private string Standby = "Standby"; 
     private string Left = "Left";
@@ -602,7 +602,7 @@
 			{
 				Content = $"You are running a new version of the application ({currentVersion}) Check the settings page to see if there are new values you would like to track.  More information can be found in the release notes on the About page.",
 				Icon = "fa-solid fa-circle-info",
-				Color = Color.Secondary,
+				Color = BootstrapBlazor.Components.Color.Secondary,
 				ShowDismiss = true,
 				ShowBar = true,
 				IsAutoHide = false

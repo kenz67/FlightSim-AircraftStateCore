@@ -6,7 +6,7 @@
 
 
 <div>
-	<Button @onclick="() => Show()" Color="Color.Primary">Save to DB</Button>
+	<Button @onclick="() => Show()" Color="BootstrapBlazor.Components.Color.Primary">Save to DB</Button>
 	
 	<Divider/>
 
@@ -17,8 +17,8 @@
 				<AutoComplete Items="@planeData.Profiles" IsLikeMatch="true" IgnoreCase="true" OnValueChanged="SelectProfile" IsSelectAllTextOnFocus="true" />
 				<br />
 				<div class="modal-footer">
-					<Button class="@isDisabled" Color="Color.Success" @onclick="() => SaveProfile()">Save</Button>
-					<Button Color="Color.Danger" @onclick="() => Close()">Cancel</Button>
+					<Button class="@isDisabled" Color="BootstrapBlazor.Components.Color.Success" @onclick="() => SaveProfile()">Save</Button>
+					<Button Color="BootstrapBlazor.Components.Color.Danger" @onclick="() => Close()">Cancel</Button>
 				</div>
 			</BodyTemplate>
 		</ModalDialog>

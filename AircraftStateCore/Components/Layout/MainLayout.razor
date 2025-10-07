@@ -28,15 +28,15 @@
         <div class="top-row px-2">
             @if (simconnect.VerifyAutoSave())
             {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Info">Autosave enabled</Badge></div>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="BootstrapBlazor.Components.Color.Info">Autosave enabled</Badge></div>
             }
             @if (@simconnect.Connected())
             {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Success">Connected to Sim</Badge></div>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="BootstrapBlazor.Components.Color.Success">Connected to Sim</Badge></div>
             }
             else
             {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Danger">Not Connected to Sim</Badge></div>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="BootstrapBlazor.Components.Color.Danger">Not Connected to Sim</Badge></div>
             }
             @*<a href="https://docs.microsoft.com/aspnet/" target="_blank">about</a>*@
         </div>

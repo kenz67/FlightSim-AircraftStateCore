@@ -13,15 +13,15 @@
 <h2>Send Data to Sim</h2>
 <br />
 
-<Message @ref="ApplyMessage" Placement="Placement.Top" />
+<Message @ref="ApplyMessage" Placement="BootstrapBlazor.Components.Placement.Top" />
 
 <div>
 	<div class="row">
 		<div class="col-10">
-			<Dropdown TValue="string" ShowLabel="true" Value="@selectedProfile" DisplayText="Select Profile&nbsp;&nbsp;" Direction="Direction.Dropright" Items="planeList" Size="Size.Small" OnSelectedItemChanged="ChangeProfile" />
+			<Dropdown TValue="string" ShowLabel="true" Value="@selectedProfile" DisplayText="Select Profile&nbsp;&nbsp;" Direction="BootstrapBlazor.Components.Direction.Dropright" Items="planeList" Size="BootstrapBlazor.Components.Size.Small" OnSelectedItemChanged="ChangeProfile" />
 		</div>
 		<div class="col-2">		
-			<Button class="@disabledDelete" OnClick="() => SmallModal.Toggle()" Color="Color.Dark">Delete Profile</Button>
+			<Button class="@disabledDelete" OnClick="() => SmallModal.Toggle()" Color="BootstrapBlazor.Components.Color.Dark">Delete Profile</Button>
 			<Modal @ref="SmallModal">
 				<ModalDialog SaveButtonText="Yes" ShowCloseButton="false" ShowSaveButton = "false" CloseButtonText="No" CloseButtonIcon="" IsCentered="true" Title="Delete Profile">
 					<BodyTemplate>
@@ -29,8 +29,8 @@
 						<div>Are you sure you want to delete the <b>@selectedProfile</b> profile?</div>
 						<br />
 						<div class="modal-footer">
-							<Button Color="Color.Success" @onclick="() => DeleteProfile()">Yes</Button>
-							<Button Color="Color.Danger" @onclick="() => Close()">No</Button>
+							<Button Color="BootstrapBlazor.Components.Color.Success" @onclick="() => DeleteProfile()">Yes</Button>
+							<Button Color="BootstrapBlazor.Components.Color.Danger" @onclick="() => Close()">No</Button>
 						</div>
 					</BodyTemplate>
 				</ModalDialog>
@@ -44,14 +44,14 @@
 	{
 		<div class="row g-10 form-inline">
 			<div class="col-md-3">
-				<Button class="@disabledSend" @onclick="() => SendToSim()" Color="Color.Primary">Send to Sim</Button>
+				<Button class="@disabledSend" @onclick="() => SendToSim()" Color="BootstrapBlazor.Components.Color.Primary">Send to Sim</Button>
 			</div>
 
 			@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyAll)) ||
 					selectedData.Exists(s => s.txt.Equals(FieldText.FuelSelector)))
 			{
 				<div class="col-md-3 col-sm-6">
-					<Tooltip Placement="Placement.Bottom" Title="Do net send Fuel Data, even if selected below.">
+					<Tooltip Placement="BootstrapBlazor.Components.Placement.Bottom" Title="Do net send Fuel Data, even if selected below.">
 						<Checkbox TValue="bool" DisplayText="Block Fuel Data" ShowLabel="false" @bind-Value="BlockFuel" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
 					</Tooltip>
 
@@ -61,7 +61,7 @@
 			@if (selectedData.Exists(s => s.txt.StartsWith("Location")))
 			{
 				<div class="col-md-3 col-sm-6">
-					<Tooltip Placement="Placement.Bottom" Title="Do net send Location Data, even if selected below.">
+					<Tooltip Placement="BootstrapBlazor.Components.Placement.Bottom" Title="Do net send Location Data, even if selected below.">
 						<Checkbox TValue="bool" DisplayText="Block Location Data" ShowLabel="false" @bind-Value="BlockLocation" ShowAfterLabel="true" State="CheckboxState.UnChecked" />
 					</Tooltip>
 
@@ -855,7 +855,7 @@
 	private string disabledSend => (string.IsNullOrEmpty(selectedProfile) || !simconnect.Connected() ? "disabled bottom-buffer" : "bottom-buffer");
 	private Message ApplyMessage { get; set; }
 	private Settings SettingsData { get; set; }
-	private Color TitleColor = Color.Warning;
+	private BootstrapBlazor.Components.Color TitleColor = BootstrapBlazor.Components.Color.Warning;
 	private string Active = "Active";
 	private string Standby = "Standby";
     private string Left = "Left";
@@ -903,7 +903,7 @@
 			{
 				Content = $"Nothing will be sent to the sim, you need to select data to send to the sim on the settings page.",
 				Icon = "fa-solid fa-triangle-exclamation fa-xl",
-				Color = Color.Warning,
+				Color = BootstrapBlazor.Components.Color.Warning,
 				ShowDismiss = true,
 				ShowBar = true,
 				IsAutoHide = false
