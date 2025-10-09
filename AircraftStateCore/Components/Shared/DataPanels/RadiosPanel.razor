@@ -1,0 +1,103 @@
+﻿@using AircraftStateCore.Helpers
+@using AircraftStateCore.Models
+@using AircraftStateCore.Services.Interfaces
+
+@inject ISettingsData settings;
+
+<MudItem md="6" lg="4" xs="12">
+	<MudExpansionPanels Class="@BackGroundClass">
+		<MudExpansionPanel Expanded="true" Text="2.2">
+			<TitleContent>
+				<MudText Typo="Typo.h6">Radios</MudText>
+			</TitleContent>
+			<ChildContent>
+				<MudGrid Spacing="1">
+					@if (!CheckDisplay || (SelectedData.Exists(s => s.txt.Equals(FieldText.RadiosCom1Both)) ||
+							SelectedData.Exists(s => s.txt.Equals(FieldText.RadiosCom2Both)) ||
+							SelectedData.Exists(s => s.txt.Equals(FieldText.RadiosNav1Both)) ||
+							SelectedData.Exists(s => s.txt.Equals(FieldText.RadiosNav2Both)) ||
+							SelectedData.Exists(s => s.txt.Equals(FieldText.RadiosAdfBoth))))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label"></MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">Active</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">Standby</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.RadiosCom1Both)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr 3fr auto; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.RadiosCom1</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal3AbsFormatter(Data.com1Active)</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal3AbsFormatter(Data.com1Standby)</MudButton>
+
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.RadiosCom2Both)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.RadiosCom2</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal3AbsFormatter(Data.com2Active)</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal3AbsFormatter(Data.com2Standby)</MudButton>
+
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.RadiosNav1Both)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr 3fr auto; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.RadiosNav1</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal3AbsFormatter(Data.nav1Active)</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal3AbsFormatter(Data.nav1Standby)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.RadiosNav2Both)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.RadiosNav2</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal3AbsFormatter(Data.nav2Active)</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal3AbsFormatter(Data.nav2Standby)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.RadiosAdfBoth)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.RadiosAdf</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.DecimalAdfFormatter(Data.adfActive)</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.DecimalAdfFormatter(Data.adfStandby)</MudButton>
+							</div>
+						</MudItem>
+					}
+				</MudGrid>
+			</ChildContent>
+		</MudExpansionPanel>
+	</MudExpansionPanels>
+</MudItem>
+
+@code {
+	[Parameter]
+	public List<AvailableDataItem> SelectedData { get; set; } = new List<AvailableDataItem>();
+
+	[Parameter]
+	public string BackGroundClass { get; set; }
+
+	[Parameter]
+	public PlaneDataStruct Data { get; set; }
+
+	private bool CheckDisplay => SelectedData.Count > 0;
+}

@@ -2,6 +2,7 @@
 @using AircraftStateCore.Helpers;
 @using AircraftStateCore.Services.Interfaces;
 @using BootstrapBlazor.Components
+@using AircraftStateCore.Components.Shared.DataPanels;
 
 @inject ISimConnectService simconnect
 @inject IPlaneData planeData;
@@ -15,6 +16,7 @@
 <br />
 
 <Message @ref="ApplyMessage" Placement="BootstrapBlazor.Components.Placement.Top" />
+
 
 <div>
 	<div class="row">
@@ -43,13 +45,13 @@
 			</div>
 
 			@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyAll)) ||
-					selectedData.Exists(s => s.txt.Equals(FieldText.FuelSelector)))
+										selectedData.Exists(s => s.txt.Equals(FieldText.FuelSelector)))
 			{
 				<div class="col-md-3 col-sm-6">
 					<MudTooltip Text="Do net send Fuel Data, even if selected below.">
 						<MudCheckBox @bind-Value="BlockFuel" Label="Block Fuel Data" Color="MudBlazor.Color.Primary" />
 					</MudTooltip>
-				</div>			
+				</div>
 			}
 
 			@if (selectedData.Exists(s => s.txt.StartsWith("Location")))
@@ -61,368 +63,29 @@
 				</div>
 			}
 		</div>
+	
+	<br /><br />
+
+
+<MudGrid>
+	<LocationPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+	<FuelPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+	<OBSPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+	<ConfigurationPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+	<PowerPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+	<OtherPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+	<LightsPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+	<PayloadPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+</MudGrid>
+
+<br />
+<br />
+<br />
+
 
 		<div class="row g-2">
-			@*first Column*@
-			<div class="col-md-6 col-lg-4 col-sm-12">
-				@*Radios*@
-				<div class="row g-2 bottom-buffer">
-					<div class="col-12">
-						<Collapse>
-							<CollapseItems>
-								<CollapseItem Text="@FieldText.radiosHeader" Class="" TitleColor="@TitleColor" IsCollapsed="false">
-									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.RadiosCom1Both)) ||
-												selectedData.Exists(s => s.txt.Equals(FieldText.RadiosCom2Both)) ||
-												selectedData.Exists(s => s.txt.Equals(FieldText.RadiosNav1Both)) ||
-												selectedData.Exists(s => s.txt.Equals(FieldText.RadiosNav2Both)) ||
-												selectedData.Exists(s => s.txt.Equals(FieldText.RadiosAdfBoth)))															
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="" />
-													<BootstrapInput class="disabled" TValue="string" value="Active" />
-													<BootstrapInput class="disabled" TValue="string" value="Standby" />
-												</BootstrapInputGroup>
-											</div>
-										}
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.RadiosCom1Both)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosCom1" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@planeData.CurrentData.com1Active" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@planeData.CurrentData.com1Standby" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.RadiosCom2Both)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosCom2" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@planeData.CurrentData.com2Active" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@planeData.CurrentData.com2Standby" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.RadiosNav1Both)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-														<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosNav1" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@planeData.CurrentData.nav1Active" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@planeData.CurrentData.nav1Standby" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.RadiosNav2Both)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosNav2" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@planeData.CurrentData.nav2Active" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal3AbsFormatter" value="@planeData.CurrentData.nav2Standby" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.RadiosAdfBoth)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.RadiosAdf" />
-													<BootstrapInput TValue="double" Formatter="Formatter.DecimalAdfFormatter" value="@planeData.CurrentData.adfActive" />
-													<BootstrapInput TValue="double" Formatter="Formatter.DecimalAdfFormatter" value="@planeData.CurrentData.adfStandby" />
-												</BootstrapInputGroup>
-											</div>
-										}
-									</div>
-								</CollapseItem>
-							</CollapseItems>
-						</Collapse>
-					</div>
-				</div>
-				@*OBS*@
-				<div class="row g-2 bottom-buffer">
-					<div class="col-12">
-						<Collapse>
-							<CollapseItems>
-								<CollapseItem Text="OBS" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.ObsObs1)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.ObsObs1" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.obs1" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.ObsObs2)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.ObsObs2" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.obs2" />
-												</BootstrapInputGroup>
-										</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.ObsAdfCard)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.ObsAdfCard" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.adfCard" />
-												</BootstrapInputGroup>
-											</div>
-										}
-									</div>
-								</CollapseItem>
-							</CollapseItems>
-						</Collapse>
-					</div>
-				</div>
-				@*Power*@
-				<div class="row g-2">
-					<div class="col-12">
-						<Collapse>
-							<CollapseItems>
-								<CollapseItem Text="Power" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.PowerMasterBattery)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.PowerMasterBattery" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.masterBattery" />
-												</BootstrapInputGroup>										
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.PowerMasterAlternator)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.PowerMasterAlternator" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.masterAlternator" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.PowerMasterAvionics)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.PowerMasterAvionics" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.masterAvionics" />
-												</BootstrapInputGroup>
-											</div>
-										}
-									</div>
-								</CollapseItem>
-							</CollapseItems>
-						</Collapse>
-					</div>
-				</div>
-							@*Other*@
-				<div class="row g-2 bottom-buffer">
-					<div class="col-12">
-						<Collapse>
-							<CollapseItems>
-								<CollapseItem Text="Other" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherTransponder)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherTransponder" />
-													<BootstrapInput TValue="uint" Formatter="Formatter.GetTransponder" value="@planeData.CurrentData.transponder" />
-												</BootstrapInputGroup>
-											</div>
-										}
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherKolhsman)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherKolhsman" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.kohlsman" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherHeadingBug)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherHeadingBug" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.headingBug" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.GyroDrift)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.GyroDrift" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GyroDriftFormatter" value="@planeData.CurrentData.gyroDriftError" />
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.GyroDriftLabel(@planeData.CurrentData)" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.OtherBatteryVoltage)))
-										{
-										<div class="col-12">
-											<BootstrapInputGroup>
-												<BootstrapInputGroupLabel class="input-group-addon-18" DisplayText="@FieldText.OtherBatteryVoltage" />
-												<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.batteryVoltage" />
-											</BootstrapInputGroup>
-										</div>
-										}
-									</div>
-								</CollapseItem>
-							</CollapseItems>
-						</Collapse>
-					</div>
-				</div>
-			</div>	
 			@*second Column*@
 			<div class="col-md-6 col-lg-4 col-sm-12">
-				@*Location*@
-				<div class="row g-2 bottom-buffer">
-					<div class="col-12">
-						<Collapse>
-							<CollapseItems>
-								<CollapseItem Text="Location" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LocationLongitude)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10"  DisplayText="@FieldText.LocationLongitude" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GetLongitude" value="@planeData.CurrentData.longitude" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LocationLatitude)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.LocationLatitude" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GetLatitude" value="@planeData.CurrentData.latitude" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LocationHeading)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.LocationHeading" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal0Formatter" value="@planeData.CurrentData.heading" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LocationAltitude)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.LocationAltitude" />
-													<BootstrapInput TValue="int" value="@planeData.CurrentData.altitude" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LocationPitch)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.LocationPitch" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2AbsFormatter" value="@planeData.CurrentData.pitch" />
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.PitchLabel(@planeData.CurrentData)" />
-												</BootstrapInputGroup>
-											</div>
-										}
-									</div>
-								</CollapseItem>
-							</CollapseItems>
-						</Collapse>
-					</div>
-				</div>
-				@*Plane Config*@
-				<div class="row g-2 bottom-buffer">
-				<div class="col-12">
-					<Collapse>
-						<CollapseItems>
-								<CollapseItem Text="Plane Configuration" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-								<div class="row g-1">
-									@if (selectedData.Exists(s => s.txt.Equals(FieldText.ConfigurationFlaps)))
-									{
-										<div class="col-12">
-											<BootstrapInputGroup>
-												<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.ConfigurationFlaps" />
-												<BootstrapInput TValue="int" value="@planeData.CurrentData.flapsIndex" />
-											</BootstrapInputGroup>
-										</div>
-									}
-
-									@if (selectedData.Exists(s => s.txt.Equals(FieldText.ConfigurationParkingBrake)))
-									{
-										<div class="col-12">
-											<BootstrapInputGroup>
-												<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.ConfigurationParkingBrake" />
-												<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.parkingBrake" />
-											</BootstrapInputGroup>
-										</div>
-									}
-
-									@if (selectedData.Exists(s => s.txt.Equals(FieldText.ConfigurationElevatorTrim)))
-									{
-										<div class="col-12">
-											<BootstrapInputGroup>
-												<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.ConfigurationElevatorTrim" />
-												<BootstrapInput TValue="double" Formatter="Formatter.Decimal2AbsFormatter" value="@planeData.CurrentData.elevtorTrim" />
-												<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.ElevatorTrimLabel(planeData.CurrentData)" />
-											</BootstrapInputGroup>
-										</div>
-									}
-
-									@if (selectedData.Exists(s => s.txt.Equals(FieldText.ConfigurationRudderTrim)))
-									{
-										<div class="col-12">
-											<BootstrapInputGroup>
-												<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.ConfigurationRudderTrim" />
-												<BootstrapInput TValue="double" Formatter="Formatter.Decimal2AbsFormatter" value="@planeData.CurrentData.rudderTrim" />
-												<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.RudderTrimLabel(planeData.CurrentData)" />
-											</BootstrapInputGroup>
-										</div>
-									}
-
-									@if (selectedData.Exists(s => s.txt.Equals(FieldText.ConfigurationAileronTrim)))
-									{
-										<div class="col-12">
-											<BootstrapInputGroup>
-												<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.ConfigurationAileronTrim" />
-												<BootstrapInput TValue="double" Formatter="Formatter.Decimal2AbsFormatter" value="@planeData.CurrentData.aileronTrim" />
-												<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@Formatter.AileronTrimLabel(planeData.CurrentData)" />
-											</BootstrapInputGroup>
-										</div>
-									}
-								</div>
-							</CollapseItem>
-						</CollapseItems>
-					</Collapse>
-				</div>
-			</div>
 				@*Lights*@
 				<div class="row g-2 bottom-buffer">
 					<div class="col-12">
@@ -580,260 +243,9 @@
 						</Collapse>
 					</div>
 				</div>
-
-			</div>	
-			@*third Column*@
-			<div class="col-md-6 col-lg-4 col-sm-12">
-				@*Fuel*@
-				<div class="row g-2 bottom-buffer">
-					<div class="col-12">
-						<Collapse>
-							<CollapseItems>
-								<CollapseItem Text="Fuel" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="" />
-													<BootstrapInput class="disabled" TValue="string" value="Left" />
-													<BootstrapInput class="disabled" TValue="string" value="Right" />
-												</BootstrapInputGroup>
-											</div>
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.FuelMain" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelLeftMain" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelRightMain" />
-												</BootstrapInputGroup>
-											</div>
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.FuelTip" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelLeftTip" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelRightTip" />
-												</BootstrapInputGroup>
-											</div>
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-5" DisplayText="@FieldText.FuelAux" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelLeftAux" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelRightAux" />
-												</BootstrapInputGroup>
-											</div>
-			
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelCenter1" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelCenter1" />
-												</BootstrapInputGroup>
-											</div>
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelCenter2" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelCenter2" />
-												</BootstrapInputGroup>
-											</div>
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelCenter3" />
-													<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelCenter3" />
-												</BootstrapInputGroup>
-											</div>
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelExternal1" />
-															<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelExternal1" />
-												</BootstrapInputGroup>
-											</div>
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelExternal2" />
-															<BootstrapInput TValue="double" Formatter="Formatter.Decimal2Formatter" value="@planeData.CurrentData.fuelExternal2" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelSelector)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-10" DisplayText="@FieldText.FuelSelector" />
-													<BootstrapInput TValue="int" Formatter="Formatter.FuelSelectorFormatter" value="@planeData.CurrentData.fuelSelector" />
-												</BootstrapInputGroup>
-											</div>
-										}
-									</div>
-								</CollapseItem>
-							</CollapseItems>
-						</Collapse>
-					</div>
-				</div>
-					@*Payload*@
-				<div class="row g-2 bottom-buffer">
-					<div class="col-12">
-						<Collapse>
-							<CollapseItems>
-								<CollapseItem Text="Payload" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad0" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload0" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad1" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload1" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad2" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload2" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad3" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload3" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad4" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload4" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad5" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload5" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad6" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload6" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad7" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload7" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad8" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload8" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad9" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload9" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad10" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload10" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad11" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload11" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad12" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload12" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad13" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload13" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.payLoad14" />
-													<BootstrapInput TValue="double" value="@planeData.CurrentData.payload14" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-									</div>
-								</CollapseItem>
-							</CollapseItems>
-						</Collapse>
-					</div>
-				</div>
 			</div>
 		</div>
+
 	}
 </div>
 

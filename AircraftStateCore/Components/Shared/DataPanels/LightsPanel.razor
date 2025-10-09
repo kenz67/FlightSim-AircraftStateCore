@@ -1,0 +1,177 @@
+﻿@using AircraftStateCore.Helpers
+@using AircraftStateCore.Models
+@using AircraftStateCore.Services.Interfaces
+
+@inject ISettingsData settings;
+
+<MudItem md="6" lg="4" xs="12">
+	<MudExpansionPanels Class="@BackGroundClass">
+		<MudExpansionPanel Expanded="true" Text="2.2">
+			<TitleContent>
+				<MudText Typo="Typo.h6">Lights</MudText>
+			</TitleContent>
+			<ChildContent>
+				<MudGrid Spacing="1">
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsBeacon)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsBeacon</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.lightBeacon)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsCabin)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsCabin</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.lightCabin)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsLanding)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsLanding</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.lightLanding)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsLogo)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsLogo</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.lightLogo)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsNav)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsNav</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.lightNav)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsPanel)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsPanel</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.lightPanel)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsRecognition)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsRecognition</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.lightRecognition)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsStrobe)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsStrobe</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.lightStrobe)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsTaxi)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsTaxi</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.lightTaxi)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsWing)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsWing</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.lightWing)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsGlareshieldPower)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsGlareshieldPower</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetPercent(Data.lightGlareShieldPct)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsPanelPower)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsPanelPower</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetPercent(Data.lightPanelPct)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsCabinPower)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsCabinPower</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetPercent(Data.lightCabinPct)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LightsPedestalPower)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LightsPedestalPower</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetPercent(Data.lightPedestralPct)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+				</MudGrid>
+			</ChildContent>
+		</MudExpansionPanel>
+	</MudExpansionPanels>
+</MudItem>
+
+@code {
+	[Parameter]
+	public List<AvailableDataItem> SelectedData { get; set; } = new List<AvailableDataItem>();
+
+	[Parameter]
+	public string BackGroundClass { get; set; }
+
+	[Parameter]
+	public PlaneDataStruct Data { get; set; }
+
+    private bool CheckDisplay => SelectedData.Count > 0;
+
+	// protected override void OnInitialized()
+	// {
+	// 	CheckDisplay = SelectedData.Count > 0;
+	// }
+}

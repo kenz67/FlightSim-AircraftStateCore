@@ -184,6 +184,21 @@ ul.no-bullets {
     background-color: white;
 }
 
+.mud-expansion-panel-khaki-header * {
+    //max-width: 600px;
+}
+
+.mud-expansion-panel-khaki-header .mud-expand-panel-header {
+    background-color: khaki;
+}
+
+.mud-expansion-panel-khaki-header .mud-expand-panel-content {
+    padding-top: 15px;
+    background-color: white;
+}
+
+
+
 .mud-select .mud-input-control > .mud-input-control-input-container > div.mud-input.mud-input-text {
     background-color: royalblue;
     color: white;
@@ -205,4 +220,24 @@ ul.no-bullets {
 
 .dialogContextText {
     font-size: 18px;
+}
+
+.mud-button-label {
+    text-transform: none
+}
+
+.grey-background {
+    background-color: lightgrey;
+}
+
+.group-label {
+    background-color: lightgrey;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.group-data {
+    background-color: white;
+    justify-content: flex-start;
+    text-align: left;
 }

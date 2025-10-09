@@ -1,0 +1,144 @@
+﻿@using AircraftStateCore.Helpers
+@using AircraftStateCore.Models
+@using AircraftStateCore.Services.Interfaces
+
+@inject ISettingsData settings;
+
+<MudItem md="6" lg="4" xs="12">
+	<MudExpansionPanels Class="@BackGroundClass">
+		<MudExpansionPanel Expanded="true" Text="2.2">
+			<TitleContent>
+				<MudText Typo="Typo.h6">Payload</MudText>
+			</TitleContent>
+			<ChildContent>
+				<MudGrid Spacing="1">
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.payLoadAll)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad0</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload0</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad1</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload1</MudButton>
+							</div>
+						</MudItem>
+						
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad2</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload2</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad3</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload3</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad4</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload4</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad5</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload5</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad6</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload6</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad7</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload7</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad8</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload8</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad9</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload9</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad10</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload10</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad11</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload11</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad12</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload12</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad13</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload13</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.payLoad14</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.payload14</MudButton>
+							</div>
+						</MudItem>
+					}
+				</MudGrid>
+			</ChildContent>
+		</MudExpansionPanel>
+	</MudExpansionPanels>
+</MudItem>
+
+@code {
+	[Parameter]
+	public List<AvailableDataItem> SelectedData { get; set; } = new List<AvailableDataItem>();
+
+	[Parameter]
+	public string BackGroundClass { get; set; }
+
+	[Parameter]
+	public PlaneDataStruct Data { get; set; }
+
+    private bool CheckDisplay => SelectedData.Count > 0;
+
+	// protected override void OnInitialized()
+	// {
+	// 	CheckDisplay = SelectedData.Count > 0;
+	// }
+}

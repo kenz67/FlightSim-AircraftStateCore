@@ -1,0 +1,113 @@
+﻿@using AircraftStateCore.Helpers
+@using AircraftStateCore.Models
+@using AircraftStateCore.Services.Interfaces
+
+@inject ISettingsData settings;
+
+<MudItem md="6" lg="4" xs="12">
+	<MudExpansionPanels Class="@BackGroundClass">
+		<MudExpansionPanel Expanded="true" Text="2.2">
+			<TitleContent>
+				<MudText Typo="Typo.h6">Fuel</MudText>
+			</TitleContent>
+			<ChildContent>
+				<MudGrid Spacing="1">
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyAll)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label"></MudButton>
+								<MudButton Variant="Variant.Outlined">Left</MudButton>
+								<MudButton Variant="Variant.Outlined">Right</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.FuelMain</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelLeftMain)</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelRightMain)</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.FuelTip</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelLeftTip)</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelRightTip)</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.FuelAux</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelLeftAux)</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelRightAux)</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 6fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.FuelSelector</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.FuelSelectorFormatter(Data.fuelSelector)</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 6fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.FuelCenter1</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelCenter1)</MudButton>
+							</div>
+
+							<MudItem xs="12">
+								<div style="display: grid; grid-template-columns: 3fr 6fr; gap: 0;">
+									<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.FuelCenter2</MudButton>
+									<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelCenter2)</MudButton>
+								</div>
+							</MudItem>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 6fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.FuelCenter3</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelCenter3)</MudButton>
+							</div>
+						</MudItem>
+
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 6fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.FuelExternal1</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelExternal1)</MudButton>
+							</div>
+
+							<MudItem xs="12">
+								<div style="display: grid; grid-template-columns: 3fr 6fr; gap: 0;">
+									<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.FuelExternal2</MudButton>
+									<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2Formatter(Data.fuelExternal2)</MudButton>
+								</div>
+							</MudItem>
+						</MudItem>
+					}
+				</MudGrid>
+			</ChildContent>
+		</MudExpansionPanel>
+	</MudExpansionPanels>
+</MudItem>
+
+@code {
+	[Parameter]
+	public List<AvailableDataItem> SelectedData { get; set; } = new List<AvailableDataItem>();
+
+	[Parameter]
+	public string BackGroundClass { get; set; }
+
+	[Parameter]
+	public PlaneDataStruct Data { get; set; }
+
+    private bool CheckDisplay => SelectedData.Count > 0;
+
+	// protected override void OnInitialized()
+	// {
+	// 	CheckDisplay = SelectedData.Count > 0;
+	// }
+}
