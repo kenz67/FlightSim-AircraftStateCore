@@ -1,64 +1,40 @@
 ﻿@using AircraftStateCore.Services.Interfaces;
-@using BootstrapBlazor.Components;
    
 @inject IPlaneData planeData;
 @inject ISimConnectService simconnect
-
+@inject IDialogService DialogService
 
 <div>
-	<Button @onclick="() => Show()" Color="BootstrapBlazor.Components.Color.Primary">Save to DB</Button>
-	
-	<Divider/>
+	<MudButton @onclick="() => Show()" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">Save to DB</MudButton>
 
-	<Modal @ref="SmallModal">
-		<ModalDialog SaveButtonText="Yes" ShowCloseButton="false" ShowSaveButton="false" CloseButtonText="No" CloseButtonIcon="" IsCentered="true" Title="Save Profile">
-			<BodyTemplate>				
-				<br />
-				<AutoComplete Items="@planeData.Profiles" IsLikeMatch="true" IgnoreCase="true" OnValueChanged="SelectProfile" IsSelectAllTextOnFocus="true" />
-				<br />
-				<div class="modal-footer">
-					<Button class="@isDisabled" Color="BootstrapBlazor.Components.Color.Success" @onclick="() => SaveProfile()">Save</Button>
-					<Button Color="BootstrapBlazor.Components.Color.Danger" @onclick="() => Close()">Cancel</Button>
-				</div>
-			</BodyTemplate>
-		</ModalDialog>
-	</Modal>
+	<CustomDivider />
 </div>
 
 @code {
-	private Modal SmallModal { get; set; }
-	private List<SelectedItem> planeList { get; set; } = new List<SelectedItem>();
 	private List<String> ProfileList { get; set; }
 	private String ProfileName { get; set; }
 	private String isDisabled { get; set; } = "disabled";
+
 	protected override void OnInitialized()
 	{
 
 	}
 
-	private Task Show()
+	private async Task Show()
 	{
-		SmallModal.Show();
-		return Task.CompletedTask;
-	}
+		var parameters = new DialogParameters<DbSaveDialog>()
+		{
+			{ x => x.Profiles, planeData.Profiles }
+		};
 
-	public void SaveProfile()
-	{
-		simconnect.SaveDataToDb(ProfileName);       
-        planeData.ResetProfiles();
-		SmallModal.Close();
-	}
+		var dialog = await DialogService.ShowAsync<DbSaveDialog>(string.Empty, parameters);
+		var result = await dialog.Result;
 
-	protected async Task SelectProfile(string item)
-	{
-		ProfileName = item;
-		isDisabled = string.IsNullOrEmpty(ProfileName) ? "disabled" : String.Empty;
-		await InvokeAsync(StateHasChanged);		
-	}
-
-
-	public void Close()
-	{
-		SmallModal.Close();
+		if (!result.Canceled)
+		{
+            var ProfileName = result.Data as string;
+			simconnect.SaveDataToDb(ProfileName);
+			await planeData.ResetProfiles();
+		}
 	}
 }

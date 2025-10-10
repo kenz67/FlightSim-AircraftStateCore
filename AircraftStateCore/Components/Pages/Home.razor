@@ -2,196 +2,93 @@
 @using AircraftStateCore.DAL.Repositories.Interfaces;
 @using AircraftStateCore.Helpers;
 @using AircraftStateCore.Models;
+@using AircraftStateCore.Services
 @using AircraftStateCore.Services.Interfaces;
-@using BootstrapBlazor.Components;
 
-@inject MessageService MessageService
 @inject ISimConnectService simconnect
 @inject ISettingsRepo settingRepo
+@inject IDialogService DialogService
+@inject IPlaneData planeData;
 
 @page "/"
 
 <h2>Sim Status</h2>
 
-<Message @ref="@Message" Placement="BootstrapBlazor.Components.Placement.Bottom" />
-
 <div>
-	@* ShowSaveButton="true" SaveButtonText="Ok" SaveIcon="" *@
-	<Modal @ref="NotificationModal">
-		<ModalDialog ShowCloseButton="false" 
-				ShowSaveButton="true" SaveButtonText="Ok" SaveButtonIcon=""
-				OnSaveAsync="CloseDialog"
-				IsCentered="true"						
-				Title="Missing Settings">				
-			<BodyTemplate>
-				<br />
-				<div>@Message</div>
-				<br />
-			</BodyTemplate>
-		</ModalDialog>
-	</Modal>
-	
 	<DbSave/>
 	<h4>@simconnect.MasterData.title</h4>
 
-	<MudGrid>
-		<RadiosPanel BackGroundClass="mud-expansion-panel-lightblue-header"	Data="@simconnect.SimData" />
-		<LocationPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
-		<FuelPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
-		<OBSPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
-		<ConfigurationPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
-		<PowerPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
-		<OtherPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
-		<LightsPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
-		<PayloadPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
+	<MudGrid Spacing="1">
+		<MudItem sm="12" md="6" lg="4">
+			<MudGrid Spacing="1">
+				<MudItem xs="12">
+					<RadiosPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
+				</MudItem>
+				<MudItem xs="12">
+					<OBSPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
+				</MudItem>
+				<MudItem xs="12">
+					<PowerPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
+				</MudItem>
+				<MudItem xs="12">
+					<OtherPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
+				</MudItem>
+			</MudGrid>
+		</MudItem>
+
+		<MudItem sm="12" md="6" lg="4">
+			<MudGrid Spacing="1">
+				<MudItem xs="12">
+					<LocationPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
+				</MudItem>
+				<MudItem xs="12">
+					<ConfigurationPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
+				</MudItem>
+				<MudItem xs="12">
+					<LightsPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
+				</MudItem>
+			</MudGrid>
+		</MudItem>
+
+		<MudItem sm="12" md="6" lg="4">
+			<MudGrid Spacing="1">
+				<MudItem xs="12">
+					<FuelPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
+				</MudItem>
+				<MudItem xs="12">
+					<PayloadPanel BackGroundClass="mud-expansion-panel-lightblue-header" Data="@simconnect.SimData" />
+				</MudItem>
+			</MudGrid>
+		</MudItem>
 	</MudGrid>
-
-
-	<div class="row g-2">
-
-		@*second Column*@
-		<div class="col-md-6 col-lg-4 col-sm-12">
-			@*Lights*@
-			<div class="row g-2 bottom-buffer">
-				<div class="col-12">
-					<Collapse>
-						<CollapseItems>
-							<CollapseItem Text="Lights" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-								<div class="row g-1">
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsBeacon" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightBeacon" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabin" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightCabin" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLanding" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightLanding" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLogo" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightLogo" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsNav" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightNav" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanel" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightPanel" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsRecognition" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightRecognition" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsStrobe" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightStrobe" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsTaxi" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightTaxi" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsWing" />
-											<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@simconnect.SimData.lightWing" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshieldPower" />
-											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightGlareShieldPct" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanelPower" />
-											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent100" value="@simconnect.SimData.lightPanelPct" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabinPower" />
-											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightCabinPct" />
-										</BootstrapInputGroup>
-									</div>
-									<div class="col-12">
-										<BootstrapInputGroup>
-											<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestalPower" />
-											<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@simconnect.SimData.lightPedestralPct" />
-										</BootstrapInputGroup>
-									</div>
-								</div>
-							</CollapseItem>
-						</CollapseItems>
-					</Collapse>
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 @code {
-	private Modal NotificationModal { get; set; }
-	private Message Message { get; set; }
-	private BootstrapBlazor.Components.Color TitleColor = BootstrapBlazor.Components.Color.Info;
-	private string Active = "Active";
-	private string Standby = "Standby"; 
-    private string Left = "Left";
-    private string Right = "Right";
-
-	protected override void OnInitialized()
-	{
-		simconnect.OnChangeAsync += Refresh;
-	}
+    protected override void OnInitialized()
+    {
+        simconnect.OnChangeAsync += Refresh;
+        planeData.OnChangeAsync += Refresh;
+    }
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		var currentVersion = Formatter.GetBuildNumber();
 		if (firstRender && await settingRepo.UpdateVersion(currentVersion))
 		{
-			await MessageService.Show(new MessageOption()
+			var param = new DialogParameters<DialogOk>()
 			{
-				Content = $"You are running a new version of the application ({currentVersion}) Check the settings page to see if there are new values you would like to track.  More information can be found in the release notes on the About page.",
-				Icon = "fa-solid fa-circle-info",
-				Color = BootstrapBlazor.Components.Color.Secondary,
-				ShowDismiss = true,
-				ShowBar = true,
-				IsAutoHide = false
-			});
+				{ x => x.Message, $"You are running a new version of the application ({currentVersion}) Check the settings page to see if there are new values you would like to track.More information can be found in the release notes on the About page." },
+				{ x => x.DialogIcon, "fa-solid fa-circle-info" },
+				{ x => x.DialogClass, "grey-background" }
+			};
+
+			await DialogService.ShowAsync<DialogOk>("New Version", param);
 		}
 	}
 
 	private async Task Refresh()
 	{		
 		await InvokeAsync(StateHasChanged);
-	}
-
-	private async Task<bool> CloseDialog()
-	{
-		await NotificationModal.Close();
-		return true;
 	}
 
 	public async void Connect()
@@ -203,5 +100,6 @@
 	public void Dispose()
 	{
 		simconnect.OnChangeAsync -= Refresh;
+		planeData.OnChangeAsync -= Refresh;
 	}
 }

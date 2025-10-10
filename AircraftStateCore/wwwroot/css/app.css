@@ -230,6 +230,10 @@ ul.no-bullets {
     background-color: lightgrey;
 }
 
+.warn-background {
+    background-color: lightyellow;
+}
+
 .group-label {
     background-color: lightgrey;
     justify-content: flex-start;
@@ -240,4 +244,21 @@ ul.no-bullets {
     background-color: white;
     justify-content: flex-start;
     text-align: left;
+}
+
+.white-autocomplete .mud-input-root {
+    background-color: white !important;
+}
+
+.pill-chip {
+    border-radius: 9999px !important; /* fully rounded */
+    padding: 0 12px;
+}
+
+.small-pill {
+    height: 16px !important;
+    line-height: 16px !important;
+    font-size: 0.7rem !important;
+    padding: 0 8px !important;
+    border-radius: 9999px !important;
 }

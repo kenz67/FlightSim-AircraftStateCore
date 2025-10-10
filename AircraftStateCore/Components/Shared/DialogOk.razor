@@ -1,5 +1,5 @@
 ﻿@using static MudBlazor.CategoryTypes
-<MudDialog>
+<MudDialog Class="@DialogClass">
     <TitleContent>
         <div class="d-flex align-items-center dialogHeaderText">
             <MudIcon Icon="@DialogIcon" Color="Color.Info" Size="Size.Large" Class="me-2" />
@@ -14,7 +14,7 @@
     <DialogActions>        
         @if (ShowCancel)
         {
-            <MudButton Color="Color.Secondary" OnClick="() => MudDialog.Cancel()">@CancelText</MudButton>
+            <MudButton Color="Color.Error" OnClick="() => MudDialog.Cancel()">@CancelText</MudButton>
         }
         <MudButton Color="Color.Primary" OnClick="Close">@OkText</MudButton>
     </DialogActions>
@@ -26,6 +26,9 @@
 
     [Parameter]
     public string DialogIcon { get; set; } = Icons.Material.Filled.Info;
+
+    [Parameter]
+    public String DialogClass { get; set; } = String.Empty;
 
     [Parameter]
     public string Title { get; set; }

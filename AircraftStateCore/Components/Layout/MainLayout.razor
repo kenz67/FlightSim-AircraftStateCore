@@ -5,16 +5,12 @@
 @inject IDialogService DialogService
 @inject ISimConnectService simconnect
 
-@* Required *@
 
-@* <MudThemeProvider @bind-IsDarkMode="@_isDarkMode" /> TODO: Reseach Themes *@  
-<MudThemeProvider />
+
+@*<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" /> TODO: Research Themes *@  
+<MudThemeProvider Theme="_myTheme" />
 <MudPopoverProvider />
-
-@* Needed for dialogs *@
 <MudDialogProvider />
-
-@* Needed for snackbars *@
 <MudSnackbarProvider />
 
 <div class="page">
@@ -26,15 +22,15 @@
         <div class="top-row px-2">
             @if (simconnect.VerifyAutoSave())
             {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="BootstrapBlazor.Components.Color.Info">Autosave enabled</Badge></div>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><MudChip T="string" Class="small-pill" Variant="Variant.Filled" Label="true" Color="MudBlazor.Color.Info">Autosave enabled</MudChip></div>
             }
             @if (@simconnect.Connected())
             {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="BootstrapBlazor.Components.Color.Success">Connected to Sim</Badge></div>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><MudChip T="string" Class="small-pill" Variant="Variant.Filled" Label="true" Color="MudBlazor.Color.Success">Connected to Sim</MudChip></div>
             }
             else
             {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="BootstrapBlazor.Components.Color.Danger">Not Connected to Sim</Badge></div>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><MudChip T="string" Class="small-pill" Variant="Variant.Filled" Label="true" Color="MudBlazor.Color.Error">Not Connected to Sim</MudChip></div>
             }
             @*<a href="https://docs.microsoft.com/aspnet/" target="_blank">about</a>*@
         </div>
@@ -52,6 +48,40 @@
 @code
 {
     private String Message { get; set; }
+@code {
+    private MudTheme _myTheme = new MudTheme()
+    {
+        PaletteLight = new PaletteLight()
+        {
+            Primary = Colors.Blue.Default,
+            Secondary = Colors.Green.Accent4,
+            Tertiary = Colors.Purple.Default,
+            AppbarBackground = Colors.Gray.Darken3,
+            AppbarText = Colors.Shades.White,
+            Background = Colors.Gray.Lighten5,
+            Surface = Colors.Shades.White,
+            Success = Colors.Green.Default,
+            Warning = Colors.Orange.Default,
+            Error = Colors.Red.Default,
+            Info = Colors.LightBlue.Default
+        },
+        //note: Dark Mode not currently used, colors would need to be set better
+        PaletteDark = new PaletteDark()
+        {
+            Primary = Colors.Blue.Lighten1,
+            Secondary = Colors.Green.Accent2,
+            Tertiary = Colors.Purple.Lighten2,
+            AppbarBackground = Colors.Gray.Darken4,
+            AppbarText = Colors.Shades.White,
+            Background = Colors.Gray.Darken3,
+            Surface = Colors.Gray.Darken4,
+            Success = Colors.Green.Accent3,
+            Warning = Colors.Orange.Darken2,
+            Error = Colors.Red.Darken2,
+            Info = Colors.LightBlue.Lighten1
+        }
+    };
+}
 
     protected override void OnInitialized()
     {

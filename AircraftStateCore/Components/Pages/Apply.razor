@@ -1,22 +1,17 @@
 ﻿@using AircraftStateCore.Models;
 @using AircraftStateCore.Helpers;
 @using AircraftStateCore.Services.Interfaces;
-@using BootstrapBlazor.Components
 @using AircraftStateCore.Components.Shared.DataPanels;
 
 @inject ISimConnectService simconnect
 @inject IPlaneData planeData;
 @inject ISettingsData settings;
-@inject MessageService MessageService
 @inject IDialogService DialogService
 
 @page "/apply"
 
 <h2>Send Data to Sim</h2>
 <br />
-
-<Message @ref="ApplyMessage" Placement="BootstrapBlazor.Components.Placement.Top" />
-
 
 <div>
 	<div class="row">
@@ -35,7 +30,7 @@
 		</div>
 	</div>
 
-	<Divider />
+	<CustomDivider />
 
 	@if (!string.IsNullOrEmpty(@selectedProfile))
 	{
@@ -45,7 +40,7 @@
 			</div>
 
 			@if (selectedData.Exists(s => s.txt.Equals(FieldText.FuelQtyAll)) ||
-										selectedData.Exists(s => s.txt.Equals(FieldText.FuelSelector)))
+															selectedData.Exists(s => s.txt.Equals(FieldText.FuelSelector)))
 			{
 				<div class="col-md-3 col-sm-6">
 					<MudTooltip Text="Do net send Fuel Data, even if selected below.">
@@ -63,189 +58,52 @@
 				</div>
 			}
 		</div>
-	
-	<br /><br />
 
+		<br /><br />
 
-<MudGrid>
-	<LocationPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
-	<FuelPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
-	<OBSPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
-	<ConfigurationPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
-	<PowerPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
-	<OtherPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
-	<LightsPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
-	<PayloadPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
-</MudGrid>
+		<MudGrid Spacing="1">
+			<MudItem sm="12" md="6" lg="4">
+				<MudGrid Spacing="1">
+					<MudItem xs="12">
+						<RadiosPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" />
+					</MudItem>
+					<MudItem xs="12">
+						<OBSPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+					</MudItem>
+					<MudItem xs="12">
+						<PowerPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" />
+					</MudItem>
+					<MudItem xs="12">
+						<OtherPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+					</MudItem>
+				</MudGrid>
+			</MudItem>
 
-<br />
-<br />
-<br />
+			<MudItem sm="12" md="6" lg="4">
+				<MudGrid Spacing="1">
+					<MudItem xs="12">
+						<LocationPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+					</MudItem>
+					<MudItem xs="12">
+						<ConfigurationPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+					</MudItem>
+					<MudItem xs="12">
+						<LightsPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+					</MudItem>
+				</MudGrid>
+			</MudItem>
 
-
-		<div class="row g-2">
-			@*second Column*@
-			<div class="col-md-6 col-lg-4 col-sm-12">
-				@*Lights*@
-				<div class="row g-2 bottom-buffer">
-					<div class="col-12">
-						<Collapse>
-							<CollapseItems>
-								<CollapseItem Text="Lights" Class="btn-sm" TitleColor="@TitleColor" IsCollapsed="false">
-									<div class="row g-1">
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsBeacon)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsBeacon" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightBeacon" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsCabin)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabin" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightCabin" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsLanding)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLanding" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightLanding" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsLogo)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsLogo" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightLogo" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsNav)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsNav" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightNav" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPanel)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanel" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightPanel" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsRecognition)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsRecognition" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightRecognition" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsStrobe)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsStrobe" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightStrobe" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsTaxi)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsTaxi" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightTaxi" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsWing)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsWing" />
-													<BootstrapInput TValue="bool" Formatter="Formatter.GetOnOff" value="@planeData.CurrentData.lightWing" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsGlareshieldPower)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsGlareshieldPower" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightGlareShieldPct" />
-													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPanelPower)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPanelPower" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent100" value="@planeData.CurrentData.lightPanelPct" />
-													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsCabinPower)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsCabinPower" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightCabinPct" />
-													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-										@if (selectedData.Exists(s => s.txt.Equals(FieldText.LightsPedestalPower)))
-										{
-											<div class="col-12">
-												<BootstrapInputGroup>
-													<BootstrapInputGroupLabel class="input-group-addon-14" DisplayText="@FieldText.LightsPedestalPower" />
-													<BootstrapInput TValue="double" Formatter="Formatter.GetPercent" value="@planeData.CurrentData.lightPedestralPct" />
-													<BootstrapInputGroupLabel class="input-group-addon-3" DisplayText="pct" />
-												</BootstrapInputGroup>
-											</div>
-										}
-
-									</div>
-								</CollapseItem>
-							</CollapseItems>
-						</Collapse>
-					</div>
-				</div>
-			</div>
-		</div>
-
+			<MudItem sm="12" md="6" lg="4">
+				<MudGrid Spacing="1">
+					<MudItem xs="12">
+						<FuelPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" SelectedData="@selectedData" />
+					</MudItem>
+					<MudItem xs="12">
+						<PayloadPanel BackGroundClass="mud-expansion-panel-khaki-header" Data="@planeData.CurrentData" />
+					</MudItem>
+				</MudGrid>
+			</MudItem>
+		</MudGrid>
 	}
 </div>
 
@@ -258,13 +116,7 @@
 	private bool BlockLocation { get; set; } = true;
 	private bool disabledDelete => (string.IsNullOrEmpty(selectedProfile) || selectedProfile.Equals(planeArray.FirstOrDefault() ?? String.Empty) ? true : false);
 	private bool disabledSend => (disabledDelete || !simconnect.Connected() ? true : false);
-	private Message ApplyMessage { get; set; }
 	private Settings SettingsData { get; set; }
-	private BootstrapBlazor.Components.Color TitleColor = BootstrapBlazor.Components.Color.Warning;
-	private string Active = "Active";
-	private string Standby = "Standby";
-	private string Left = "Left";
-	private string Right = "Right";
 
 	protected async override void OnInitialized()
 	{      
@@ -303,15 +155,14 @@
 		var currentVersion = Formatter.GetBuildNumber();
 		if (firstRender && (SettingsData.SelectedData == null || SettingsData.SelectedData.Count.Equals(0)))
 		{
-			await MessageService.Show(new MessageOption()
+			var param = new DialogParameters<DialogOk>()
 			{
-				Content = $"Nothing will be sent to the sim, you need to select data to send to the sim on the settings page.",
-				Icon = "fa-solid fa-triangle-exclamation fa-xl",
-				Color = BootstrapBlazor.Components.Color.Warning,
-				ShowDismiss = true,
-				ShowBar = true,
-				IsAutoHide = false
-			});
+				{ x => x.Message, $"Nothing will be sent to the sim, you need to select data to send to the sim on the settings page." },
+				{ x => x.DialogIcon, "fa-solid fa-triangle-exclamation fa-xl" },
+				{ x => x.DialogClass, "warn-background" }
+			};
+
+			await DialogService.ShowAsync<DialogOk>("New Version", param);
 		}
 
 	}
@@ -331,7 +182,6 @@
 			{ x => x.Message3, " profile?" },			
 		};
 		
-
 		var dialog = await DialogService.ShowAsync<DialogDelete>("Save Data", param);
 		var choice = await dialog.Result;
 

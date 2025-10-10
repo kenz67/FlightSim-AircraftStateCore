@@ -1,0 +1,72 @@
+﻿@using static MudBlazor.CategoryTypes
+
+<MudDialog ContentStyle="min-width:500px; min-height:400px;">
+    <TitleContent>
+        <div class="d-flex align-items-center dialogHeaderText">
+            <MudIcon Icon="@Icons.Material.Filled.Save" Color="Color.Info" Size="Size.Large" Class="me-2" />
+            <span>Save Profile</span>
+        </div>
+    </TitleContent>
+    <DialogContent>
+        <br />
+        <div class="dialogContextText">Save current aircraft state to database profile</div>
+        <br />
+        <MudAutocomplete T="string"
+                         Label="Select or enter a profile"
+                         @bind-Value="_selectedProfile"
+                         SearchFunc="SearchProfiles"
+                         ToStringFunc="@(s => s)"
+                         Clearable="true"
+                         ResetValueOnEmptyText="true"
+                         CoerceText="true"
+                         CoerceValue="true"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense" />
+
+        <MudText Class="mt-2" Typo="Typo.caption">
+            You can pick an existing profile or type a new one.
+        </MudText>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Submit">OK</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Cancel">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public List<string> Profiles { get; set; } = new();
+
+    private string _selectedProfile;
+
+    private Task<IEnumerable<string>> SearchProfiles(string value, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return Task.FromResult(Profiles.AsEnumerable());
+
+        // Return matches, but also include the raw input if it's not already in the list
+        var matches = Profiles
+            .Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase))
+            .ToList();
+
+        if (!matches.Contains(value, StringComparer.InvariantCultureIgnoreCase))
+            matches.Insert(0, value); // allow new entry
+
+        return Task.FromResult(matches.AsEnumerable());
+    }
+
+    private void Submit()
+    {
+        // Return the selected or newly typed profile
+        MudDialog.Close(DialogResult.Ok(_selectedProfile));
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+}
