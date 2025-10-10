@@ -6,6 +6,7 @@ using AircraftStateCore.Services;
 using AircraftStateCore.Services.Interfaces;
 using Microsoft.FlightSimulator.SimConnect;
 using System.Diagnostics.CodeAnalysis;
+using Assert = Xunit.Assert;
 
 namespace AircraftStateCoreUnitTest.Services;
 

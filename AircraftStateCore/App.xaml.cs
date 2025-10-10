@@ -26,17 +26,21 @@
 			// Subscribe to Destroying event (fires when app is closing)
 			window.Destroying += (s, e) =>
 			{
-				var w = (Window)s;
-				double width = w.Width;
-				double height = w.Height;
-				double x = w.X;
-				double y = w.Y;
+				try
+				{
+					var w = (Window)s;
+					double width = w.Width;
+					double height = w.Height;
+					double x = w.X;
+					double y = w.Y;
 
-				// Save to Preferences or local storage
-				Preferences.Set("LastWindowWidth", width);
-				Preferences.Set("LastWindowHeight", height);
-				Preferences.Set("LastWindowX", x);
-				Preferences.Set("LastWindowY", y);
+					// Save to Preferences or local storage
+					Preferences.Set("LastWindowWidth", width);
+					Preferences.Set("LastWindowHeight", height);
+					Preferences.Set("LastWindowX", x);
+					Preferences.Set("LastWindowY", y);
+				}
+				catch { }
 			};
 
 			return window;

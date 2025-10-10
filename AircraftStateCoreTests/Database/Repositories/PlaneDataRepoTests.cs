@@ -5,6 +5,7 @@ using AircraftStateCore.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
+using Assert = Xunit.Assert;
 
 namespace AircraftStateCore.DAL.Repositories.Tests;
 
