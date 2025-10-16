@@ -27,7 +27,6 @@ namespace AircraftStateCore
 #endif
 			builder.Services
 				.AddMudServices()
-				.AddBootstrapBlazor()
 				//.AddSingleton<MainPage>()
 				.AddSqlite<AircraftStateContext>($"Data Source={DbCommon.DbName}")
 				.AddSingleton<IDbInit, DbInit>()

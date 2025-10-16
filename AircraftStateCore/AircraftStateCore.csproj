@@ -64,8 +64,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="BootstrapBlazor" Version="9.2.6" />
-        <PackageReference Include="BootstrapBlazor.FontAwesome" Version="9.0.1" />
         <PackageReference Include="Font.Awesome" Version="5.15.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.9" />
