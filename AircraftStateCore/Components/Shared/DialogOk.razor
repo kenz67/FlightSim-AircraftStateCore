@@ -1,5 +1,5 @@
 ﻿@using static MudBlazor.CategoryTypes
-<MudDialog Class="@DialogClass">
+<MudDialog Class="@_DialogClass()">
     <TitleContent>
         <div class="d-flex align-items-center dialogHeaderText">
             <MudIcon Icon="@DialogIcon" Color="Color.Info" Size="Size.Large" Class="me-2" />
@@ -50,8 +50,7 @@
         MudDialog.SetOptionsAsync(new DialogOptions() { BackdropClick = false });
     }
 
-    private void Close() => MudDialog.Close(DialogResult.Ok(true));
+    private string _DialogClass() => $"{DialogClass} dialog-width400";
 
-    }
-
+    private void Close() => MudDialog.Close(DialogResult.Ok(true));   
 }

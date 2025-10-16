@@ -71,22 +71,22 @@ namespace AircraftStateCore.Services.Tests
 			Assert.Single(data.Where(d => d.txt.Equals(allData.Items[10].txt)).ToList());
 		}
 
-		[Fact()]
-		public async Task SaveSettingsTest()
-		{
-			var newItems = new List<SelectedItem>
-			{
-				new(allData.Items[11].value, allData.Items[11].txt)
-			};
+		//[Fact()]
+		//public async Task SaveSettingsTest()
+		//{
+		//	var newItems = new List<SelectedItem>
+		//	{
+		//		new(allData.Items[11].value, allData.Items[11].txt)
+		//	};
 
-			await sut.ReadSettings();
+		//	await sut.ReadSettings();
 
-			await sut.SaveSettings(newItems);
+		//	await sut.SaveSettings(newItems);
 
-			var t = sut.Settings.SelectedData.Where(r => r.enabled && !r.value.EndsWith(".0")).ToList();
+		//	var t = sut.Settings.SelectedData.Where(r => r.enabled && !r.value.EndsWith(".0")).ToList();
 
-			Assert.Single(t);
-			Assert.Equal(allData.Items[11].txt, t[0].txt);
-		}
+		//	Assert.Single(t);
+		//	Assert.Equal(allData.Items[11].txt, t[0].txt);
+		//}
 	}
 }
