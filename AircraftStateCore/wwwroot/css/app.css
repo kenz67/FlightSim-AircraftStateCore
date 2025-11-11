@@ -175,6 +175,7 @@ ul.no-bullets {
 }
 
 .mud-expansion-panel-lightblue-header * {
+
     //max-width: 600px;
 }
 
@@ -187,7 +188,7 @@ ul.no-bullets {
     background-color: white;
 }
 
-.mud-expansion-panel-khaki-header * {
+.mud-expansion-panel-khaki-header * {    
     //max-width: 600px;
 }
 
@@ -238,12 +239,14 @@ ul.no-bullets {
 }
 
 .group-label {
+    font-size: .75rem;
     background-color: lightgrey;
     justify-content: flex-start;
     text-align: left;
 }
 
 .group-data {
+    font-size: .75rem;
     background-color: white;
     justify-content: flex-start;
     text-align: left;

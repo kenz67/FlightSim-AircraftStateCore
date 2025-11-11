@@ -705,7 +705,7 @@ public class SimConnectService : ISimConnectService
 
 	private static uint ConvertKohlsman(double value)
 	{
-		var x = (uint)(value * 541.8);    //couldn't figure out how to set this, calulated this value, it is close, but sometimes off by a bit
+		var x = (uint)(value * 541.8224);
 		return x;
 	}
 

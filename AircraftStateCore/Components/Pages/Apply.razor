@@ -13,10 +13,11 @@
 <h2>Send Data to Sim</h2>
 <br />
 
+@* Make mud grid instead of bootstrap rows and cols *@
 <div>
-	<div class="row">
-		<div class="col-10">
-			<MudStack Style="width:450px">
+	<MudGrid Spacing="1">
+		<MudItem sm="12" md="8">
+			<MudStack Style="width:250px">
 				<MudSelect T="string" FitContent=true Label="Select Profile" AnchorOrigin="Origin.BottomRight" @bind-Value="selectedProfile" TextChanged="OnAfterProfileChange">
 					@foreach (var plane in planeArray)
 					{
@@ -24,11 +25,11 @@
 					}
 				</MudSelect>
 			</MudStack>
-		</div>
-		<div class="col-2">		
+		</MudItem>
+		<MudItem sm="12" md="4">
 			<MudButton Disabled=@disabledDelete OnClick="() => OpenDelete()" Variant="Variant.Filled" Color="MudBlazor.Color.Dark">Delete Profile</MudButton>			
-		</div>
-	</div>
+		</MudItem>
+	</MudGrid>
 
 	<CustomDivider />
 
