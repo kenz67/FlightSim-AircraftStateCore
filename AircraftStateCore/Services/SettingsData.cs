@@ -1,7 +1,6 @@
 ﻿using AircraftStateCore.DAL.Repositories.Interfaces;
 using AircraftStateCore.Models;
 using AircraftStateCore.Services.Interfaces;
-using BootstrapBlazor.Components;
 
 namespace AircraftStateCore.Services;
 
@@ -40,13 +39,8 @@ public class SettingsData(ISettingsRepo settingsRepo) : ISettingsData
 		return Settings.SelectedData.Where(s => s.enabled).ToList();
 	}
 
-	public async Task SaveSettings(List<SelectedItem> SelectedItems)
+	public async Task SaveSettings(Settings settings)
 	{
-		foreach (var item in Settings.SelectedData)
-		{
-			item.enabled = SelectedItems.Exists(s => s.Value.Equals(item.value));
-		}
-
 		await _settingsRepo.SaveSettings(Settings);
 	}
 }

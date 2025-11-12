@@ -1,0 +1,87 @@
+﻿@using AircraftStateCore.Helpers
+@using AircraftStateCore.Models
+@using AircraftStateCore.Services.Interfaces
+
+@inject ISettingsData settings;
+
+
+	<MudExpansionPanels Class="@BackGroundClass">
+		<MudExpansionPanel Expanded="true">
+			<TitleContent>
+				<MudText Typo="Typo.h6">Location</MudText>
+			</TitleContent>
+			<ChildContent>
+				<MudGrid Spacing="1">
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LocationLongitude)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LocationLongitude</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetLongitude(@Data.longitude)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LocationLatitude)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LocationLatitude</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetLatitude(@Data.latitude)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LocationHeading)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LocationHeading</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal0Formatter(@Data.heading)</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LocationAltitude)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LocationAltitude</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.altitude</MudButton>
+							</div>
+						</MudItem>
+					}
+
+					@if (!CheckDisplay || SelectedData.Exists(s => s.txt.Equals(FieldText.LocationPitch)))
+					{
+						<MudItem xs="12">
+							<div style="display: grid; grid-template-columns: 4fr 2fr 2fr; gap: 0;">
+								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.LocationPitch</MudButton>
+								<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.Decimal2AbsFormatter(@Data.pitch)</MudButton>
+								<MudButton Variant="Variant.Filled" Class="group-label">@Formatter.PitchLabel(@Data)</MudButton>
+							</div>
+						</MudItem>
+					}
+				</MudGrid>
+			</ChildContent>
+		</MudExpansionPanel>
+	</MudExpansionPanels>
+
+
+@code {
+	[Parameter]
+	public List<AvailableDataItem> SelectedData { get; set; } = new List<AvailableDataItem>();
+
+	[Parameter]
+	public string BackGroundClass { get; set; }
+
+	[Parameter]
+	public PlaneDataStruct Data { get; set; }
+
+    private bool CheckDisplay => SelectedData.Count > 0;
+
+	// protected override void OnInitialized()
+	// {
+	// 	CheckDisplay = SelectedData.Count > 0;
+	// }
+}

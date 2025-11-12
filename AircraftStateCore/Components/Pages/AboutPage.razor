@@ -1,6 +1,5 @@
 ﻿@using AircraftStateCore.Models;
 @using AircraftStateCore.Services.Interfaces;
-@using BootstrapBlazor.Components;
 
 @inject ISettingsData settingsData
 
@@ -9,46 +8,43 @@
 <h2>About</h2>
 
 <div>
-    <div class="row g-2">
-        <div class="col-12">
-            <p><b>Software Version: @version</b></p>
-        </div>
-    </div>
-    <p/>
-    <div class="row g-2">
-        <div class="col-12">
+    <MudGrid Spacing="2">
+        <MudItem xs="12"><p><b>Software Version: @version</b></p></MudItem>
+        <MudItem xs="12">
+            <p/>
             <p>This application was created to save the state of an aircraft in MSFS 2020 in order for it to be restored for the next flight allowing the user to begin where they left off.</p>
             <p>The data will be saved for each plane as defined by the plane Title from the aircraft.cfg file.</p>
             <p>I wrote this application for my own use as I like to continue my flights from one place to another with different planes on different routes as well as to learn the SimConnect interface. If time permits or I move into more complex aircraft I may add more data, but I don't have a lot of free time and prefer to spend it flying rather than coding. Even in its current limited state, I have found it very useful and thought others might as well.  The application has been tested with the Steam Version of the Cessna 172 and the plane Bonanza G36. It should work with any GA aircraft without issues. I do not fly airliners and no testing has been done in this area, but for the given data, it should work.</p>
-        </div>
-    </div>
-    <p />
-    <p />
-    <div class="row g-2">
-        <div class="col-12">
+        </MudItem>
+        <MudItem xs="12">
+            <p/>
             <a href="https://github.com/kenz67/FlightSim-AircraftStateCore">Click here to access project in Github</a>
-        </div>
-    </div>
-    <div class="row g-2">
-        <div class="col-12">
+        </MudItem>
+        <MudItem xs="12">
             <p><b>Release Notes</b></p>
-        </div>
-    </div>
-    <div class="row g-2">
-        <div class="col-12">
-            <Collapse IsAccordion=true>
-                <CollapseItems>
-                    <CollapseItem Text="2.2" TitleColor="Color.Info">
+        </MudItem>
+        <MudItem xs="12">
+            <MudExpansionPanels MultiExpansion="false" class="mud-expansion-panel-lightblue-header">
+                <MudExpansionPanel Text="2.2">
+                    <TitleContent>
+                        <MudText Typo="Typo.h6">2.2</MudText>
+                    </TitleContent>
+                    <ChildContent>
+                        Add fields
+                        <ul>
+                            <li>All Fuel Tanks</li>
+                            <li>Payloads</li>
+                        </ul>
+                    </ChildContent>
+                </MudExpansionPanel>
+
+                <MudExpansionPanel>
+                    <TitleContent>
+                        <MudText Typo="Typo.h6">2.1</MudText>
+                    </TitleContent>
+                    <ChildContent>
                         <p>
                             Add fields
-                            <ul>
-                                <li>All Fuel Tanks</li>
-                                <li>Payloads</li>
-                            </ul>
-                        </p>
-                    </CollapseItem>
-                    <CollapseItem Text="2.1" TitleColor="Color.Info">
-                        <p>Add fields
                             <ul>
                                 <li>Transponder</li>
                                 <li>Glare Shield Light %</li>
@@ -57,32 +53,34 @@
                                 <li>Pedestal Light %</li>
                             </ul>
                         </p>
-                    </CollapseItem>
-                    <CollapseItem Text="2.0" TitleColor="Color.Info">
+                    </ChildContent>
+                </MudExpansionPanel>
+                <MudExpansionPanel>
+                    <TitleContent>
+                        <MudText Typo="Typo.h6">2.0</MudText>
+                    </TitleContent>
+                    <ChildContent>
                         <p>This is a port of the original Aircraft State application.  The functionality is the same, but it has been moved to more modern technology using DotNet Core giving a modern interface and making the code easier to maintain and add new features in the future</p>
-                    </CollapseItem>
-                </CollapseItems>
-            </Collapse>
-        </div>
-    </div>
-    <p /><p />
-    <div class="row g-2">
-        <div class="col-4">
+                    </ChildContent>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        </MudItem>
+        <MudItem xs="2">
+            <p/><p/>
             <a href="https://www.buymeacoffee.com/zaldoken" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;"></a>
-        </div>
-        <div class="col-2">
+        </MudItem>
+        <MudItem xs="2">
+            <p/>
             <a href="https://www.paypal.com/donate?token=uJVUN0cI7ZiRxqEdUoPm7J1hgU9LRbG5F8dUJx5tut0a79x9Q-auI0WPeovgPea7x8h2q3QlIz0Suph-" target="_blank"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="Donate with PayPal button" /></a>
-        </div>
-    </div>
+        </MudItem>
+    </MudGrid>
 </div>
-
-
 
 @code
 {
     private String version { get; set; }
 
-    protected async override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
         version = (await settingsData.ReadSettings()).Version;
     }

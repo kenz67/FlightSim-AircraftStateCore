@@ -6,43 +6,49 @@ namespace AircraftStateCore.Services;
 
 public class PlaneData : IPlaneData
 {
-    public event Func<Task> OnChangeAsync;
+	public event Func<Task> OnChangeAsync;
 
-    public PlaneDataStruct CurrentData { get; set; }
-    public List<string> Profiles { get; set; }
+	public PlaneDataStruct CurrentData { get; set; }
+	public List<string> Profiles { get; set; }
 
-    private readonly IPlaneDataRepo _planeData;
+	private readonly IPlaneDataRepo _planeData;
 
-    public PlaneData(IPlaneDataRepo planeData)
-    {
-        
-        _planeData = planeData;
-        CurrentData = new PlaneDataStruct();
+	public PlaneData(IPlaneDataRepo planeData)
+	{
 
-        string appDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\AircraftState";
-        if (!Directory.Exists(appDir))
-        {
-            Directory.CreateDirectory(appDir);
-        }
+		_planeData = planeData;
+		CurrentData = new PlaneDataStruct();
 
-        Profiles = Task.Run(() => _planeData.GetSavedProfiles()).Result;
-    }
+		string appDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\AircraftState";
+		if (!Directory.Exists(appDir))
+		{
+			Directory.CreateDirectory(appDir);
+		}
 
-    public async Task LookUpProfile(string profile)
-    {
-        CurrentData = await _planeData.GetDataForProfile(profile);
-        await OnChangeAsync();
-    }
+		Profiles = Task.Run(() => _planeData.GetSavedProfiles()).Result;
+	}
 
-    public async Task DeleteProfile(string profile)
-    {
-        await _planeData.DeleteSavedProfile(profile);
-    }
+	public async Task ResetProfiles()
+	{
+		Profiles = await _planeData.GetSavedProfiles();
+		await OnChangeAsync();
+	}
 
-    public async Task SaveProfile(string profile)
-    {
-        await _planeData.SaveDataForProfile(profile, CurrentData);
-        Profiles.Add(profile);
-        Profiles.Sort();
-    }
+	public async Task LookUpProfile(string profile)
+	{
+		CurrentData = await _planeData.GetDataForProfile(profile);
+		await OnChangeAsync();
+	}
+
+	public async Task DeleteProfile(string profile)
+	{
+		await _planeData.DeleteSavedProfile(profile);
+	}
+
+	public async Task SaveProfile(string profile)
+	{
+		await _planeData.SaveDataForProfile(profile, CurrentData);
+		Profiles.Add(profile);
+		Profiles.Sort();
+	}
 }

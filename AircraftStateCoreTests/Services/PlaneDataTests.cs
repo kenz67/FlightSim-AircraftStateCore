@@ -1,5 +1,6 @@
 ﻿using AircraftStateCore.DAL.Repositories.Interfaces;
 using AircraftStateCore.Models;
+using Assert = Xunit.Assert;
 
 namespace AircraftStateCore.Services.Tests
 {

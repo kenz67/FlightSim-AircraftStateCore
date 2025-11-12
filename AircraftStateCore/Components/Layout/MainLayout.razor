@@ -1,68 +1,99 @@
 ﻿@inherits LayoutComponentBase
 @using AircraftStateCore.Models;
 @using AircraftStateCore.Services.Interfaces;
-@using BootstrapBlazor.Components
 
+@inject IDialogService DialogService
 @inject ISimConnectService simconnect
+
+@*<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" /> TODO: Research Themes *@  
+<MudThemeProvider Theme="_myTheme" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
 
-    <Modal @ref="NotificationModal">
-        <ModalDialog ShowCloseButton="false"
-                     ShowSaveButton="true" SaveButtonText="Ok" SaveButtonIcon=""
-                     OnSaveAsync="CloseDialog"
-                     IsCentered="true"
-                     Title="Save Data">
-            <BodyTemplate>
-                <br />
-                <div>@Message</div>
-                <br />
-            </BodyTemplate>
-        </ModalDialog>
-    </Modal>
-
     <main>
         <div class="top-row px-2">
             @if (simconnect.VerifyAutoSave())
             {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Info">Autosave enabled</Badge></div>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><MudChip T="string" Class="small-pill" Variant="Variant.Filled" Label="true" Color="MudBlazor.Color.Info">Autosave enabled</MudChip></div>
             }
             @if (@simconnect.Connected())
             {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Success">Connected to Sim</Badge></div>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><MudChip T="string" Class="small-pill" Variant="Variant.Filled" Label="true" Color="MudBlazor.Color.Success">Connected to Sim</MudChip></div>
             }
             else
             {
-                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Danger">Not Connected to Sim</Badge></div>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-auto"><MudChip T="string" Class="small-pill" Variant="Variant.Filled" Label="true" Color="MudBlazor.Color.Error">Not Connected to Sim</MudChip></div>
             }
             @*<a href="https://docs.microsoft.com/aspnet/" target="_blank">about</a>*@
         </div>
 
         <article class="content px-4">
+        <MudLayout>
+            <MudMainContent>
             @Body
+            </MudMainContent>
+        </MudLayout>
         </article>
     </main>
 </div>
 
 @code
 {
-
-    private Modal NotificationModal { get; set; }
     private String Message { get; set; }
+@code {
+    private MudTheme _myTheme = new MudTheme()
+    {
+        PaletteLight = new PaletteLight()
+        {
+            Primary = Colors.Blue.Default,
+            Secondary = Colors.Green.Accent4,
+            Tertiary = Colors.Purple.Default,
+            AppbarBackground = Colors.Gray.Darken3,
+            AppbarText = Colors.Shades.White,
+            Background = Colors.Gray.Lighten5,
+            Surface = Colors.Shades.White,
+            Success = Colors.Green.Default,
+            Warning = Colors.Orange.Default,
+            Error = Colors.Red.Default,
+            Info = Colors.LightBlue.Default
+        },
+        //note: Dark Mode not currently used, colors would need to be set better
+        PaletteDark = new PaletteDark()
+        {
+            Primary = Colors.Blue.Lighten1,
+            Secondary = Colors.Green.Accent2,
+            Tertiary = Colors.Purple.Lighten2,
+            AppbarBackground = Colors.Gray.Darken4,
+            AppbarText = Colors.Shades.White,
+            Background = Colors.Gray.Darken3,
+            Surface = Colors.Gray.Darken4,
+            Success = Colors.Green.Accent3,
+            Warning = Colors.Orange.Darken2,
+            Error = Colors.Red.Darken2,
+            Info = Colors.LightBlue.Lighten1
+        }
+    };
+}
 
     protected override void OnInitialized()
     {
         simconnect.OnMessageUpdate += Refresh;
     }
 
-    private async Task<bool> CloseDialog()
+    private async Task ShowDialog()
     {
-        simconnect.DisplayMessage = string.Empty;
-        await NotificationModal.Close();
-        return true;
+        var param = new DialogParameters<DialogOk> {
+            { x => x.Message, "Save current data to the database?" },
+            { x => x.ShowCancel, true }
+        };
+        var dialogReference = await DialogService.ShowAsync<DialogOk>("Save Data", param);
+        var result = await dialogReference.Result; // Await the result of the dialog
     }
 
     private async Task Refresh()
@@ -70,8 +101,15 @@
         Message = simconnect.DisplayMessage;
         if (!string.IsNullOrEmpty(Message))
         {
-            await NotificationModal.Show();
+            var param = new DialogParameters<DialogOk> {
+                { x => x.Title, "Save Data" },
+                { x => x.Message, Message }
+            };
+
+            await DialogService.ShowAsync<DialogOk>(String.Empty, param);
+            simconnect.DisplayMessage = string.Empty;
         }
+
         await InvokeAsync(StateHasChanged);
     }
 

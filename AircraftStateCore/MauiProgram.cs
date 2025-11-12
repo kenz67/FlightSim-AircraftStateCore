@@ -3,7 +3,7 @@ using AircraftStateCore.DAL.Repositories.Interfaces;
 using AircraftStateCore.Database;
 using AircraftStateCore.Services;
 using AircraftStateCore.Services.Interfaces;
-using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
 
 namespace AircraftStateCore
 {
@@ -23,10 +23,10 @@ namespace AircraftStateCore
 
 #if DEBUG
 			builder.Services.AddBlazorWebViewDeveloperTools();
-			builder.Logging.AddDebug();
+			//builder.Logging.AddDebug();
 #endif
 			builder.Services
-				.AddBootstrapBlazor()
+				.AddMudServices()
 				//.AddSingleton<MainPage>()
 				.AddSqlite<AircraftStateContext>($"Data Source={DbCommon.DbName}")
 				.AddSingleton<IDbInit, DbInit>()

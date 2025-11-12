@@ -1,168 +1,169 @@
 ﻿@using AircraftStateCore.Helpers;
 @using AircraftStateCore.Models;
 @using AircraftStateCore.Services.Interfaces;
-@using BootstrapBlazor.Components;
+@using static AircraftStateCore.Components.Shared.MudBlazorZ_Transfer
 
 @inject ISettingsData settingsData
-@inject MessageService MessageService
+@inject IDialogService DialogService
 
 @page "/SettingsPage"
 
 <h2>Settings</h2>
 
-<Message @ref="SaveMessage" Placement="Placement.Top" />
-
 <div>
-    <div class="bottom-buffer"></div>
-    <div class="row g-2 bottom-buffer">
-        <div class="col-2">
-            <Button @onclick="() => Save()" Color="Color.Primary">Save Settings</Button>
-        </div>
-    </div>
-    <div class="row g-2">
-        <div class="col-1" />
-        <div class="col-11">
-            <Checkbox TValue="bool" DisplayText="Auto save to Database" @bind-Value="@settings.AutoSave" OnValueChanged="OnAutoSaveChange" ShowLabel="false" ShowAfterLabel="true" />
-        </div>
-    </div>
-    <div class="row g-2">
-        <div class="col-1" />
-        <div class="col-11">
-             <Tooltip Placement="Placement.Bottom" Title="When sending data to the sim, if the checkbox is checked, location data will not be sent, even if it is a seleted field.">
-                <Checkbox TValue="bool" DisplayText="Override (block) sending plane location (default)" @bind-Value="@settings.BlockLocation" OnValueChanged="OnBlockLocationChange" ShowLabel="false" ShowAfterLabel="true" />
-             </Tooltip>
-        </div>
-    </div>
-    <div class="row g-2 bottom-buffer">
-        <div class="col-1" />
-        <div class="col-11">
-             <Tooltip Placement="Placement.Bottom" Title="When sending data to the sim, if the checkbox is checked, fuel data will not be sent, even if it is a selected field.">
-                <Checkbox TValue="bool" DisplayText="Override (block) sending fuel data (default)" @bind-Value="@settings.BlockFuel" OnValueChanged="OnBlockFuelChange" ShowLabel="false" ShowAfterLabel="true" />
-            </Tooltip>
-        </div>
-    </div>
+    <MudGrid>
+        <div class="bottom-buffer"></div>
+        <MudItem xs="2">
+            <MudButton @onclick="() => Save()" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">Save Settings</MudButton>
+        </MudItem>
+        <MudItem xs="10" />
 
-    <div class="row g-2">
-        <div class="col-1" />
-        <div class="col-11">
-            <Tooltip Placement="Placement.Bottom" IsHtml="true" 
-                Title="Select the settings that will be sent to the simulator.<br><br>
-                    <b>Settings may behave strangely in different aircraft, most testing done in C172 Classic.</b>">
-            <Transfer
-                    ShowLabel="true" DisplayText="Select the fields that will be sent to the simulator"
-                    LeftPanelText="Available" RightPanelText="Selected"
-                    LeftButtonText="Remove" RightButtonText="Add"
-                    ShowSearch="true"                    
-                    LeftPanelSearchPlaceHolderString="Search"  RightPanelSearchPlaceHolderString="Search" 
-                    OnSetItemClass="SetItemClass"
-                      OnSelectedItemsChanged="@OnSelectedItemsChanged"
-                      Items="Items" @bind-Value="@SelectedItems" />
-            </Tooltip>
-        </div>
-    </div>
+        <MudItem xs="1" />
+        <MudItem xs="11" class="tight-checkbox">
+            <div>
+                <MudCheckBox T="bool" Dense="true" @bind-Value="@settings.AutoSave" Label="Auto save to Database"
+                             Color="MudBlazor.Color.Primary" />
+            </div>
+            <div>
+                <MudTooltip text="When sending data to the sim, if the checkbox is checked, location data will not be sent, even if it is a selected field.">
+                    <MudCheckBox T="bool" Dense="true" @bind-Value="@settings.BlockLocation" Label="Override (block) sending plane location (default)"
+                                 Color="MudBlazor.Color.Primary" />
+                </MudTooltip>
+            </div>
+            <div>
+                <MudTooltip text="When sending data to the sim, if the checkbox is checked, fuel data will not be sent, even if it is a selected field.">
+                    <MudCheckBox T="bool" Dense="true" @bind-Value="@settings.BlockFuel" Label="Override (block) sending fuel data (default)"
+                                 Color="MudBlazor.Color.Primary" />
+                </MudTooltip>
+            </div>
+        </MudItem>
+        <MudItem xs="12" />
+    </MudGrid>
 </div>
+
+<MudGrid>
+    <MudItem xs="8">
+        <MudTooltip>
+            <TooltipContent>
+                Select the settings that will be sent to the simulator.<br><br>
+                <b>Settings may behave strangely in different aircraft, most testing done in C172 Classic.</b>
+            </TooltipContent>
+            <ChildContent>
+                <MudBlazorZ_Transfer Items="TransferItems"
+                                  LeftHeader="Select Data to send to the Sim"
+                                  RightHeader="Data that will be sent"
+                                  ShowSearch />
+            </ChildContent>
+        </MudTooltip>
+
+    </MudItem>
+</MudGrid>
 
 @code
 {
     private Settings settings;
-    private List<SelectedItem> Items { get; set; }
-    private List<SelectedItem> SelectedItems { get; set; }
-    private Message SaveMessage { get; set; }
+    private List<TransferItemData> TransferItems { get; set; }
 
     protected async override void OnInitialized()
     {
         settingsData.OnChangeAsync += Refresh;
         settings = await settingsData.ReadSettings();
 
-        Items = new List<SelectedItem>();
-        Items = ConvertToSelectedItemList(settings.SelectedData);
-        SelectedItems = ConvertToSelectedItemSelectedList(settings.SelectedData);
-
-        Items.Sort((x, y) => x.Value.CompareTo(y.Value));
-        SelectedItems.Sort((x, y) => x.Value.CompareTo(y.Value));
+        TransferItems = new List<TransferItemData>();
+        TransferItems = ConvertToTransferItemList(settings.SelectedData);
     }
 
-    private static string SetItemClass(SelectedItem item) => item.Value.ToString().EndsWith("0")
-        ? "transfer-disable bg-success text-white checkbox-hidden transfer-z"
-        : "transfer-z";
-
-
-    private List<SelectedItem> ConvertToSelectedItemList(List<AvailableDataItem> items)
+    private List<TransferItemData> ConvertToTransferItemList(List<AvailableDataItem> items)
     {
-        var result = new List<SelectedItem>();
-
+        var result = new List<TransferItemData>();
+        TransferItemData section = null;
         foreach (var item in items)
         {
-            result.Add(new SelectedItem(item.value, item.txt));
-        }
-
-        return result;
-    }
-
-    private List<SelectedItem> ConvertToSelectedItemSelectedList(List<AvailableDataItem> items)
-    {
-        var result = new List<SelectedItem>();
-
-        foreach (var item in items.Where(i => i.enabled).ToList())
-        {
-            result.Add(new SelectedItem(item.value, item.txt));
-        }
-
-        return result;
-    }
-
-    private Task OnSelectedItemsChanged(IEnumerable<SelectedItem> items)
-    {
-        Items.Sort((x, y) => x.Value.CompareTo(y.Value));
-
-        SelectedItems.RemoveAll(r => r.Value.EndsWith("0") && !r.Value.EndsWith(".0"));
-
-        if (SelectedItems.Count == 0)
-        {
-            foreach (var h in FieldText.Headers)
+            if (item.value.EndsWith("0") && !item.value.EndsWith(".0"))
             {
-                SelectedItems.Add(new SelectedItem($"{h.Key}.0", h.Value) { Active = false });
+                //skip non-subheader items that end with 0 but not .0
+                continue;
+            }
+            else if (item.value.EndsWith(".0"))
+            {
+                if (section != null)
+                {
+                    result.Add(section);
+                }
+
+                section = new TransferItemData
+                {
+                    Text = item.txt,
+                    Value = item.value,
+                    Selected = false,
+                    SubItems = new List<TransferItemData>()
+                };
+            }
+            else
+            {
+                if (section != null)
+                {
+                    section.SubItems.Add(new TransferItemData
+                    {
+                        Text = item.txt,
+                        Value = item.value,
+                        Selected = item.enabled
+                    });
+                }
+                else
+                {
+                    //no section, add as top level item
+                    result.Add(new TransferItemData
+                    {
+                        Text = item.txt,
+                        Value = item.value,
+                        Selected = item.enabled
+                    });
+                }
             }
         }
 
-        SelectedItems.Sort((x, y) => x.Value.CompareTo(y.Value));
+        if (section != null)
+        {
+            result.Add(section);
+        }
 
-        StateHasChanged();
-        return Task.CompletedTask;
+        return result;
     }
+
+    private void UpdateSettingsFromTransferItems()
+    {
+        foreach (var item in TransferItems)
+        {
+            foreach (var sub in item.SubItems)
+            {
+                settings.SelectedData.Where(s => s.value.Equals(sub.Value)).ToList().ForEach(s => s.enabled = sub.Selected);                
+            }
+        }
+    }
+
 
     private async Task Refresh()
     {
         await InvokeAsync(StateHasChanged);
     }
 
-    public Task OnAutoSaveChange(bool value)
-    {
-        settings.AutoSave = value;
-        return Task.CompletedTask;
-    }
-
-    public Task OnBlockLocationChange(bool value)
-    {
-        settings.BlockLocation = value;
-        return Task.CompletedTask;
-    }
-
-    public Task OnBlockFuelChange(bool value)
-    {
-        settings.BlockFuel = value;
-        return Task.CompletedTask;
-    }
-
     private async void Save()
     {
-        await settingsData.SaveSettings(SelectedItems);        
-        await MessageService.Show(new MessageOption()
+        var X = Services.DbCommon.DataPath;
+        var Y = Services.DbCommon.DbName;
+        UpdateSettingsFromTransferItems();
+        await settingsData.SaveSettings(settings);        
+
+        //Remove old Transfer code
+
+        //await settingsData.SaveSettings(SelectedItems);
+        var param = new DialogParameters<DialogOk>()
             {
-                Content = "Settings saved",
-                //ShowDismiss = true,
-                Icon = "fa-solid fa-circle-info"
-            });
+                { x => x.Message, $"Settings saved" },
+                { x => x.DialogIcon, "fa-solid fa-circle-info" },
+            };
+        await DialogService.ShowAsync<DialogOk>("Save", param);
     }
 
     //TODO - Settings - Auto Save settings on change?

@@ -1,4 +1,5 @@
 ﻿using AircraftStateCore.Services;
+using Assert = Xunit.Assert;
 
 namespace AircraftStateCoreTests.Services;
 

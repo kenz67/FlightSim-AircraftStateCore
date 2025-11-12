@@ -1,0 +1,147 @@
+﻿<h3>@Title</h3>
+
+
+<MudGrid Spacing="1">
+
+    @if (ShowSearch)
+    {
+        <MudItem xs="4">
+            <MudTextField
+            @bind-value="LeftSearchString"
+            @onkeydown="@(e => { SelectedLeftValues = new List<string>(); StateHasChanged(); })"
+            OnClearButtonClick="@(() => { SelectedLeftValues = new List<string>(); StateHasChanged(); })"
+            Placeholder="Search"
+            Variant="Variant.Text"
+            Clearable="true"
+            Immediate="true"
+            />
+        </MudItem>
+        <MudItem xs="4" />
+        <MudItem xs="4">
+            <MudTextField @bind-value="RightSearchString"
+                @onkeydown="@(e => { SelectedRightValues = new List<string>(); StateHasChanged(); })"
+                      OnClearButtonClick="@(() => { SelectedRightValues = new List<string>(); StateHasChanged(); })"
+                Placeholder="Search"
+                Variant="Variant.Text"
+                Clearable="true"
+                Immediate="true"
+                />
+        </MudItem>
+    }
+    @* <-- New Row --> *@
+
+    <MudItem xs="4">
+        <MudList T="string" Dense="true" Class="scrollable-list mudlist-bordered"
+                    @bind-SelectedValues="SelectedLeftValues" SelectionMode="SelectionMode.MultiSelection">
+            <MudListSubheader>
+                <b>@LeftHeader</b>
+            </MudListSubheader>
+            @foreach (var item in Items.Where(i => String.IsNullOrEmpty(LeftSearchString) || i.SubItems.Any(s => s.Text.StartsWith(LeftSearchString) && !s.Selected)))
+            {
+                if (item.SubItems.Count > 0)
+                {
+                    <MudListSubheader Class="ListSectionHeader">@item.Text</MudListSubheader>
+                    foreach (var sub in item.SubItems.Where(s => s.Text.StartsWith(LeftSearchString)).Where(i => !i.Selected))
+                    {
+                        <MudListItem Text="@sub.Text" Value="@sub.Value" />
+                    }
+                }
+                else
+                {
+                    <MudListItem Text="@item.Text" Value="@item.Text" />
+                }
+            }
+        </MudList>
+    </MudItem>
+
+
+    <MudItem xs="4" Class="center-item">
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Disabled="SelectedRightValues.Count == 0"
+                    OnClick="(() => ButtonClicked(SelectedRightValues, false))">&lt; Remove</MudButton>
+        <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" Disabled="SelectedLeftValues.Count == 0"
+                    OnClick="(() => ButtonClicked(SelectedLeftValues, true))">Add &gt;</MudButton>
+    </MudItem>
+
+    <MudItem xs="4">
+        <MudList T="string" Dense="true" Class="scrollable-list mudlist-bordered" 
+                    @bind-SelectedValues="SelectedRightValues" SelectionMode="SelectionMode.MultiSelection">
+            <MudListSubheader>
+                <b>@RightHeader</b>
+            </MudListSubheader>
+            @foreach (var item in Items.Where(i => String.IsNullOrEmpty(RightSearchString) || i.SubItems.Any(s => s.Text.StartsWith(RightSearchString) && s.Selected)))
+            {
+                if (item.SubItems.Count > 0)
+                {
+                    <MudListSubheader Class="ListSectionHeader">@item.Text</MudListSubheader>
+                    foreach (var sub in item.SubItems.Where(s => s.Text.StartsWith(RightSearchString)).Where(i => i.Selected))
+                    {
+                        <MudListItem Text="@sub.Text" Value="@sub.Value" />
+                    }
+                }
+                else
+                {
+                    <MudListItem Text="@item.Text" Value="@item.Text" />
+                }
+            }
+        </MudList>
+    </MudItem>
+</MudGrid>
+
+@code {
+    public class TransferItemData
+    {
+        public string Text { get; set; }
+        public string Value { get; set; }
+        public bool Selected { get; set; } = false;
+        public List<TransferItemData> SubItems { get; set; } = new List<TransferItemData>();
+    }
+
+    [Parameter]
+    public String Title { get; set; } = String.Empty;
+
+    [Parameter]
+    public String LeftHeader { get; set; } = String.Empty;
+
+    [Parameter]
+    public String RightHeader { get; set; } = String.Empty;
+
+    [Parameter]
+    public List<TransferItemData> Items { get; set; } = new List<TransferItemData>();
+
+    [Parameter]
+    public Boolean ShowSearch { get; set; } = false;
+
+    private IReadOnlyCollection<string> SelectedLeftValues { get; set; } = new List<string>();
+    private IReadOnlyCollection<string> SelectedRightValues { get; set; } = new List<string>();
+
+    private String LeftSearchString { get; set; } = String.Empty;
+    private String RightSearchString { get; set; } = String.Empty;
+
+    protected void ButtonClicked(IReadOnlyCollection<string> SelectedItems, bool Selected)
+    {
+        foreach (var val in SelectedItems)
+        {
+            var item = Items.FirstOrDefault(i => i.Value == val);
+            if (item != null)
+            {
+                item.Selected = true;
+            }
+            else
+            {
+                foreach (var parent in Items.Where(i => i.SubItems.Count > 0))
+                {
+                    var subItem = parent.SubItems.FirstOrDefault(si => si.Value == val);
+                    if (subItem != null)
+                    {
+                        subItem.Selected = Selected;
+                        break;
+                    }
+                }
+            }
+        }
+        SelectedLeftValues = new List<string>();
+        SelectedRightValues = new List<string>();
+        StateHasChanged();
+    }
+
+}

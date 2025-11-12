@@ -1,7 +1,4 @@
-﻿@using BootstrapBlazor.Components;
-
-
-@page "/helpPage"
+﻿@page "/helpPage"
 
 <h2>Help</h2>
 
@@ -12,14 +9,14 @@ All data will be captured and saved, however, the data that will be sent to the 
 <br /><br />
 The page has a menu down the left side (each option described below) and icons on the top as follows:
 <ul class="no-bullets">
-    <li><div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Success">Connected to Sim</Badge> The application is connected to the simulator and can send/receive data</div></li>
-    <li><div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Danger">Not Connected to Sim</Badge>The application is not connected to the simulator and cannot send/receive data</div></li>
-    <li><div class="col-6 col-sm-4 col-md-3 col-lg-auto"><Badge IsPill="true" Color="Color.Info">Autosave enabled</Badge> The application is set to auto-save data to the DB</div></li>
+        <li><div class="col-6 col-sm-4 col-md-3 col-lg-auto"><MudChip T="string" Class="small-pill" Variant="Variant.Filled" Label="true" Color="Color.Success">Connected to Sim</MudChip> The application is connected to the simulator and can send/receive data</div></li>
+        <li><div class="col-6 col-sm-4 col-md-3 col-lg-auto"><MudChip T="string" Class="small-pill" Variant="Variant.Filled" Label="true" Color="Color.Error">Not Connected to Sim</MudChip> The application is not connected to the simulator and cannot send/receive data</div></li>
+        <li><div class="col-6 col-sm-4 col-md-3 col-lg-auto"><MudChip T="string" Class="small-pill" Variant="Variant.Filled" Label="true" Color="Color.Info">Autosave enabled</MudChip> The application is set to auto-save data to the DB</div></li>
 </ul>
 </div>
 <br /><br />
 <b>Autosave</b> is an option to allow the application to automatically save a flight at the end.  It is triggered after the combination of the data has been sent to the sim from the application 
-and the master battery switch is on.  The data will be saved when the master battery is switched to off.  This option can be turned off in settings.  Note that, to protect saved profile data after a simlator crash, autosave will not 
+and the master battery switch is on.  The data will be saved when the master battery is switched to off.  This option can be turned off in settings.  Note that, to protect saved profile data after a simulator crash, autosave will not 
 save when it determines that the readings are default.  The conditions that will not save are either of the following
 <ul class="cols2">
     <li>Both Com radios are set to 124.85</li>
@@ -30,7 +27,7 @@ save when it determines that the readings are default.  The conditions that will
 <h4>Home Page</h4>
 <div>
     The home page shows the current data that is being read from the sim.  Regardless of what data is being applied to the sim, all current data will be shown here.
-    The <Button Color="Color.Primary">Save to DB</Button> will allow the current data to be saved to the database.   When saving, a profile name can be supplied allowing multiple sets of 
+    The <MudButton Variant="Variant.Filled" Color="Color.Primary">Save to DB</MudButton> will allow the current data to be saved to the database.   When saving, a profile name can be supplied allowing multiple sets of
     data for the same aircraft.
     <br /><br />
 @*    If the application is not connected to the sim, for example, it was started before the sim was open, the
@@ -45,9 +42,9 @@ save when it determines that the readings are default.  The conditions that will
     If no profile is found or a different profile is desired one can be selected from the select profile drop down.  Once a profile is slected, the data for that profile will be shown.  Note that only
     data that will be sent to the sim is shown.  Data can be selected from the settings page.
     <br /><br />
-    The <Button Color="Color.Primary">Send to Sim</Button> will send the data from the screen to the sim.
+    The <MudButton Variant="Variant.Filled" Color="Color.Primary">Send to Sim</MudButton> will send the data from the screen to the sim.
     <br />
-    The <Button Color="Color.Dark">Delete Profile</Button> will delete the currently selected profile from the database.
+    The <MudButton Variant="Variant.Filled" Color="Color.Dark">Delete Profile</MudButton> will delete the currently selected profile from the database.
     <br /><br />
     There are two options in check boxes <b>Block Fuel Data</b> and <b>Block Location Data</b>.  These option allow the user to override sending Fuel and Location data even if set to be sent.  
     This can be useful in some situations such as FSEconomy which sets this data itself.
