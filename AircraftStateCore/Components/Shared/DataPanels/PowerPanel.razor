@@ -16,7 +16,7 @@
 						<MudItem xs="12">
 							<div style="display: grid; grid-template-columns: 3fr 3fr; gap: 0;">
 								<MudButton Variant="Variant.Filled" Class="group-label">@FieldText.PowerMasterBattery</MudButton>
-								<MudButton Variant="Variant.Outlined" Class="group-data">@Data.masterBattery</MudButton>
+							<MudButton Variant="Variant.Outlined" Class="group-data">@Formatter.GetOnOff(Data.masterAlternator)</MudButton>
 							</div>
 						</MudItem>
 					}
